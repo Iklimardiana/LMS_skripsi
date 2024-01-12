@@ -24,6 +24,8 @@ return new class extends Migration
             $table->string('phone');
             $table->string('avatar')->default('avatarDefault.png');
             $table->enum('gender', ["P","L"]);
+            $table->string('key')->nullable();
+            $table->enum('active', [0,1])->default(0);
             $table->rememberToken();
             $table->timestamps();
         });
