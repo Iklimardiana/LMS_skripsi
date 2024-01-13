@@ -18,11 +18,11 @@ return new class extends Migration
             $table->string('attachment');
             $table->enum('type', ['file', 'link']);
             $table->enum('category', ['fromteacher', 'fromstudent']);
-            $table->float('score');
+            $table->float('score')->nullable();
             $table->unsignedBigInteger('idMaterial');
-            $table->unsignedBigInteger('idStudent');
+            $table->unsignedBigInteger('idUser');
             $table->foreign('idMaterial')->references('id')->on('material')->onDelete('cascade');
-            $table->foreign('idStudent')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('idUser')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
