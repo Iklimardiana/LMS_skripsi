@@ -21,7 +21,10 @@ class UserSeeder extends Seeder
             'password'=>bcrypt('Pelajar1'),
             'role'=>'student',
             'gender'=>'L',
-            'avatar'=>'avatarDefault.png'
+            'phone'=>'09210929102',
+            'avatar'=>'avatarDefault.png',
+            'key'=>null,
+            'active'=>'1'
         ]);
         User::create([
             'email'=>'student2@gmail.com',
@@ -30,7 +33,10 @@ class UserSeeder extends Seeder
             'password'=>bcrypt('Pelajar2'),
             'role'=>'student',
             'gender'=>'P',
-            'avatar'=>'avatarDefault.png'
+            'phone'=>'09210929102',
+            'avatar'=>'avatarDefault.png',
+            'key'=>null,
+            'active'=>'1'
         ]);
         User::create([
             'email'=>'teacher1@gmail.com',
@@ -39,7 +45,10 @@ class UserSeeder extends Seeder
             'password'=>bcrypt('Pengajar1'),
             'role'=>'teacher',
             'gender'=>'P',
-            'avatar'=>'avatarDefault.png'
+            'phone'=>'09210929102',
+            'avatar'=>'avatarDefault.png',
+            'key'=>null,
+            'active'=>'1'
         ]);
         User::create([
             'email'=>'teacher2@gmail.com',
@@ -48,7 +57,10 @@ class UserSeeder extends Seeder
             'password'=>bcrypt('Pengajar2'),
             'role'=>'teacher',
             'gender'=>'P',
-            'avatar'=>'avatarDefault.png'
+            'phone'=>'09210929102',
+            'avatar'=>'avatarDefault.png',
+            'key'=>null,
+            'active'=>'1'
         ]);
     }
 }
