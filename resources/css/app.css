@@ -1,3 +1,34 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.active{
+    /* Add whatever CSS style will make your link look active. The example below (in my case) */
+    @apply bg-white border border-cyan-500 text-gray-900;
+}
+input[type=file]::file-selector-button {
+    color: white;
+    background: #06B6D4;
+    border: 0;
+    font-weight: 500;
+    font-size: 0.875rem;
+    cursor: pointer;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    padding-right: 0.5rem;
+    margin-inline-start: -1rem;
+    margin-inline-end: 1rem;
+  }
+input[type=file]::file-selector-button:hover {
+   background: #06B6D4;
+}
+.min-h-100{
+  min-height: 26rem;
+}
+.w-25{
+  width: 6.5rem;
+}
+.w-21{
+  width: 5.5rem;
+}
