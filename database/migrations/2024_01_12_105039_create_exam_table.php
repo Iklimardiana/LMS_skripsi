@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('title');
             $table->enum('type', ['pretest', 'postest']);
             $table->integer('duration');
+            $table->enum('status',[1,0])->default(0);
             $table->unsignedBigInteger('idSubject');
             $table->foreign('idSubject')->references('id')->on('subject')->onDelete('cascade');
             $table->timestamps();

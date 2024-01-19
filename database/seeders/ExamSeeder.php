@@ -18,13 +18,15 @@ class ExamSeeder extends Seeder
             'title'=>'Ujian Pretest Alpro',
             'type'=>'pretest',
             'duration'=>60,
-            'idSubject'=>1
+            'idSubject'=>1,
+            'status'=>'1'
         ]);
         Exam::create([
             'title'=>'ujian postest alpro',
             'type'=>'postest',
             'duration'=>60,
-            'idSubject'=>1
+            'idSubject'=>1,
+            'status'=>'0'
         ]);
     }
 }

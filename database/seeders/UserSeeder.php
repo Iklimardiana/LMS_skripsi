@@ -23,6 +23,7 @@ class UserSeeder extends Seeder
             'gender'=>'L',
             'phone'=>'09210929102',
             'avatar'=>'avatarDefault.png',
+            'entry_year'=>2022,
             'key'=>null,
             'active'=>'1'
         ]);
@@ -35,6 +36,7 @@ class UserSeeder extends Seeder
             'gender'=>'P',
             'phone'=>'09210929102',
             'avatar'=>'avatarDefault.png',
+            'entry_year'=>2022,
             'key'=>null,
             'active'=>'1'
         ]);
@@ -47,6 +49,7 @@ class UserSeeder extends Seeder
             'gender'=>'P',
             'phone'=>'09210929102',
             'avatar'=>'avatarDefault.png',
+            'entry_year'=>null,
             'key'=>null,
             'active'=>'1'
         ]);
@@ -59,6 +62,20 @@ class UserSeeder extends Seeder
             'gender'=>'P',
             'phone'=>'09210929102',
             'avatar'=>'avatarDefault.png',
+            'entry_year'=>null,
+            'key'=>null,
+            'active'=>'1'
+        ]);
+        User::create([
+            'email'=>'admin@gmail.com',
+            'first_name'=>'Admin',
+            'last_name'=>null,
+            'password'=>bcrypt('admin'),
+            'role'=>'admin',
+            'gender'=>'P',
+            'phone'=>'09210929102',
+            'avatar'=>'avatarDefault.png',
+            'entry_year'=>null,
             'key'=>null,
             'active'=>'1'
         ]);

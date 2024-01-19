@@ -18,6 +18,7 @@ class Exam extends Model
         'type',
         'duration',
         'idSubject',
+        'status',
     ];
 
     public function Subject()
