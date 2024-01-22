@@ -20,6 +20,19 @@
         </section>
     </main>
     @include('partials.footer')
+    <script>
+        function redirectToAddTeacher() {
+            window.location.href = '/admin/teacher/create';
+        }
+
+        function redirectToListTeacher() {
+            window.location.href = '/admin/teacher'
+        }
+
+        function redirectToAddSubject() {
+            window.location.href = '/admin/subject/create'
+        }
+    </script>
 </body>
 
 </html>

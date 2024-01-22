@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-    Login
+    Reset Password
 @endsection
 @section('content')
     <div class="p-4 border-2 border-gray-200 min-h-56 border-dashed mx-4 my-28 md:my-32 md:mx-52 rounded-lg">

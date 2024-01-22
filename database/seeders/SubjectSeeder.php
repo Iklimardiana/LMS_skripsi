@@ -15,14 +15,16 @@ class SubjectSeeder extends Seeder
     public function run()
     {
         Subject::create([
-            'name'=>'Informatika',
-            'enrollment_key'=>'Informatika2024',
-            'idTeacher'=>'3'
+            'name' => 'Informatika',
+            'enrollment_key' => 'Informatika2024',
+            'idTeacher' => '3',
+            'thumbnail' => 'thumbnailDefault.jpg'
         ]);
         Subject::create([
-            'name'=>'Matematika',
-            'enrollment_key'=>'Matematika2024',
-            'idTeacher'=>'4'
+            'name' => 'Matematika',
+            'enrollment_key' => 'Matematika2024',
+            'idTeacher' => '4',
+            'thumbnail' => 'thumbnailDefault.jpg'
         ]);
     }
 }
