@@ -16,7 +16,7 @@
                         </p>
                     </span>
                     <div class="w-full mx-5 relative overflow-x-auto">
-                        <a href="#">
+                        <a href="/admin/teacher">
                             <table
                                 class="w-full text-sm text-left rtl:text-right border border-cyan-500 shadow-sm text-gray-500 ">
                                 <thead class="text-xs text-white text-center uppercase bg-cyan-500">
@@ -26,17 +26,17 @@
                                         </th>
                                     </tr>
                                 </thead>
-                                @forelse ($teachers as $teacher)
-                                    <tbody class="text-center">
+                                <tbody class="text-center">
+                                    @forelse ($teachers as $teacher)
                                         <tr class="bg-white border-b border-cyan-500 hover:bg-gray-50 ">
                                             <td class="px-6 py-1 font-medium text-gray-900 whitespace-nowrap">
                                                 {{ $teacher->first_name . ' ' . $teacher->last_name }}
                                             </td>
                                         </tr>
-                                    </tbody>
-                                @empty
-                                    <p class="text-md text-center">Tidak Ada Guru</p>
-                                @endforelse
+                                    @empty
+                                        <p class="text-md text-center">Tidak Ada Guru</p>
+                                    @endforelse
+                                </tbody>
                             </table>
                         </a>
                     </div>
@@ -52,7 +52,7 @@
                         </p>
                     </span>
                     <div class="w-full mx-5 relative overflow-x-auto">
-                        <a href="#">
+                        <a href="/admin/student">
                             <table
                                 class="w-full text-sm text-left rtl:text-right border border-cyan-500 shadow-sm text-gray-500 ">
                                 <thead class="text-xs text-white text-center uppercase bg-cyan-500">
@@ -62,17 +62,17 @@
                                         </th>
                                     </tr>
                                 </thead>
-                                @forelse ($students as $student)
-                                    <tbody class="text-center">
+                                <tbody class="text-center">
+                                    @forelse ($students as $student)
                                         <tr class="bg-white border-b border-cyan-500 hover:bg-gray-50 ">
                                             <td class="px-6 py-1 font-medium text-gray-900 whitespace-nowrap">
                                                 {{ $student->first_name . ' ' . $student->last_name }}
                                             </td>
                                         </tr>
-                                    </tbody>
-                                @empty
-                                    <p class="text-md text-center">Tidak Ada Siswa</p>
-                                @endforelse
+                                    @empty
+                                        <p class="text-md text-center">Tidak Ada Guru</p>
+                                    @endforelse
+                                </tbody>
                             </table>
                         </a>
                     </div>
@@ -87,7 +87,7 @@
                         </p>
                     </span>
                     <div class="w-full mx-5 relative overflow-x-auto">
-                        <a href="#">
+                        <a href="/admin/subject">
                             <table
                                 class="w-full text-sm text-left rtl:text-right border border-cyan-500 shadow-sm text-gray-500 ">
                                 <thead class="text-xs text-white text-center uppercase bg-cyan-500">
@@ -97,17 +97,17 @@
                                         </th>
                                     </tr>
                                 </thead>
-                                @forelse ($subjects as $subject)
-                                    <tbody class="text-center">
+                                <tbody class="text-center">
+                                    @forelse ($subjects as $subject)
                                         <tr class="bg-white border-b border-cyan-500 hover:bg-gray-50 ">
                                             <td class="px-6 py-1 font-medium text-gray-900 whitespace-nowrap">
                                                 {{ $subject->name }}
                                             </td>
                                         </tr>
-                                    </tbody>
-                                @empty
-                                    <p class="text-md text-center">Tidak Ada Mata Pelajaran</p>
-                                @endforelse
+                                    @empty
+                                        <p class="text-md text-center">Tidak Ada Guru</p>
+                                    @endforelse
+                                </tbody>
                             </table>
                         </a>
                     </div>
