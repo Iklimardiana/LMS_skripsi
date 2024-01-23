@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\Subject;
 use Illuminate\Support\Facades\File;
 use App\Models\User;
-use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
 
 class SubjectController extends Controller
@@ -39,9 +38,10 @@ class SubjectController extends Controller
 
     public function update(Request $request, $id)
     {
+        $subject = Subject::findOrFail($id);
         $request->validate([
             'name' => 'required',
-            'enrollment_key',
+            'enrollment_key' => 'confirmed',
             'thumbnail' => 'mimes:png,jpeg,jpg|max:2048',
             'idTeacher' => 'required',
         ], [
@@ -49,12 +49,10 @@ class SubjectController extends Controller
             'name.required' => 'Kolom Nama Harus Diisi'
         ]);
 
-        $subject = Subject::findOrFail($id);
-
         if ($request->input('name') !== $subject->name) {
             $subject->name = $request->input('name');
         }
-        if ($request->input('enrollment_key') !== $subject->price) {
+        if ($request->input('enrollment_key') !== $subject->enrollment_key) {
             $subject->enrollment_key = $request->input('enrollment_key');
         }
         if ($request->input('idTeacher') !== $subject->idTeacher) {
@@ -64,7 +62,7 @@ class SubjectController extends Controller
         if ($request->has('thumbnail')) {
             $path = "images/thumbnail/";
 
-            if ($subject->thumbnail && $subject->thumbnail !== 'defaultThumbnail.png') {
+            if ($subject->thumbnail && $subject->thumbnail !== 'thumbnailDefault.jpg') {
                 File::delete($path . $subject->thumbnail);
             }
 

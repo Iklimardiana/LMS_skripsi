@@ -16,6 +16,7 @@ class Subject extends Model
         'name',
         'enrollment_key',
         'idTeacher',
+        'thumbnail'
     ];
 
     public function Enrollment()

@@ -38,7 +38,8 @@ Route::middleware('admin')->group(function () {
 Route::middleware('teacher')->group(function () {
     Route::get('/teacher', [TeacherController::class, 'dashboard']);
     Route::get('/teacher/subject', [TeacherController::class, 'subjects']);
-    Route::get('teacher/subject/{id}/student', [TeacherController::class, 'students']);
+    Route::get('/teacher/subject/{id}/student', [TeacherController::class, 'students']);
+    Route::put('/teacher/subject/{id}', [TeacherController::class, 'settingSubject']);
 });
 
 Route::get('/login', [LoginController::class, 'login']);

@@ -85,4 +85,44 @@ class TeacherController extends Controller
 
         return view('teacher.material.view', compact('materials', 'subject', 'assignment', 'iteration'));
     }
+
+    public function settingSubject(Request $request, $id)
+    {
+        $request->validate([
+            'enrollment_key' => 'required|string|min:6|confirmed',
+            'thumbnail' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+        ], [
+            'enrollment_key.required' => 'Enrollment Key harus diisi. Coba lagi',
+            'enrollment_key.confirmed' => 'Konfirmasi Enrollment key tidak cocok. Coba lagi',
+            'thumbnail.image' => 'File harus berupa gambar.',
+            'thumbnail.mimes' => 'Format gambar yang diperbolehkan: jpeg, png, jpg, gif.',
+            'thumbnail.max' => 'Ukuran gambar tidak boleh melebihi 2 MB.',
+        ]);
+
+        $subject = Subject::findOrFail($id);
+
+        if ($subject->idTeacher !== auth()->user()->id) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $subject->update([
+            'enrollment_key' => $request->enrollment_key,
+        ]);
+
+        if ($request->hasFile('thumbnail')) {
+            $path = "images/thumbnail/";
+
+            if ($subject->thumbnail && $subject->thumbnail !== 'thumbnailDefault.jpg') {
+                File::delete(public_path($path . $subject->thumbnail));
+            }
+
+            $thumbnailName = time() . '.' . $request->thumbnail->extension();
+            $request->thumbnail->move(public_path($path), $thumbnailName);
+            $subject->thumbnail = $thumbnailName;
+            $subject->save();
+        }
+
+        return redirect('/teacher/subject');
+
+    }
 }

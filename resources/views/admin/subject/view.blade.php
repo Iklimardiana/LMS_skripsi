@@ -118,7 +118,7 @@
                                     {{ $subject->enrollment_key }}
                                 </td>
                                 <td class="px-6 py-1">
-                                    {{ $subject->User->first_name . ' ' . $subject->User->last_name }}
+                                    {{ $subject->teacher->first_name . ' ' . $subject->teacher->last_name }}
                                 </td>
                                 <td class="px-6 py-1 flex flex-items-center justify-center gap-1">
                                     <form action="/admin/subject/{{ $subject->id }}"method="POST">
