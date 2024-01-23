@@ -34,7 +34,7 @@
                             </tr>
                         </thead>
                         <tbody class="text-center text-gray-900">
-                            @foreach ($enrollment as $enroll)
+                            @forelse ($enrollment as $enroll)
                                 <tr class="odd:bg-gray-50 even:bg-cyan-50 b border border-cyan-500">
                                     <td class="px-6 py-1">
                                         {{ $iteration++ }}
@@ -46,7 +46,16 @@
                                         80%(masih statis)
                                     </td>
                                 </tr>
-                            @endforeach
+                            @empty
+                                <tr class="odd:bg-gray-50 even:bg-cyan-50 b border border-cyan-500">
+                                    <td class="px-6 py-1">
+
+                                    </td>
+                                    <td class="px-6 py-1">
+                                        Tidak ada siswa yang terdaftar pada mata pelajaran ini
+                                    </td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 @else

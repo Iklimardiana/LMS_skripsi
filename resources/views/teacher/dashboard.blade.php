@@ -16,36 +16,34 @@
                         </p>
                     </span>
                     <div class="w-full mx-5 relative overflow-x-auto">
-                        <a href="/teacher/student">
-                            <table
-                                class="w-full text-sm text-left rtl:text-right border border-cyan-500 shadow-sm text-gray-900 ">
-                                <thead class="text-xs text-white text-center uppercase bg-cyan-500">
-                                    <tr>
-                                        <th scope="col" class="px-6 py-3">
-                                            Daftar Siswa
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody class="text-center">
-                                    @forelse ($students as $subjectName => $subjectStudents)
-                                        @foreach ($subjectStudents as $student)
-                                            <tr class="bg-white border-b border-cyan-500 hover:bg-gray-50">
-                                                <td class="px-6 py-1 font-normal text-gray-900 whitespace-nowrap">
-                                                    @foreach ($student as $individualStudent)
-                                                        {{ $individualStudent->first_name }}
-                                                    @endforeach
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    @empty
-                                        <tr>
-                                            <td colspan="1" class="px-6 py-1 text-gray-900 whitespace-nowrap">Tidak ada
-                                                siswa yang terdaftar</td>
+                        <table
+                            class="w-full text-sm text-left rtl:text-right border border-cyan-500 shadow-sm text-gray-900 ">
+                            <thead class="text-xs text-white text-center uppercase bg-cyan-500">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3">
+                                        Daftar Siswa
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+                                @forelse ($students as $subjectName => $subjectStudents)
+                                    @foreach ($subjectStudents as $student)
+                                        <tr class="bg-white border-b border-cyan-500 hover:bg-gray-50">
+                                            <td class="px-6 py-1 font-normal text-gray-900 whitespace-nowrap">
+                                                @foreach ($student as $individualStudent)
+                                                    {{ $individualStudent->first_name . ' ' . $individualStudent->last_name }}
+                                                @endforeach
+                                            </td>
                                         </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        </a>
+                                    @endforeach
+                                @empty
+                                    <tr>
+                                        <td colspan="1" class="px-6 py-1 text-gray-900 whitespace-nowrap">Tidak ada
+                                            siswa yang terdaftar</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 <div class="flex flex-col items-center h-auto p-3 justify-items-start rounded bg-cyan-50">
