@@ -46,6 +46,18 @@
             var studentUrl = baseUrl + subjectId + '/student';
             window.location.href = studentUrl;
         }
+
+        function redirectToEditProfile(userId) {
+            var baseUrl = '/teacher/profile/';
+            var editProfileUrl = baseUrl + userId + '/edit';
+            window.location.href = editProfileUrl;
+        }
+
+        function redirectToProfile(userId) {
+            var baseUrl = '/teacher/profile/';
+            var editProfileUrl = baseUrl + userId;
+            window.location.href = editProfileUrl;
+        }
     </script>
 </body>
 

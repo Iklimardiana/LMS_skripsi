@@ -40,6 +40,10 @@ Route::middleware('teacher')->group(function () {
     Route::get('/teacher/subject', [TeacherController::class, 'subjects']);
     Route::get('/teacher/subject/{id}/student', [TeacherController::class, 'students']);
     Route::put('/teacher/subject/{id}', [TeacherController::class, 'settingSubject']);
+
+    route::get('/teacher/profile/{id}/edit', [TeacherController::class, 'editProfile']);
+    route::put('/teacher/profile/{id}', [TeacherController::class, 'updateProfile']);
+    route::get('/teacher/profile/{id}', [TeacherController::class, 'profile']);
 });
 
 Route::get('/login', [LoginController::class, 'login']);
