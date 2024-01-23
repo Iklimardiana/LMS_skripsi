@@ -15,20 +15,22 @@ class AssignmentSeeder extends Seeder
     public function run()
     {
         Assignment::create([
-            'attachment'=>'www.link.com',
-            'type'=>'link',
-            'category'=>'fromteacher',
-            'score'=>null,
-            'idMaterial'=>1,
-            'idUser'=>3,
+            'attachment' => 'www.link.com',
+            'type' => 'link',
+            'category' => 'fromteacher',
+            'score' => null,
+            'idMaterial' => 1,
+            'idUser' => 3,
+            'idSubject' => 1
         ]);
         Assignment::create([
-            'attachment'=>'file',
-            'type'=>'file',
-            'category'=>'fromstudent',
-            'score'=>null,
-            'idMaterial'=>1,
-            'idUser'=>1,
+            'attachment' => 'file',
+            'type' => 'file',
+            'category' => 'fromstudent',
+            'score' => null,
+            'idMaterial' => 1,
+            'idUser' => 1,
+            'idSubject' => 1
         ]);
     }
 }

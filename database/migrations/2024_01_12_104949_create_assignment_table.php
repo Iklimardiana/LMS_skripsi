@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -19,8 +18,10 @@ return new class extends Migration
             $table->enum('type', ['file', 'link']);
             $table->enum('category', ['fromteacher', 'fromstudent']);
             $table->float('score')->nullable();
+            $table->unsignedBigInteger('idSubject');
             $table->unsignedBigInteger('idMaterial');
             $table->unsignedBigInteger('idUser');
+            $table->foreign('idSubject')->references('id')->on('subject')->onDelete('cascade');
             $table->foreign('idMaterial')->references('id')->on('material')->onDelete('cascade');
             $table->foreign('idUser')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
