@@ -14,7 +14,6 @@ class Enrollment extends Model
 
     protected $fillable = [
         'id',
-        'verification',
         'idSubject',
         'idUser'
     ];

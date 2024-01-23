@@ -15,14 +15,12 @@ class EnrollmentSeeder extends Seeder
     public function run()
     {
         Enrollment::create([
-            'verification'=>'0',
-            'idSubject'=>'1',
-            'idUser'=>'2'
+            'idSubject' => '1',
+            'idUser' => '2'
         ]);
         Enrollment::create([
-            'verification'=>'1',
-            'idSubject'=>'1',
-            'idUser'=>'1'
+            'idSubject' => '1',
+            'idUser' => '1'
         ]);
     }
 }

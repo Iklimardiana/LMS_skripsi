@@ -10,7 +10,7 @@ class Subject extends Model
     use HasFactory;
 
     protected $table = 'subject';
-    protected $primaryKey ='id';
+    protected $primaryKey = 'id';
 
     protected $fillable = [
         'name',
@@ -33,7 +33,7 @@ class Subject extends Model
         return $this->hasMany(Exam::class, 'idSubject');
     }
 
-    public function User()
+    public function Teacher()
     {
         return $this->belongsTo(User::class, 'idTeacher');
     }
