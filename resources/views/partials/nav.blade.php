@@ -28,13 +28,13 @@
                         </a>
                     </li>
                     <li>
-                        <a href="@if (request()->is('/')) /login 
+                        <a href="@if (request()->is('/') || request()->is('forgot')) /login 
                             @elseif(request()->is('login')) /register 
                             @elseif(request()->is('register')) /login @endif"
                             class="block py-2 px-3 md:p-0 text-white rounded md:hover:underline md:hover:border-white"
                             aria-current="page">
                             <span class="p-2">
-                                @if (request()->is('/'))
+                                @if (request()->is('/') || request()->is('forgot'))
                                     Masuk/ Daftar
                                 @elseif(request()->is('login'))
                                     Daftar

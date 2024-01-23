@@ -77,7 +77,7 @@
                 @if (Auth()->user()->role == 'teacher')
                     <li>
                         <a href="/teacher"
-                            class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-white hover:border hover:border-cyan-500 group active">
+                            class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-white hover:border hover:border-cyan-500 group {{ request()->is('teacher') ? ' active' : '' }}">
                             <svg class="w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900 "
                                 aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                 viewBox="0 0 22 21">
@@ -90,8 +90,8 @@
                         </a>
                     </li>
                     <li>
-                        <a href="subject.html"
-                            class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-white hover:border hover:border-cyan-500 group">
+                        <a href="/teacher/subject"
+                            class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-white hover:border hover:border-cyan-500 group {{ request()->is('teacher/subject*') ? ' active' : '' }}">
                             <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900 "
                                 xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 20">
                                 <path
@@ -102,7 +102,7 @@
                     </li>
                     <li>
                         <a href="student.html"
-                            class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-white hover:border hover:border-cyan-500 group">
+                            class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-white hover:border hover:border-cyan-500 group {{ request()->is('teacher/profile*') ? ' active' : '' }}">
                             <svg class="w-5 h-5 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                 fill="currentColor" viewBox="0 0 20 16">
                                 <path
