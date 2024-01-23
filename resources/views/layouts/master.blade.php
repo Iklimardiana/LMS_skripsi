@@ -32,6 +32,20 @@
         function redirectToAddSubject() {
             window.location.href = '/admin/subject/create'
         }
+
+        function redirectToMaterial() {
+            window.location.href = '#';
+        }
+
+        function redirectToExam() {
+            window.location.href = 'exam_list.html'
+        }
+
+        function redirectToStudent(subjectId) {
+            var baseUrl = '/teacher/subject/';
+            var studentUrl = baseUrl + subjectId + '/student';
+            window.location.href = studentUrl;
+        }
     </script>
 </body>
 
