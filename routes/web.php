@@ -53,6 +53,8 @@ Route::middleware('student')->group(function () {
     route::get('/student/profile/{id}/edit', [StudentController::class, 'editProfile']);
     route::put('/student/profile/{id}', [StudentController::class, 'updateProfile']);
     route::get('/student/profile/{id}', [StudentController::class, 'profile']);
+
+    Route::post('/student/enroll/{enrollmentKey}', [StudentController::class, 'enrollSubject'])->name('student.enroll');
 });
 
 Route::get('/login', [LoginController::class, 'login']);

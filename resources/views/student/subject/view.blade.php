@@ -3,24 +3,58 @@
     Subject-Student
 @endsection
 @section('content')
-    <div class="mb-4 border-b border-gray-200 md:ml-64 lg:ml-64">
+    <div class="mb-4 border-b border-cyan-200 md:ml-64 lg:ml-64">
         <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-tab"
             data-tabs-toggle="#default-tab-content" role="tablist">
             <li class="me-2" role="presentation">
-                <button class="inline-block p-4 border-b-2 rounded-t-lg" id="enrolled-tab" data-tabs-target="#enrolled"
-                    type="button" role="tab" aria-controls="enrolled" aria-selected="false">enrolled</button>
+                <button
+                    class="inline-block p-4 border-b-2 text-cyan-500 rounded-t-lg hover:text-cyan-600 hover:border-cyan-300"
+                    id="enrolled-tab" data-tabs-target="#enrolled" type="button" role="tab" aria-controls="enrolled"
+                    aria-selected="false">Terdaftar</button>
             </li>
             <li class="me-2" role="presentation">
                 <button
-                    class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                    class="inline-block p-4 border-b-2 rounded-t-lg text-cyan-500  hover:text-cyan-600 hover:border-cyan-300"
                     id="unenrolled-tab" data-tabs-target="#unenrolled" type="button" role="tab"
-                    aria-controls="unenrolled" aria-selected="false">unenrolled</button>
+                    aria-controls="unenrolled" aria-selected="false">Tidak Terdaftar</button>
             </li>
         </ul>
     </div>
     <div id="default-tab-content" class="md:ml-64 lg:ml-64">
         <div class="hidden p-4 rounded-lg " id="enrolled" role="tabpanel" aria-labelledby="enrolled-tab">
             <div class="flex flex-col space-y-3 p-4 border-2 border-gray-200 border-dashed h-auto mb-20 rounded-lg">
+                @if (session('error'))
+                    <div id="alert-2" class="flex items-center p-4 mb-4 text-red-800 rounded-lg bg-red-50" role="alert">
+                        <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                        </svg>
+                        <span class="sr-only">Info</span>
+                        <div class="ms-3 text-sm font-medium">
+                            @if ($errors->any())
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            @endif
+                            @if (session('error'))
+                                <p>{{ session('error') }}</p>
+                            @endif
+                        </div>
+                        <button type="button"
+                            class="ms-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
+                            data-dismiss-target="#alert-2" aria-label="Close">
+                            <span class="sr-only">Close</span>
+                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 14 14">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                            </svg>
+                        </button>
+                    </div>
+                @endif
                 @forelse ($enrollment as $enroll)
                     <div
                         class="flex items-center justify-between h-36 pr-2 md:pr-3 py-0 pl-0 justify-items-center rounded-lg bg-cyan-50 border border-cyan-500">
@@ -87,19 +121,23 @@
                                             data-modal-toggle="enrollment-modal">
                                             <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                                 fill="none" viewBox="0 0 14 14">
-                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                                    stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                                <path stroke="currentColor" stroke-linecap="round"
+                                                    stroke-linejoin="round" stroke-width="2"
+                                                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                                             </svg>
                                             <span class="sr-only">Close modal</span>
                                         </button>
                                     </div>
                                     <!-- Modal body -->
-                                    <form class="p-4 md:p-5">
+                                    <form
+                                        action="{{ route('student.enroll', ['enrollmentKey' => $subject->enrollment_key]) }}"
+                                        method="post" class="p-4 md:p-5">
+                                        @csrf
                                         <div class="grid gap-4 mb-4 grid-cols-2">
                                             <div class="col-span-2">
-                                                <label for="subject"
+                                                <label for="enrollment_key"
                                                     class="block mb-2 text-sm font-medium text-gray-900">Enrollment-Key</label>
-                                                <input type="text" name="subject" id="subject"
+                                                <input type="text" name="enrollment_key" id="enrollment_key"
                                                     class="bg-gray-50 border border-cyan-400 text-gray-900 text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5 "
                                                     required="">
                                             </div>

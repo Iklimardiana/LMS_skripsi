@@ -83,18 +83,17 @@ class StudentController extends Controller
         return redirect('/student/profile/' . $profile->id);
     }
 
-    public function enrollSubject($enrollmentKey)
+    public function enrollSubject(Request $request)
     {
         $user = Auth::user();
 
-        // Cari mata pelajaran dengan kunci pendaftaran yang sesuai
-        $subject = Subject::where('enrollment_key', $enrollmentKey)->first();
+        $enrollmentkeyStudent = $request->input('enrollment_key');
+        $subject = Subject::where('enrollment_key', $enrollmentkeyStudent)->first();
 
         if (!$subject) {
             return redirect()->back()->with('error', 'Kunci pendaftaran tidak valid.');
         }
 
-        // Cek apakah student sudah terdaftar pada mata pelajaran ini
         $isEnrolled = Enrollment::where('idUser', $user->id)
             ->where('idSubject', $subject->id)
             ->exists();
@@ -102,8 +101,9 @@ class StudentController extends Controller
         if ($isEnrolled) {
             return redirect()->back()->with('error', 'Anda sudah terdaftar pada mata pelajaran ini.');
         }
-
-        // Jika belum terdaftar, lakukan pendaftaran
+        if ($enrollmentkeyStudent !== $subject->enrollment_key) {
+            return redirect()->back()->with('error', 'Enrollment Key tidak sesuai.');
+        }
         Enrollment::create([
             'idUser' => $user->id,
             'idSubject' => $subject->id,

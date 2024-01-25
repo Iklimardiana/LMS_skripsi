@@ -7,7 +7,7 @@
         <div class="flex flex-col space-y-3 p-4 border-2 border-gray-200 border-dashed h-auto rounded-lg">
             <div class="grid max-w-screen-xl md:grid-cols-12 gap-4 lg:grid-cols-12">
                 <div class="flex justify-center md:col-span-2">
-                    <img class="rounded-lg w-28 h-32 md:w-32 md:h-36 border border-cyan-500 object-cover"
+                    <img class="rounded-full w-36 h-40 border border-cyan-500 object-cover"
                         src="{{ asset('images/avatar/' . $profile->avatar) }}" alt="Profile Image">
                 </div>
                 <div class="md:flex md:col-span-10">
