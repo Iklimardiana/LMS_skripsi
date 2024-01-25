@@ -38,6 +38,17 @@
                                             class="bg-gray-50 border border-cyan-400 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                                             value="{{ $profile->email }}" disabled>
                                     </div>
+                                    @if (Auth::user()->role === 'student')
+                                        <div class="mb-3">
+                                            <label for="entry_year"
+                                                class="block mb-1 text-sm font-medium text-gray-800">Tahun
+                                                Masuk
+                                            </label>
+                                            <input type="number" name="entry_year" id="entry_year"
+                                                class="bg-gray-50 border border-cyan-400 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                                value="{{ $profile->entry_year }}" disabled>
+                                        </div>
+                                    @endif
                                 </section>
                                 <section>
                                     <div class="mb-3">
@@ -55,38 +66,30 @@
                                                 @endif
                                             </option>
                                         </select>
-                                        @if (Auth::user() === 'student')
-                                            <div class="mb-3">
-                                                <label for="entry_year"
-                                                    class="block mb-1 text-sm font-medium text-gray-800">Tahun
-                                                    Masuk
-                                                </label>
-                                                <input type="number" name="entry_year" id="entry_year"
-                                                    class="bg-gray-50 border border-cyan-400 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                                                    value="{{ $profile->entry_year }}" disabled>
-                                            </div>
-                                        @endif
-                                        <div class="mb-3">
-                                            <label for="phone"
-                                                class="block mb-1 text-sm font-medium text-gray-800 ">Nomor Telpon
-                                            </label>
-                                            <input type="text" name="phone" id="phone"
-                                                class="bg-gray-50 border border-cyan-400 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                                                value="{{ $profile->phone }}" disabled>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="block mb-1 text-sm font-medium text-gray-900" for="photo">Ganti
-                                                Foto Profile</label>
-                                            <input type="file"
-                                                class="block w-full text-sm text-gray-900 border border-cyan-400 rounded-lg cursor-pointer bg-gray-50 focus:outline-none file:bg-cyan-500"
-                                                aria-describedby="file_input_help" id="file_input" disabled name="photo">
-                                            <p class="mt-1 text-sm text-gray-500" id="file_input_help">
-                                                {{ $profile->avatar }}</p>
-                                        </div>
-                                        <div class="flex justify-end mt-8">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="phone" class="block mb-1 text-sm font-medium text-gray-800 ">Nomor
+                                            Telpon
+                                        </label>
+                                        <input type="number" name="phone" id="phone"
+                                            class="bg-gray-50 border border-cyan-400 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                            value="{{ $profile->phone }}" disabled>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="block mb-1 text-sm font-medium text-gray-900" for="photo">Ganti
+                                            Foto Profile</label>
+                                        <input type="file"
+                                            class="block w-full text-sm text-gray-900 border border-cyan-400 rounded-lg cursor-pointer bg-gray-50 focus:outline-none file:bg-cyan-500"
+                                            aria-describedby="file_input_help" id="file_input" disabled name="photo">
+                                        <p class="mt-1 text-sm text-gray-500" id="file_input_help">
+                                            {{ $profile->avatar }}</p>
+                                    </div>
+                                    <div class="flex justify-end mt-8">
+                                        @if (Auth::user())
                                             <button
                                                 class="w-20 flex items-center justify-center px-2 py-2 leading-5 text-white transition-colors duration-200 transform bg-cyan-500 rounded-md hover:bg-cyan-600 focus:outline-none focus:bg-cyan-600"
-                                                onclick="redirectToEditProfile({{ $profile->id }})" type="button">
+                                                onclick="redirectToEditProfile({{ $profile->id }}, '{{ $profile->role }}')"
+                                                type="button">
                                                 <svg class="w-5 h-5 text-white" aria-hidden="true"
                                                     xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                                     viewBox="0 0 20 18">
@@ -97,14 +100,15 @@
                                                 </svg>
                                                 Edit
                                             </button>
-                                        </div>
+                                        @endif
                                     </div>
-                                </section>
                             </div>
-                        </form>
+                            </section>
                     </div>
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 @endsection

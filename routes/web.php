@@ -7,6 +7,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\StudentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,6 +45,14 @@ Route::middleware('teacher')->group(function () {
     route::get('/teacher/profile/{id}/edit', [TeacherController::class, 'editProfile']);
     route::put('/teacher/profile/{id}', [TeacherController::class, 'updateProfile']);
     route::get('/teacher/profile/{id}', [TeacherController::class, 'profile']);
+});
+
+Route::middleware('student')->group(function () {
+    Route::get('/student/subject', [StudentController::class, 'subjects']);
+
+    route::get('/student/profile/{id}/edit', [StudentController::class, 'editProfile']);
+    route::put('/student/profile/{id}', [StudentController::class, 'updateProfile']);
+    route::get('/student/profile/{id}', [StudentController::class, 'profile']);
 });
 
 Route::get('/login', [LoginController::class, 'login']);

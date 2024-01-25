@@ -161,7 +161,7 @@ class TeacherController extends Controller
         } elseif ($request->input('phone') !== $profile->phone) {
             $profile->phone = $request->input('phone');
         } elseif ($request->input('gender') !== $profile->gender) {
-            $profile->phone = $request->input('gender');
+            $profile->gender = $request->input('gender');
         } elseif ($request->has('avatar')) {
             $path = "images/avatar/";
 

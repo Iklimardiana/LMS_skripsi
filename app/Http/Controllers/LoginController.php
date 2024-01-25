@@ -43,7 +43,7 @@ class LoginController extends Controller
             } elseif (Auth::user()->role == 'teacher') {
                 return redirect()->intended('/teacher');
             } else {
-                return redirect()->intended('/student');
+                return redirect()->intended('/student/subject');
             }
         } else {
             return back()->with('loginError', 'Login Gagal!');

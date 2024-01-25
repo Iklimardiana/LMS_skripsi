@@ -100,7 +100,8 @@
                                         role="menuitem">Dashboard</a>
                                 @endif
                                 @if (Auth::user()->role == 'student')
-                                    <a href="/student" class="block px-4 py-2 text-sm text-gray-700 hover:bg-cyan-100"
+                                    <a href="/student/subject"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-cyan-100"
                                         role="menuitem">Subject</a>
                                 @endif
                             </li>
@@ -113,7 +114,7 @@
                                 @if (Auth::user()->role == 'student')
                                     <a href="/student/profile/{{ Auth::user()->id }}"
                                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-cyan-100"
-                                        role="menuitem">Dashboard</a>
+                                        role="menuitem">Profile</a>
                                 @endif
                             </li>
                             <li>

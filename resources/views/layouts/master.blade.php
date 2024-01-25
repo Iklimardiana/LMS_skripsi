@@ -47,14 +47,25 @@
             window.location.href = studentUrl;
         }
 
-        function redirectToEditProfile(userId) {
-            var baseUrl = '/teacher/profile/';
+        function redirectToEditProfile(userId, userRole) {
+            if (userRole == 'student') {
+                baseUrl = '/student/profile/';
+            } else if (userRole == 'teacher') {
+                baseUrl = '/teacher/profile/';
+            }
+
             var editProfileUrl = baseUrl + userId + '/edit';
             window.location.href = editProfileUrl;
         }
 
-        function redirectToProfile(userId) {
-            var baseUrl = '/teacher/profile/';
+
+        function redirectToProfile(userId, userRole) {
+            if (userRole == 'student') {
+                baseUrl = '/student/profile/';
+            } else if (userRole == 'teacher') {
+                baseUrl = '/teacher/profile/';
+            }
+
             var editProfileUrl = baseUrl + userId;
             window.location.href = editProfileUrl;
         }

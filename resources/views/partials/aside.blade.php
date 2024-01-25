@@ -125,6 +125,43 @@
                         </a>
                     </li>
                 @endif
+                @if (Auth()->user()->role == 'student')
+                    <li>
+                        <a href="/student/subject"
+                            class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-white hover:border hover:border-cyan-500 group {{ request()->is('student/subject*') ? ' active' : '' }}">
+                            <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900 "
+                                xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 20">
+                                <path
+                                    d="M16 14V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v15a3 3 0 0 0 3 3h12a1 1 0 0 0 0-2h-1v-2a2 2 0 0 0 2-2ZM4 2h2v12H4V2Zm8 16H3a1 1 0 0 1 0-2h9v2Z" />
+                            </svg>
+                            <span class="flex-1 ms-3 whitespace-nowrap">Mata Pelajaran</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/student/profile/{{ Auth::user()->id }}"
+                            class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-white hover:border hover:border-cyan-500 group {{ request()->is('student/profile*') ? ' active' : '' }}">
+                            <svg class="w-5 h-5 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                fill="currentColor" viewBox="0 0 20 16">
+                                <path
+                                    d="M18 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2ZM6.5 3a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3.014 13.021l.157-.625A3.427 3.427 0 0 1 6.5 9.571a3.426 3.426 0 0 1 3.322 2.805l.159.622-6.967.023ZM16 12h-3a1 1 0 0 1 0-2h3a1 1 0 0 1 0 2Zm0-3h-3a1 1 0 1 1 0-2h3a1 1 0 1 1 0 2Zm0-3h-3a1 1 0 1 1 0-2h3a1 1 0 1 1 0 2Z" />
+                            </svg>
+                            <span class="flex-1 ms-3 whitespace-nowrap">Profil</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/logout"
+                            class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-white hover:border hover:border-cyan-500 group">
+                            <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"
+                                id="logout-tab" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 16 16">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M4 8h11m0 0-4-4m4 4-4 4m-5 3H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h3" />
+                            </svg>
+                            <span class="flex-1 ms-3 whitespace-nowrap">Keluar</span>
+                        </a>
+                    </li>
+                @endif
             </ul>
     </aside>
 @endif
