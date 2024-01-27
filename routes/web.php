@@ -53,6 +53,9 @@ Route::middleware('teacher')->group(function () {
     route::get('/teacher/materials/{id}/edit', [TeacherController::class, 'editMaterial']);
     route::get('/teacher/materials/{id}/detail', [TeacherController::class, 'showMaterial']);
     route::delete('/teacher/materials/{idSubject}', [TeacherController::class, 'destroyMaterial']);
+
+    route::get('/teacher/attachment/{id}', [TeacherController::class, 'attachments']);
+    route::put('/teacher/attachment/score/{id}', [TeacherController::class, 'scoreAttachment']);
 });
 
 Route::middleware('student')->group(function () {

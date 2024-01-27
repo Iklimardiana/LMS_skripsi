@@ -39,6 +39,12 @@
             window.location.href = materialUrl;
         }
 
+        function redirectToAttachmentStudent(idMaterial) {
+            var baseUrl = '/teacher/attachment/';
+            var attachmentUrl = baseUrl + idMaterial
+            window.location.href = attachmentUrl;
+        }
+
         function redirectToExam() {
             window.location.href = 'exam_list.html'
         }
@@ -70,6 +76,10 @@
 
             var editProfileUrl = baseUrl + userId;
             window.location.href = editProfileUrl;
+        }
+
+        function redirectToLink(link) {
+            window.open(link, '_blank');
         }
     </script>
 </body>

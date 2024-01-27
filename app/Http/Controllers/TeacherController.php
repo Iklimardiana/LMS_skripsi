@@ -273,4 +273,31 @@ class TeacherController extends Controller
 
         return redirect('/teacher/material/' . $materials->idSubject);
     }
+
+    public function attachments($id)
+    {
+        $attachments = Assignment::where('idSubject', $id)->where('category', 'fromstudent')->paginate(8);
+        $iteration = $attachments->firstItem();
+
+        return view('teacher.attachment.view', compact('attachments', 'iteration'));
+    }
+
+    public function scoreAttachment(Request $request, $id)
+    {
+        $request->validate([
+            'score' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/'
+        ], [
+            'score.required' => 'Nilai harus diisi',
+            'score.numeric' => 'Nilai harus berupa angka',
+            'score.regex' => 'Nilai harus berupa angka atau angka desimal dengan maksimal dua digit di belakang koma'
+        ]);
+
+        $attachments = Assignment::findOrFail($id);
+
+        $attachments->update([
+            'score' => $request->score,
+        ]);
+
+        return redirect('/teacher/attachment/' . $attachments->idMaterial);
+    }
 }
