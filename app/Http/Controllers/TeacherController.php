@@ -79,11 +79,11 @@ class TeacherController extends Controller
         $materials = Material::where('idSubject', $id)
             ->orderBy('sequence', 'ASC')->paginate(7);
         $iteration = $materials->firstItem();
-        $subject = Material::find($id);
+        $subjects = Subject::find($id);
         $assignment = Assignment::where('idSubject', $id)
-            ->where('type', '0')->get();
+            ->where('category', 'fromteacher')->get();
 
-        return view('teacher.material.view', compact('materials', 'subject', 'assignment', 'iteration'));
+        return view('teacher.material.view', compact('materials', 'subjects', 'assignment', 'iteration'));
     }
 
     public function settingSubject(Request $request, $id)
@@ -179,5 +179,98 @@ class TeacherController extends Controller
         $profile->save();
 
         return redirect('/teacher/profile/' . $profile->id);
+    }
+
+    public function createMaterial($idSubject)
+    {
+        $subjects = Subject::find($idSubject);
+        return view('teacher.material.create', compact('subjects'));
+    }
+
+    public function storeMaterial(Request $request, $idSubject)
+    {
+        $request->validate([
+            'sequence' => 'required',
+            'name' => 'required',
+            'content' => 'required'
+        ]);
+
+        $newSequence = $request->sequence;
+
+        $existingMaterial = Subject::where('idSubject', $idSubject)
+            ->where('sequence', $newSequence)->first();
+
+        if ($existingMaterial) {
+            Subject::where('idSubject', $idSubject)
+                ->where('sequence', '>=', $newSequence)
+                ->increment('sequence');
+        }
+
+        $materials = new Subject;
+
+        $materials->name = $request->name;
+        $materials->content = $request->input('content');
+        $materials->sequence = $request->sequence;
+        $materials->idCourse = $idSubject;
+
+        $materials->save();
+
+        return redirect('/teacher/material/' . $idSubject);
+    }
+
+    public function showMaterial($id)
+    {
+        $materials = Subject::findOrFail($id);
+        return view('teacher.material.show', compact('materials'));
+    }
+
+    public function editMaterial($id)
+    {
+        $materials = Material::findOrFail($id);
+        $subjects = Subject::findOrFail($materials->idSubject);
+
+        return view('teacher.material.edit', compact('materials', 'subjects'));
+    }
+
+    public function updateMaterial(Request $request, $id)
+    {
+        $request->validate([
+            'sequence' => 'required',
+            'name' => 'required',
+            'content' => 'required'
+        ]);
+
+        $materials = Material::findOrFail($id);
+
+        $newSequence = $request->sequence;
+
+        $existingMaterials = Material::where('idSubject', $materials->idSubject)
+            ->where('sequence', $newSequence)
+            ->where('id', '!=', $id) // Menambahkan kondisi agar tidak memeriksa materi yang sedang diperbarui
+            ->first();
+
+        if ($existingMaterials) {
+            Subject::where('idSubject', $materials->idSubject)
+                ->where('sequence', '>=', $newSequence)
+                ->where('id', '!=', $id) // Menambahkan kondisi agar tidak memperbarui materi yang sedang diperbarui
+                ->increment('sequence');
+        }
+
+        $materials->sequence = $request->sequence;
+        $materials->name = $request->name;
+        $materials->content = $request->input('content');
+
+        $materials->save();
+
+        return redirect('/teacher/material/' . $materials->idSubect);
+    }
+
+    public function destroyMaterial($id)
+    {
+        $materials = Material::findOrFail($id);
+
+        $materials->delete();
+
+        return redirect('/teacher/material/' . $materials->idSubject);
     }
 }

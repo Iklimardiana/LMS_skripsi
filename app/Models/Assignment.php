@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Assignment extends Model
 {
@@ -13,14 +14,23 @@ class Assignment extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'id',
         'attachment',
         'type',
         'category',
         'score',
         'idMaterial',
-        'idStudent',
+        'idUser',
+        'idSubject',
     ];
+
+    public function hasFile($attribute)
+    {
+        $file = $this->{$attribute};
+        if (!empty($file) && Storage::exists($file)) {
+            return true;
+        }
+        return false;
+    }
 
     public function Material()
     {
@@ -29,6 +39,6 @@ class Assignment extends Model
 
     public function User()
     {
-        return $this->belongsTo(User::class, 'idStudent');
+        return $this->belongsTo(User::class, 'idUser');
     }
 }

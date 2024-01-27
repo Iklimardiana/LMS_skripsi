@@ -33,8 +33,10 @@
             window.location.href = '/admin/subject/create'
         }
 
-        function redirectToMaterial() {
-            window.location.href = '#';
+        function redirectToMaterial(idSubject) {
+            var baseUrl = '/teacher/materials/';
+            var materialUrl = baseUrl + idSubject;
+            window.location.href = materialUrl;
         }
 
         function redirectToExam() {
