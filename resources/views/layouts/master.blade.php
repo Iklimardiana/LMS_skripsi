@@ -66,6 +66,9 @@
             window.location.href = editProfileUrl;
         }
 
+        function goBack() {
+            window.history.back();
+        }
 
         function redirectToProfile(userId, userRole) {
             if (userRole == 'student') {
@@ -81,6 +84,44 @@
         function redirectToLink(link) {
             window.open(link, '_blank');
         }
+
+        function redirectToAddAssignment() {
+            window.location.href
+        }
+
+        function redirectToAddMaterial(idSubject) {
+            var baseUrl = '/teacher/materials/create/';
+            var addMateriUrl = baseUrl + idSubject;
+            window.location.href = addMateriUrl;
+        }
+
+        function redirectListMaterials(idSubject) {
+            var baseUrl = '/teacher/materials/';
+            var ListMateriUrl = baseUrl + idSubject;
+            window.location.href = ListMateriUrl;
+        }
+
+        const categoryInput = document.querySelector('#type');
+        const linkForm = document.querySelector('#linkForm');
+        const pdfForm = document.querySelector('#pdfForm');
+
+        categoryInput.addEventListener('change', function() {
+            if (this.value === '') {
+                pdfForm.style.display = 'none';
+                linkForm.style.display = 'none';
+            }
+            if (this.value === 'file') {
+                pdfForm.style.display = 'block';
+                linkForm.style.display = 'none';
+
+
+            }
+            if (this.value === 'link') {
+                linkForm.style.display = 'block';
+                pdfForm.style.display = 'none';
+
+            }
+        });
     </script>
 </body>
 
