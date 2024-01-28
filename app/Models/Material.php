@@ -10,7 +10,7 @@ class Material extends Model
     use HasFactory;
 
     protected $table = 'material';
-    protected $primareyKey = 'id';
+    protected $primaryKey = 'id';
 
     protected $fillable = [
         'name',
