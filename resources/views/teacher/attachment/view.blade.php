@@ -6,7 +6,7 @@
     <div class="p-4 mt-16 sm:ml-64">
         <div class="p-4 border-2 border-gray-200 min-h-56 border-dashed h-auto mb-20 rounded-lg ">
             <div class="flex items-center justify-between gap-2 mb-2">
-                <a href="material_list.html">
+                <a href="/teacher/materials/{{ $material->idSubject }}">
                     <svg class="w-6 h-6 text-cyan-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                         viewBox="0 0 14 10">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -15,7 +15,7 @@
                 </a>
             </div>
             <div class="relative overflow-x-auto shadow-md sm:rounded-t-lg">
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-900">
                     <thead class="text-xs text-center text-white uppercase bg-cyan-500 border border-cyan-500">
                         <tr>
                             <th scope="col" class="px-6 py-3">
@@ -67,12 +67,13 @@
                                 </td>
                                 <td class="px-6 py-1">
                                     @if ($attachment->score === null && $attachment->category === 'fromstudent')
-                                        <button data-modal-target="score-modal" data-modal-toggle="score-modal"
+                                        <button data-modal-target="score-modal-{{ $attachment->id }}"
+                                            data-modal-toggle="score-modal-{{ $attachment->id }}"
                                             class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none">
                                             Beri Nilai
                                         </button>
-                                        <div id="score-modal" tabindex="-1" aria-hidden="true"
-                                            class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                        <div id="score-modal-{{ $attachment->id }}" tabindex="-1" aria-hidden="true"
+                                            class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
                                             <div class="relative p-4 w-full max-w-md max-h-full">
                                                 <!-- Modal content -->
                                                 <div
@@ -81,11 +82,13 @@
                                                     <div
                                                         class="flex items-center justify-between p-4 md:p-5 border-b border-cyan-400 rounded-t">
                                                         <h3 class="text-lg font-semibold text-gray-900">
-                                                            Beri Nilai
+                                                            @if ($attachment->user->role === 'student')
+                                                                Nilai untuk {{ $attachment->user->first_name }}
+                                                            @endif
                                                         </h3>
                                                         <button type="button"
                                                             class="bg-transparent hover:bg-gray-200 hover:text-cyan-700 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center text-cyan-500"
-                                                            data-modal-toggle="score-modal">
+                                                            data-modal-toggle="score-modal-{{ $attachment->id }}">
                                                             <svg class="w-3 h-3" aria-hidden="true"
                                                                 xmlns="http://www.w3.org/2000/svg" fill="none"
                                                                 viewBox="0 0 14 14">
@@ -97,42 +100,44 @@
                                                         </button>
                                                     </div>
                                                     <!-- Modal body -->
-                                                    <form action="/teacher/attachment/score/{{ $attachment->id }}"
-                                                        method="POST" class="p-4 md:p-5">
-                                                        @method('put')
-                                                        @csrf
-                                                        <div class="grid gap-4 mb-4 grid-cols-2">
-                                                            <div class="col-span-2">
-                                                                <label for="score"
-                                                                    class="block mb-2 text-sm font-medium text-gray-900">Nilai</label>
-                                                                <input type="text" name="score" id="score"
-                                                                    class="bg-gray-50 border border-cyan-400 text-gray-900 text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5 "
-                                                                    required="">
+                                                    <div class="flex flex-col justify-start text-start">
+                                                        <form action="/teacher/attachment/score/{{ $attachment->id }}"
+                                                            method="POST" class="p-4 md:p-5">
+                                                            @method('put')
+                                                            @csrf
+                                                            <div class="grid gap-4 mb-4 grid-cols-2">
+                                                                <div class="col-span-2">
+                                                                    <label for="score"
+                                                                        class="block mb-2 text-sm font-medium text-gray-900">Nilai</label>
+                                                                    <input type="text" name="score" id="score"
+                                                                        class="bg-gray-50 border border-cyan-400 text-gray-900 text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5 "
+                                                                        required="">
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <button type="submit"
-                                                            class="text-white inline-flex items-center bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                                                            <svg class="me-1 -ms-1 w-5 h-5"
-                                                                xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"
-                                                                viewBox="0 0 64 64" id="save">
-                                                                <path fill="none" stroke="#FFFFFF" stroke-miterlimit="10"
-                                                                    stroke-width="4"
-                                                                    d="M58,58H12L6,52V8A2,2,0,0,1,8,6H56a2,2,0,0,1,2,2Z">
-                                                                </path>
-                                                                <rect width="36" height="24" x="14" y="6"
-                                                                    fill="none" stroke="#FFFFFF"
-                                                                    stroke-miterlimit="10" stroke-width="4"></rect>
-                                                                <rect width="24" height="16" x="18" y="42"
-                                                                    fill="none" stroke="#FFFFFF"
-                                                                    stroke-miterlimit="10" stroke-width="4"></rect>
-                                                                <line x1="26" x2="26" y1="48"
-                                                                    y2="58" fill="none" stroke="#FFFFFF"
-                                                                    stroke-miterlimit="10" stroke-width="4">
-                                                                </line>
-                                                            </svg>
-                                                            Simpan
-                                                        </button>
-                                                    </form>
+                                                            <button type="submit"
+                                                                class="text-white inline-flex items-center bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                                                                <svg class="me-1 -ms-1 w-5 h-5"
+                                                                    xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"
+                                                                    viewBox="0 0 64 64" id="save">
+                                                                    <path fill="none" stroke="#FFFFFF"
+                                                                        stroke-miterlimit="10" stroke-width="4"
+                                                                        d="M58,58H12L6,52V8A2,2,0,0,1,8,6H56a2,2,0,0,1,2,2Z">
+                                                                    </path>
+                                                                    <rect width="36" height="24" x="14" y="6"
+                                                                        fill="none" stroke="#FFFFFF"
+                                                                        stroke-miterlimit="10" stroke-width="4"></rect>
+                                                                    <rect width="24" height="16" x="18" y="42"
+                                                                        fill="none" stroke="#FFFFFF"
+                                                                        stroke-miterlimit="10" stroke-width="4"></rect>
+                                                                    <line x1="26" x2="26" y1="48"
+                                                                        y2="58" fill="none" stroke="#FFFFFF"
+                                                                        stroke-miterlimit="10" stroke-width="4">
+                                                                    </line>
+                                                                </svg>
+                                                                Simpan
+                                                            </button>
+                                                        </form>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
