@@ -225,8 +225,8 @@ class TeacherController extends Controller
 
     public function showMaterial($id)
     {
-        $materials = Subject::findOrFail($id);
-        return view('teacher.material.show', compact('materials'));
+        $materials = Material::findOrFail($id);
+        return view('teacher.material.show-detail', compact('materials'));
     }
 
     public function editMaterial($id)
@@ -282,7 +282,6 @@ class TeacherController extends Controller
     {
         $attachments = Assignment::where('idSubject', $id)->where('category', 'fromstudent')->paginate(8);
         $iteration = $attachments->firstItem();
-        // $materialIds = $attachments->pluck('idMaterial')->toArray();
         $material = Material::findOrFail($id);
 
         return view('teacher.attachment.view', compact('attachments', 'iteration', 'material'));

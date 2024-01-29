@@ -75,7 +75,7 @@
                                             </svg>
                                         </button>
                                     </form>
-                                    <button type="button"
+                                    <button type="button" onclick="redirectToShowMaterial({{ $material->id }})"
                                         class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none"
                                         title="Klik untuk pratinjau materi">
                                         <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"

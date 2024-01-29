@@ -114,6 +114,12 @@
             var EditMateriUrl = baseUrl + idMaterial + '/edit';
             window.location.href = EditMateriUrl;
         }
+
+        function redirectToShowMaterial(idMaterial) {
+            var baseUrl = '/teacher/materials/';
+            var showMateriUrl = baseUrl + idMaterial + '/detail';
+            window.location.href = showMateriUrl;
+        }
     </script>
 </body>
 

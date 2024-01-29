@@ -48,10 +48,11 @@ Route::middleware('teacher')->group(function () {
 
     route::get('/teacher/materials/create/{idSubject}', [TeacherController::class, 'createMaterial']);
     route::get('/teacher/materials/{id}', [TeacherController::class, 'materials']);
+    route::get('/teacher/materials/{id}/detail', [TeacherController::class, 'showMaterial']);
     route::put('/teacher/materials/{idSubject}', [TeacherController::class, 'updateMaterial']);
     route::post('/teacher/materials/{idSubject}', [TeacherController::class, 'storeMaterial']);
     route::get('/teacher/materials/{id}/edit', [TeacherController::class, 'editMaterial']);
-    route::get('/teacher/materials/{id}/detail', [TeacherController::class, 'showMaterial']);
+    // route::get('/teacher/materials/{id}/detail', [TeacherController::class, 'showMaterial']);
     route::delete('/teacher/materials/{idSubject}', [TeacherController::class, 'destroyMaterial']);
 
     route::get('/teacher/attachment/{id}', [TeacherController::class, 'attachments']);
