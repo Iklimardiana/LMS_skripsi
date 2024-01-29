@@ -428,4 +428,14 @@ class TeacherController extends Controller
 
         return redirect('/teacher/materials/' . $idSubject);
     }
+    public function destroyAssignment($id)
+    {
+        $assignment = Assignment::findOrFail($id);
+
+        File::delete(public_path('attachment/task/' . $assignment->attachment));
+
+        $assignment->delete();
+
+        return back();
+    }
 }

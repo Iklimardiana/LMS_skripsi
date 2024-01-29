@@ -52,7 +52,6 @@ Route::middleware('teacher')->group(function () {
     route::put('/teacher/materials/{idSubject}', [TeacherController::class, 'updateMaterial']);
     route::post('/teacher/materials/{idSubject}', [TeacherController::class, 'storeMaterial']);
     route::get('/teacher/materials/{id}/edit', [TeacherController::class, 'editMaterial']);
-    // route::get('/teacher/materials/{id}/detail', [TeacherController::class, 'showMaterial']);
     route::delete('/teacher/materials/{idSubject}', [TeacherController::class, 'destroyMaterial']);
 
     route::get('/teacher/attachment/{id}', [TeacherController::class, 'attachments']);
@@ -62,6 +61,7 @@ Route::middleware('teacher')->group(function () {
     route::post('/teacher/assignment/{id}', [TeacherController::class, 'storeAssignment']);
     route::get('/teacher/assignment/{id}/edit', [TeacherController::class, 'editAssigment']);
     route::put('/teacher/assignment/{id}', [TeacherController::class, 'updateAssignment']);
+    route::delete('/teacher/assignment/{id}', [TeacherController::class, 'destroyAssignment']);
 });
 
 Route::middleware('student')->group(function () {
