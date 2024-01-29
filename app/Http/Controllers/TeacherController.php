@@ -190,32 +190,37 @@ class TeacherController extends Controller
     public function storeMaterial(Request $request, $idSubject)
     {
         $request->validate([
-            'sequence' => 'required',
+            'sequence' => 'required|numeric',
             'name' => 'required',
             'content' => 'required'
+        ], [
+            'sequence.required' => 'Urutan materi harus diisi',
+            'sequence.numeric' => 'urutan materi harus berupa angka',
+            'name.required' => 'Judul materi harus diisi',
+            'content.required' => 'Konten materi harus diisi'
         ]);
 
         $newSequence = $request->sequence;
 
-        $existingMaterial = Subject::where('idSubject', $idSubject)
+        $existingMaterial = Material::where('idSubject', $idSubject)
             ->where('sequence', $newSequence)->first();
 
         if ($existingMaterial) {
-            Subject::where('idSubject', $idSubject)
+            Material::where('idSubject', $idSubject)
                 ->where('sequence', '>=', $newSequence)
                 ->increment('sequence');
         }
 
-        $materials = new Subject;
+        $materials = new Material;
 
         $materials->name = $request->name;
         $materials->content = $request->input('content');
         $materials->sequence = $request->sequence;
-        $materials->idCourse = $idSubject;
+        $materials->idSubject = $idSubject;
 
         $materials->save();
 
-        return redirect('/teacher/material/' . $idSubject);
+        return redirect('/teacher/materials/' . $materials->idSubject);
     }
 
     public function showMaterial($id)
@@ -261,8 +266,7 @@ class TeacherController extends Controller
         $materials->content = $request->input('content');
 
         $materials->save();
-
-        return redirect('/teacher/material/' . $materials->idSubect);
+        return redirect('/teacher/materials/' . $materials->idSubject);
     }
 
     public function destroyMaterial($id)
@@ -271,15 +275,17 @@ class TeacherController extends Controller
 
         $materials->delete();
 
-        return redirect('/teacher/material/' . $materials->idSubject);
+        return back();
     }
 
     public function attachments($id)
     {
         $attachments = Assignment::where('idSubject', $id)->where('category', 'fromstudent')->paginate(8);
         $iteration = $attachments->firstItem();
+        // $materialIds = $attachments->pluck('idMaterial')->toArray();
+        $material = Material::findOrFail($id);
 
-        return view('teacher.attachment.view', compact('attachments', 'iteration'));
+        return view('teacher.attachment.view', compact('attachments', 'iteration', 'material'));
     }
 
     public function scoreAttachment(Request $request, $id)
@@ -299,5 +305,112 @@ class TeacherController extends Controller
         ]);
 
         return redirect('/teacher/attachment/' . $attachments->idMaterial);
+    }
+
+    public function storeAssignment(Request $request, $id)
+    {
+        $request->validate([
+            'type' => 'required',
+            'attachment' => 'required',
+        ]);
+
+        if ($request->has('attachment')) {
+            $attachment = $request->attachment;
+
+            if (filter_var($attachment, FILTER_VALIDATE_URL)) {
+                $request->validate([
+                    'attachment' => 'url',
+                ], [
+                    'attachment.url' => 'Tautan tugas harus valid/ benar',
+                ]);
+            } else {
+                $request->validate([
+                    'attachment' => 'file|mimes:pdf|max:3048',
+                ]);
+
+                $fileName = time() . '.' . $request->attachment->extension();
+                $request->attachment->move(public_path('attachment/task/'), $fileName);
+
+                $request->attachment = $fileName;
+            }
+        } else {
+            return redirect()->back()->withErrors(['attachment' => 'Lampiran tugas wajib diisi']);
+        }
+
+        $materials = Material::findOrFail($id);
+
+        $subjects = $materials->subject;
+
+        $assignment = new Assignment();
+
+        $assignment->attachment = $request->attachment;
+        $assignment->score = $request->score;
+        $assignment->category = 'fromteacher';
+        $assignment->type = $request->type;
+        $assignment->idmaterial = $materials->id;
+        $assignment->idSubject = $subjects->id;
+        $assignment->idUser = Auth::user()->id;
+
+        $assignment->save();
+
+        return redirect('/teacher/materials/' . $subjects->id);
+    }
+
+    public function updateAssignment(Request $request, $id)
+    {
+        $assignment = Assignment::findOrFail($id);
+        $idMaterial = $assignment->idMaterial;
+        $idSubject = $assignment->idSubject;
+
+        $request->validate([
+            'type' => 'required',
+            'attachment' => 'required',
+        ]);
+
+        if ($request->has('attachment')) {
+            $attachment = $request->attachment;
+
+            if (filter_var($attachment, FILTER_VALIDATE_URL)) {
+                $request->validate([
+                    'attachment' => 'url',
+                ], [
+                    'attachment.url' => 'Tautan tugas harus valid/ benar.',
+                ]);
+
+                if ($assignment->attachment && File::exists(public_path('attachment/task/' . $assignment->attachment))) {
+                    File::delete(public_path('attachment/task/' . $assignment->attachment));
+                }
+
+                $assignment->attachment = $request->attachment;
+            } else {
+                $request->validate([
+                    'attachment' => 'file|mimes:pdf|max:3048',
+                ]);
+
+                if ($request->hasFile('attachment')) {
+                    if ($assignment->attachment && File::exists(public_path('attachment/task/' . $assignment->attachment))) {
+                        File::delete(public_path('attachment/task/' . $assignment->attachment));
+                    }
+
+                    // $path = "attachment/task/";
+                    $fileName = time() . '.' . $request->attachment->extension();
+                    $request->attachment->move(public_path('attachment/task/'), $fileName);
+                    $assignment->attachment = $fileName;
+                }
+            }
+        } else {
+            return redirect()->back()->withErrors(['assignment' => 'The assignment field is required.']);
+        }
+
+        $assignment->score = $request->score;
+        $assignment->type = $request->type;
+        $assignment->category = 'fromteacher';
+        $assignment->idMaterial = $idMaterial;
+        $assignment->idSubject = $idSubject;
+        $assignment->idUser = Auth::user()->id;
+
+        $assignment->save();
+
+        return redirect('/teacher/materials/' . $idSubject);
     }
 }

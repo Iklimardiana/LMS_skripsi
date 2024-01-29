@@ -101,6 +101,12 @@
             window.location.href = ListMateriUrl;
         }
 
+        function redirectToEditMaterial(idMaterial) {
+            var baseUrl = '/teacher/materials/';
+            var EditMateriUrl = baseUrl + idMaterial + '/edit';
+            window.location.href = EditMateriUrl;
+        }
+
         const categoryInput = document.querySelector('#type');
         const linkForm = document.querySelector('#linkForm');
         const pdfForm = document.querySelector('#pdfForm');

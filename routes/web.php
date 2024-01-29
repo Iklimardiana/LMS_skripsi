@@ -56,6 +56,9 @@ Route::middleware('teacher')->group(function () {
 
     route::get('/teacher/attachment/{id}', [TeacherController::class, 'attachments']);
     route::put('/teacher/attachment/score/{id}', [TeacherController::class, 'scoreAttachment']);
+
+    route::post('/teacher/assignment/{id}', [TeacherController::class, 'storeAssignment']);
+    route::put('/teacher/assignment/{id}', [TeacherController::class, 'updateAssignment']);
 });
 
 Route::middleware('student')->group(function () {
