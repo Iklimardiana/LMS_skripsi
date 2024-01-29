@@ -120,7 +120,8 @@
                                         </button>
                                         <button type="button"
                                             class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none"
-                                            title="Klik Untuk Pratinjau Tugas">
+                                            title="Klik Untuk Pratinjau Tugas"
+                                            onclick="previewAssignment('{{ $currentAssignment->type }}', '{{ $currentAssignment->attachment }}')">
                                             <svg class=" w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                                 fill="none" viewBox="0 0 20 14">
                                                 <g stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -163,28 +164,12 @@
         </div>
     </div>
     <script>
-        const categoryInput = document.querySelector('#type');
-        const linkForm = document.querySelector('#linkForm');
-        const pdfForm = document.querySelector('#pdfForm');
-
-        categoryInput.addEventListener('change', function() {
-            if (this.value === '') {
-                pdfForm.style.display = 'none';
-                linkForm.style.display = 'none';
+        function previewAssignment(typeAssignment, attachment) {
+            if (typeAssignment === "file") {
+                window.open('{{ asset('/attachment/task/') }}' + '/' + attachment, '_blank');
+            } else if (typeAssignment === "link") {
+                window.open(attachment, '_blank');
             }
-            if (this.value === 'file') {
-                pdfForm.style.display = 'block';
-                linkForm.style.display = 'none';
-
-                linkForm.querySelector('#link').setAttribute('disabled', true);
-            }
-            if (this.value === 'link') {
-                linkForm.style.display = 'block';
-                pdfForm.style.display = 'none';
-
-                linkForm.querySelector('#file').setAttribute('disabled', true);
-
-            }
-        });
+        }
     </script>
 @endsection
