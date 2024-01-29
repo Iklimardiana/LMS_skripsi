@@ -306,6 +306,13 @@ class TeacherController extends Controller
 
         return redirect('/teacher/attachment/' . $attachments->idMaterial);
     }
+    public function createAssigment($id)
+    {
+        $materials = Material::findOrFail($id);
+        $idSubject = $materials->idSubject;
+
+        return view('teacher.assignment.create', compact('materials', 'idSubject'));
+    }
 
     public function storeAssignment(Request $request, $id)
     {
@@ -355,6 +362,16 @@ class TeacherController extends Controller
 
         return redirect('/teacher/materials/' . $subjects->id);
     }
+    public function editAssigment($id)
+    {
+        $assignment = Assignment::findOrFail($id);
+
+        $idSubject = $assignment->idSubject;
+
+        $material = Material::where('id', $assignment->idMaterial)->first();
+
+        return view('teacher.assignment.edit', compact('idSubject', 'assignment', 'material'));
+    }
 
     public function updateAssignment(Request $request, $id)
     {
@@ -374,7 +391,7 @@ class TeacherController extends Controller
                 $request->validate([
                     'attachment' => 'url',
                 ], [
-                    'attachment.url' => 'Tautan tugas harus valid/ benar.',
+                    'attachment.url' => 'The assignment must be a valid URL.',
                 ]);
 
                 if ($assignment->attachment && File::exists(public_path('attachment/task/' . $assignment->attachment))) {
@@ -392,7 +409,6 @@ class TeacherController extends Controller
                         File::delete(public_path('attachment/task/' . $assignment->attachment));
                     }
 
-                    // $path = "attachment/task/";
                     $fileName = time() . '.' . $request->attachment->extension();
                     $request->attachment->move(public_path('attachment/task/'), $fileName);
                     $assignment->attachment = $fileName;
@@ -403,8 +419,8 @@ class TeacherController extends Controller
         }
 
         $assignment->score = $request->score;
-        $assignment->type = $request->type;
         $assignment->category = 'fromteacher';
+        $assignment->type = $request->type;
         $assignment->idMaterial = $idMaterial;
         $assignment->idSubject = $idSubject;
         $assignment->idUser = Auth::user()->id;

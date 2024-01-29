@@ -85,8 +85,16 @@
             window.open(link, '_blank');
         }
 
-        function redirectToAddAssignment() {
-            window.location.href
+        function redirectToAddAssignment(idMaterial) {
+            var baseUrl = '/teacher/';
+            var addAssignmentUrl = baseUrl + idMaterial + '/assignment/create/';
+            window.location.href = addAssignmentUrl;
+        }
+
+        function redirectToEditAssignment(idAssignment) {
+            var baseUrl = '/teacher/assignment/';
+            var editAssignmentUrl = baseUrl + idAssignment + '/edit';
+            window.location.href = editAssignmentUrl;
         }
 
         function redirectToAddMaterial(idSubject) {
@@ -106,28 +114,6 @@
             var EditMateriUrl = baseUrl + idMaterial + '/edit';
             window.location.href = EditMateriUrl;
         }
-
-        const categoryInput = document.querySelector('#type');
-        const linkForm = document.querySelector('#linkForm');
-        const pdfForm = document.querySelector('#pdfForm');
-
-        categoryInput.addEventListener('change', function() {
-            if (this.value === '') {
-                pdfForm.style.display = 'none';
-                linkForm.style.display = 'none';
-            }
-            if (this.value === 'file') {
-                pdfForm.style.display = 'block';
-                linkForm.style.display = 'none';
-
-
-            }
-            if (this.value === 'link') {
-                linkForm.style.display = 'block';
-                pdfForm.style.display = 'none';
-
-            }
-        });
     </script>
 </body>
 
