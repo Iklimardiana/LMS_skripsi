@@ -118,6 +118,16 @@
             var showMateriUrl = baseUrl + idMaterial + '/detail';
             window.location.href = showMateriUrl;
         }
+
+        function previewAssignment(typeAssignment, attachment, roleUser) {
+            if (typeAssignment === "file" && roleUser == 'teacher') {
+                window.open('{{ asset('/attachment/task/') }}' + '/' + attachment, '_blank');
+            } else if (typeAssignment === "file" && roleUser == 'student') {
+                window.open('{{ asset('/attachment/submission/') }}' + '/' + attachment, '_blank');
+            } else {
+                window.open(attachment, '_blank');
+            }
+        }
     </script>
 </body>
 
