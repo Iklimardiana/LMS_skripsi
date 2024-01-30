@@ -7,11 +7,11 @@
         <div class="p-4 border-2 border-gray-200 min-h-56 border-dashed h-auto mb-20 rounded-lg ">
             <div class="gap-2 mb-2">
                 <div class="text-white font-medium text-lg">
-                    <p class="text-cyan-500">Tambah Tugas Pada Materi {{ $materials->name }}</p>
+                    <p class="text-cyan-500">Unggah Tugas Pada Materi {{ $material->name }}</p>
                 </div>
             </div>
             <div class="sm:rounded-lg bg-cyan-50 p-4 border border-cyan-500">
-                <form action="/teacher/assignment/{{ $materials->id }}" method="post" enctype="multipart/form-data"
+                <form action="/student/submission/{{ $material->id }}" method="post" enctype="multipart/form-data"
                     class="md:w-1/2 w-full">
                     @csrf
                     <div class="h-auto text-sm text-left text-gray-900">
@@ -38,8 +38,7 @@
                     </div>
                     <div class="flex justify-start">
                         <button type="button"
-                            class="flex gap-1 text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-md text-sm p-2 me-2 focus:outline-none mt-3 w-auto"
-                            onclick="redirectToMaterial({{ $materials->idSubject }}, '{{ Auth::user()->role }}')">
+                            class="flex gap-1 text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-md text-sm p-2 me-2 focus:outline-none mt-3 w-auto">
                             <svg class="w-5 h-5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                 fill="none" viewBox="0 0 14 10">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

@@ -54,7 +54,7 @@
                             </li>
                         @else
                             <li class="{{ $material->sequence == 1 ? 'border-t' : '' }} border-b border-cyan-500">
-                                <a onclick="showAlert()"
+                                <a onclick="showAlertAside()"
                                     class="flex items-center p-2 text-gray-900 hover:bg-white hover:border hover:border-cyan-500 cursor-not-allowed {{ $material->sequence == $currentSequence ? 'active' : '' }}"
                                     disabled>
                                     <span class="ms-3">{{ $material->name }}</span>
@@ -103,103 +103,124 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="odd:bg-white even:bg-gray-50 border border-cyan-500 text-center">
-                                    <th class="border border-cyan-500 py-1 font-medium text-gray-900 whitespace-nowrap">
-                                        <div class="flex items-center justify-center">
-                                            <button type="button"
-                                                class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none"
-                                                title="Klik untuk melihat tugas">
-                                                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                                    fill="none" viewBox="0 0 16 20">
-                                                    <path stroke="currentColor" stroke-linecap="round"
-                                                        stroke-linejoin="round" stroke-width="2"
-                                                        d="M4.828 10h6.239m-6.239 4h6.239M6 1v4a1 1 0 0 1-1 1H1m14-4v16a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2Z" />
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </th>
-                                    <th class="px-6 py-1 font-medium text-gray-900 whitespace-nowrap">
-                                        <button type="button"
-                                            class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none"
-                                            title="klik untuk mengunggah tugas">
-                                            <svg class="w-5 h-5 text-white" aria-hidden="true"
-                                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                                    stroke-width="2"
-                                                    d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4c0 .6.4 1 1 1h14c.6 0 1-.4 1-1v-4c0-.6-.4-1-1-1h-2M8 9l4-5 4 5m1 8h0" />
-                                            </svg>
-                                        </button>
-                                    </th>
-                                </tr>
+                                @foreach ($attachment as $item)
+                                    @if ($item->idMaterial == $currentMaterialId)
+                                        <tr class="odd:bg-white even:bg-gray-50 border border-cyan-500 text-center">
+                                            <th
+                                                class="border border-cyan-500 py-1 font-medium text-gray-900 whitespace-nowrap">
+                                                <div class="flex items-center justify-center">
+                                                    <button type="button"
+                                                        onclick="previewAssignment('{{ $item->type }}', '{{ $item->attachment }}', '{{ $item->user->role }}')"
+                                                        class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none"
+                                                        title="Klik untuk melihat tugas">
+                                                        <svg class="w-5 h-5" aria-hidden="true"
+                                                            xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                            viewBox="0 0 16 20">
+                                                            <path stroke="currentColor" stroke-linecap="round"
+                                                                stroke-linejoin="round" stroke-width="2"
+                                                                d="M4.828 10h6.239m-6.239 4h6.239M6 1v4a1 1 0 0 1-1 1H1m14-4v16a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2Z" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </th>
+                                            <th class="px-6 py-1 font-medium text-gray-900 whitespace-nowrap">
+                                                <button type="button"
+                                                    onclick="redirectToAddSubmission({{ $currentMaterialId }})"
+                                                    class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none"
+                                                    title="klik untuk mengunggah tugas">
+                                                    <svg class="w-5 h-5 text-white" aria-hidden="true"
+                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke="currentColor" stroke-linecap="round"
+                                                            stroke-linejoin="round" stroke-width="2"
+                                                            d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4c0 .6.4 1 1 1h14c.6 0 1-.4 1-1v-4c0-.6-.4-1-1-1h-2M8 9l4-5 4 5m1 8h0" />
+                                                    </svg>
+                                                </button>
+                                            </th>
+                                        </tr>
+                                    @endif
+                                @endforeach
                             </tbody>
                         </table>
-                        <table class="mt-3 overflow-x-auto text-sm text-left rtl:text-right text-gray-500 w-full">
-                            <thead class="text-xs text-center text-white uppercase bg-cyan-500 border border-cyan-500">
-                                <tr>
-                                    <th colspan="2" class="p-2">Lampiran Tugas Anda</th>
-                                </tr>
-                            </thead>
-                            <thead class="border">
-                                <tr class="odd:bg-white even:bg-gray-50 border border-cyan-500 text-center">
-                                    <th
-                                        class="border bg-cyan-200 border-cyan-500 py-1 font-bold text-gray-900 whitespace-nowrap">
-                                        Lampiran Unggahan
-                                    </th>
-                                    <th class="bg-cyan-200 py-1 font-bold text-gray-900 whitespace-nowrap">Aksi
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="odd:bg-white even:bg-gray-50 border border-cyan-500 text-center">
-                                    <th class="border border-cyan-500 py-1 font-medium text-gray-900 whitespace-nowrap">
-                                        <div class="flex items-center justify-center">
-                                            <button type="button"
-                                                class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none"
-                                                title="Klik untuk melihat tugas">
-                                                <svg class="w-5 h-5" aria-hidden="true"
-                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                    viewBox="0 0 16 20">
-                                                    <path stroke="currentColor" stroke-linecap="round"
-                                                        stroke-linejoin="round" stroke-width="2"
-                                                        d="M4.828 10h6.239m-6.239 4h6.239M6 1v4a1 1 0 0 1-1 1H1m14-4v16a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2Z" />
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </th>
-                                    <th
-                                        class="flex flex-items-center justify-center gap-1 px-6 py-1 font-medium text-gray-900 whitespace-nowrap">
-                                        <form action=""method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit"
-                                                class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none"
-                                                title="klik untuk menghapus tugas">
-                                                <svg class="w-5 h-5" aria-hidden="true"
-                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                    viewBox="0 0 18 20">
-                                                    <path stroke="currentColor" stroke-linecap="round"
-                                                        stroke-linejoin="round" stroke-width="2"
-                                                        d="M1 5h16M7 8v8m4-8v8M7 1h4a1 1 0 0 1 1 1v3H6V2a1 1 0 0 1 1-1ZM3 5h12v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5Z" />
-                                                </svg>
-                                            </button>
-                                        </form>
-                                        <button type="button"
-                                            class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none"
-                                            title="Klik untuk edit tugas">
-                                            <svg class="feather feather-edit w-5 h-5" fill="none"
-                                                stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                                stroke-width="2" viewBox="0 0 24 24" xmlns=" http://www.w3.org/2000/svg">
-                                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                                            </svg>
-                                        </button>
-                                    </th>
-                                </tr>
-                                <tr class="bg-white border border-cyan-500 text-center">
-                                    <th colspan="2" class="p-2 text-gray-900">Nilai: 80</th>
-                                </tr>
-                            </tbody>
-                        </table>
+                        @if ($submission->where('idMaterial', $currentMaterialId)->where('category', 'fromstudent')->where('idUser', Auth::user()->id)->isNotEmpty())
+                            <table class="mt-3 overflow-x-auto text-sm text-left rtl:text-right text-gray-500 w-full">
+                                <thead class="text-xs text-center text-white uppercase bg-cyan-500 border border-cyan-500">
+                                    <tr>
+                                        <th colspan="2" class="p-2">Lampiran Tugas Anda</th>
+                                    </tr>
+                                </thead>
+                                <thead class="border">
+                                    <tr class="odd:bg-white even:bg-gray-50 border border-cyan-500 text-center">
+                                        <th
+                                            class="border bg-cyan-200 border-cyan-500 py-1 font-bold text-gray-900 whitespace-nowrap">
+                                            Lampiran Unggahan
+                                        </th>
+                                        <th class="bg-cyan-200 py-1 font-bold text-gray-900 whitespace-nowrap">Aksi
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($submission as $item)
+                                        @if ($item->idMaterial == $currentMaterialId)
+                                            <tr class="odd:bg-white even:bg-gray-50 border border-cyan-500 text-center">
+                                                <th
+                                                    class="border border-cyan-500 py-1 font-medium text-gray-900 whitespace-nowrap">
+                                                    <div class="flex items-center justify-center">
+                                                        <button type="button"
+                                                            onclick="previewAssignment('{{ $item->type }}', '{{ $item->attachment }}', '{{ $item->user->role }}')"
+                                                            class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none"
+                                                            title="Klik untuk melihat tugas">
+                                                            <svg class="w-5 h-5" aria-hidden="true"
+                                                                xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                viewBox="0 0 16 20">
+                                                                <path stroke="currentColor" stroke-linecap="round"
+                                                                    stroke-linejoin="round" stroke-width="2"
+                                                                    d="M4.828 10h6.239m-6.239 4h6.239M6 1v4a1 1 0 0 1-1 1H1m14-4v16a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2Z" />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                </th>
+                                                <th
+                                                    class="flex flex-items-center justify-center gap-1 px-6 py-1 font-medium text-gray-900 whitespace-nowrap">
+                                                    <form action="/student/submission/{{ $item->id }}"method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit"
+                                                            class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none"
+                                                            title="klik untuk menghapus tugas">
+                                                            <svg class="w-5 h-5" aria-hidden="true"
+                                                                xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                viewBox="0 0 18 20">
+                                                                <path stroke="currentColor" stroke-linecap="round"
+                                                                    stroke-linejoin="round" stroke-width="2"
+                                                                    d="M1 5h16M7 8v8m4-8v8M7 1h4a1 1 0 0 1 1 1v3H6V2a1 1 0 0 1 1-1ZM3 5h12v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5Z" />
+                                                            </svg>
+                                                        </button>
+                                                    </form>
+                                                    <button type="button"
+                                                        class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none"
+                                                        title="Klik untuk edit tugas">
+                                                        <svg class="feather feather-edit w-5 h-5" fill="none"
+                                                            stroke="currentColor" stroke-linecap="round"
+                                                            stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
+                                                            xmlns=" http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                                                            <path
+                                                                d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                                                        </svg>
+                                                    </button>
+                                                </th>
+                                            </tr>
+                                            <tr class="bg-white border border-cyan-500 text-center">
+                                                <th colspan="2" class="p-2 text-gray-900">Nilai: {{ $item->score }}
+                                                </th>
+                                            </tr>
+                                        @endif
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        @endif
                     </div>
                 @else
                     <div
@@ -269,6 +290,16 @@
     <script>
         function showAlert() {
             alert("Mohon untuk mengerjakan tugas terlebih dahulu");
+        }
+
+        function showAlertAside() {
+            alert("Mohon untuk membaca materi hingga akhir");
+        }
+
+        function redirectToAddSubmission(idMaterial) {
+            var baseUrl = '/student/';
+            var addSubmissionUrl = baseUrl + idMaterial + '/submission/create/';
+            window.location.href = addSubmissionUrl;
         }
     </script>
 @endsection

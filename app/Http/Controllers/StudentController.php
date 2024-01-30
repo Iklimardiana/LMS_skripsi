@@ -155,6 +155,7 @@ class StudentController extends Controller
             } else {
                 $currentSubmission = Assignment::where('idUser', $user)
                     ->where('idSubject', $id)
+                    ->where('category', 'fromstudent')
                     ->where('idMaterial', $material->id)->first();
                 if ($currentSubmission && $currentSubmission->idMaterial == $currentAttachment->idMaterial) {
                     $currentProgres->status = '1';
@@ -208,5 +209,63 @@ class StudentController extends Controller
         $idSubject = $material->idSubject;
 
         return view('student.submission.create', compact('material', 'idSubject'));
+    }
+    public function storeSubmission(Request $request, $id)
+    {
+        $request->validate([
+            'type' => 'required',
+            'attachment' => 'required',
+        ]);
+
+        if ($request->has('attachment')) {
+            $attachment = $request->attachment;
+
+            if (filter_var($attachment, FILTER_VALIDATE_URL)) {
+                $request->validate([
+                    'attachment' => 'url',
+                ], [
+                    'attachment.url' => 'Tautan tugas harus valid/ benar',
+                ]);
+            } else {
+                $request->validate([
+                    'attachment' => 'file|mimes:pdf|max:3048',
+                ]);
+
+                $fileName = time() . '.' . $request->attachment->extension();
+                $request->attachment->move(public_path('attachment/submission/'), $fileName);
+
+                $request->attachment = $fileName;
+            }
+        } else {
+            return redirect()->back()->withErrors(['attachment' => 'Lampiran tugas wajib diisi']);
+        }
+
+        $materials = Material::findOrFail($id);
+
+        $subjects = $materials->subject;
+
+        $assignment = new Assignment();
+
+        $assignment->attachment = $request->attachment;
+        $assignment->score = $request->score;
+        $assignment->category = 'fromstudent';
+        $assignment->type = $request->type;
+        $assignment->idmaterial = $materials->id;
+        $assignment->idSubject = $subjects->id;
+        $assignment->idUser = Auth::user()->id;
+
+        $assignment->save();
+
+        return redirect('/student/materials/' . $subjects->id . '?sequence=' . $materials->sequence);
+    }
+    public function destroySubmission($id)
+    {
+        $submission = Assignment::findOrFail($id);
+
+        File::delete(public_path('attachment/submission/' . $submission->attachment));
+
+        $submission->delete();
+
+        return redirect()->back();
     }
 }

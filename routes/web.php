@@ -76,6 +76,11 @@ Route::middleware('student')->group(function () {
     Route::get('student/materials/{id}', [StudentController::class, 'materials'])->name('learning-page');
     Route::post('student/materials/{id}', [StudentController::class, 'storeAssignment']);
 
+    route::get('/student/{idMaterial}/submission/create', [StudentController::class, 'createSubmission']);
+    route::post('/student/submission/{id}', [StudentController::class, 'storeSubmission']);
+    route::get('/student/submission/{id}/edit', [StudentController::class, 'editSubmission']);
+    route::put('/student/submission/{id}', [StudentController::class, 'updateSubmission']);
+    route::delete('/student/submission/{id}', [StudentController::class, 'destroySubmission']);
 });
 
 Route::get('/login', [LoginController::class, 'login']);
