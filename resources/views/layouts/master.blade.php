@@ -33,8 +33,12 @@
             window.location.href = '/admin/subject/create'
         }
 
-        function redirectToMaterial(idSubject) {
-            var baseUrl = '/teacher/materials/';
+        function redirectToMaterial(idSubject, userRole) {
+            if (userRole === 'student') {
+                var baseUrl = '/student/materials/';
+            } else if (userRole === 'teacher') {
+                var baseUrl = '/teacher/materials/';
+            }
             var materialUrl = baseUrl + idSubject;
             window.location.href = materialUrl;
         }

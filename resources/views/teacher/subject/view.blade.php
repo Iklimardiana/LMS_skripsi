@@ -60,7 +60,8 @@
                                 src="{{ asset('images/thumbnail/' . $subject->thumbnail) }}" alt="image subject">
                             <div
                                 class="flex lg:flex-row flex-col items-center justify-between w-full mx-5 p-3 text-gray-900">
-                                <span class="font-semibold text-lg md:text-2xl md:text-center">{{ $subject->name }}</span>
+                                <span
+                                    class="font-semibold text-lg md:text-2xl lg:tex-center md:text-center">{{ $subject->name }}</span>
                                 <span class="font-light text-end">
                                     {{ $subject->Teacher->first_name }}
                                 </span>
