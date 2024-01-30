@@ -107,12 +107,6 @@
             window.location.href = addMateriUrl;
         }
 
-        function redirectListMaterials(idSubject) {
-            var baseUrl = '/teacher/materials/';
-            var ListMateriUrl = baseUrl + idSubject;
-            window.location.href = ListMateriUrl;
-        }
-
         function redirectToEditMaterial(idMaterial) {
             var baseUrl = '/teacher/materials/';
             var EditMateriUrl = baseUrl + idMaterial + '/edit';

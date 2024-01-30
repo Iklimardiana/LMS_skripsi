@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Assignment;
 use App\Models\Enrollment;
+use App\Models\Material;
+use App\Models\Progres;
 use App\Models\Subject;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -14,15 +17,12 @@ class StudentController extends Controller
     public function subjects()
     {
         $id = Auth::user()->id;
-
         $enrollment = Enrollment::where('idUser', $id)->get();
-
         $enrolledSubjectIds = Enrollment::where('idUser', $id)->pluck('idSubject')->toArray();
-
         $subjects = Subject::whereNotIn('id', $enrolledSubjectIds)->get();
+        $progres = Progres::where('idUser', $id)->get();
 
-
-        return view("student.subject.view", compact('subjects', 'enrollment'));
+        return view("student.subject.view", compact('subjects', 'enrollment', 'progres'));
     }
 
     public function profile($id)
@@ -112,4 +112,101 @@ class StudentController extends Controller
         return redirect()->back()->with('success', 'Anda berhasil terdaftar pada mata pelajaran ini.');
     }
 
+    public function materials(Request $request, $id)
+    {
+        $user = Auth::user()->id;
+        $sequence = $request->input('sequence', 1);
+
+        $subject = Subject::findOrFail($id);
+        $material = $subject->Material()->where('sequence', $sequence)->first();
+
+        if ($material) {
+            $attachment = Assignment::where('idMaterial', $material->id)
+                ->where('category', 'fromteacher')
+                ->get();
+        } else {
+            return redirect('/student/subject')->with('error', 'Belum ada modul. Mohon untuk menunggu, Anda dapat mengakses mata pelajaran lain terlebih dahulu');
+        }
+
+        $submission = Assignment::where('idUser', $user)
+            ->where('category', 'fromstudent')
+            ->get();
+
+        $currentSequence = $material ? $material->sequence : null;
+
+        $currentProgres = Progres::where('idUser', $user)->where('idSubject', $id)->first();
+
+
+        if ($currentProgres) {
+            if ($currentProgres->sequence < $currentSequence)
+                $currentProgres->sequence = $currentSequence;
+
+            $progres = Progres::where('idUser', $user)
+                ->where('idSubject', $id)->first();
+
+            $currentAttachment = Assignment::where('idMaterial', $material->id)
+                ->where('idSubject', $id)
+                ->where('category', 'fromteacher')
+                ->first();
+
+            if ($currentAttachment == null) {
+                $progres->status = '1';
+                $progres->save();
+            } else {
+                $currentSubmission = Assignment::where('idUser', $user)
+                    ->where('idSubject', $id)
+                    ->where('idMaterial', $material->id)->first();
+                if ($currentSubmission && $currentSubmission->idMaterial == $currentAttachment->idMaterial) {
+                    $currentProgres->status = '1';
+                    $currentProgres->save();
+                } else {
+                    $currentProgres->status = '0';
+                    $currentProgres->save();
+                }
+            }
+
+            if ($currentProgres->sequence == $subject->Material->count()) {
+                $currentProgres->complete = '1';
+                $currentProgres->save();
+            }
+
+            $currentProgres->save();
+        } else {
+            $currentAttachment = Assignment::where('idMaterial', $material->id)
+                ->where('idSubject', $id)
+                ->where('category', 'fromteacher')
+                ->first();
+            $currentProgres = new Progres;
+
+            $currentProgres->idUSer = $user;
+            $currentProgres->idSubject = $id;
+            $currentProgres->sequence = 1;
+            if ($currentAttachment == null) {
+                $currentProgres->status = '1';
+                $currentProgres->save();
+            } else {
+                $currentSubmission = Assignment::where('idUser', $user)
+                    ->where('idSubject', $id)
+                    ->where('idMaterial', $material->id)->first();
+                if ($currentSubmission && $currentSubmission->idMaterial == $currentAttachment->idMaterial) {
+                    $currentProgres->status = '1';
+                    $currentProgres->save();
+                } else {
+                    $currentProgres->status = '0';
+                    $currentProgres->save();
+                }
+            }
+
+            $currentProgres->save();
+        }
+
+        return view('student.material.view')->with(compact('currentProgres', 'material', 'subject', 'currentSequence', 'attachment', 'submission'));
+    }
+    public function createSubmission($id)
+    {
+        $material = Material::findOrFail($id);
+        $idSubject = $material->idSubject;
+
+        return view('student.submission.create', compact('material', 'idSubject'));
+    }
 }

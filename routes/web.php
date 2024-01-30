@@ -72,6 +72,10 @@ Route::middleware('student')->group(function () {
     route::get('/student/profile/{id}', [StudentController::class, 'profile']);
 
     Route::post('/student/enroll/{enrollmentKey}', [StudentController::class, 'enrollSubject'])->name('student.enroll');
+
+    Route::get('student/materials/{id}', [StudentController::class, 'materials'])->name('learning-page');
+    Route::post('student/materials/{id}', [StudentController::class, 'storeAssignment']);
+
 });
 
 Route::get('/login', [LoginController::class, 'login']);

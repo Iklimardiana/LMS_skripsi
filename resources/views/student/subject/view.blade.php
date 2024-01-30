@@ -22,7 +22,8 @@
     </div>
     <div id="default-tab-content" class="md:ml-64 lg:ml-64">
         <div class="hidden p-4 rounded-lg " id="enrolled" role="tabpanel" aria-labelledby="enrolled-tab">
-            <div class="flex flex-col space-y-3 p-4 border-2 border-gray-200 border-dashed h-auto mb-20 rounded-lg">
+            <div
+                class="flex flex-col space-y-3 px-4 pb-4 pt-3 border-2 border-gray-200 border-dashed h-auto mb-20 rounded-lg">
                 @if (session('error'))
                     <div id="alert-2" class="flex items-center p-4 mb-4 text-red-800 rounded-lg bg-red-50" role="alert">
                         <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -56,6 +57,17 @@
                     </div>
                 @endif
                 @forelse ($enrollment as $enroll)
+                    @php
+                        // Dapatkan id mata pelajaran dan user
+                        $subjectId = $enroll->idSubject;
+                        $userId = Auth::user()->id;
+
+                        // Temukan progres yang sesuai berdasarkan id mata pelajaran dan id user
+                        $currentProgres = $progres->where('idSubject', $subjectId)->first();
+
+                        // Tentukan sequence yang akan digunakan
+                        $sequence = $currentProgres ? $currentProgres->sequence : 1;
+                    @endphp
                     <div
                         class="flex items-center justify-between h-36 pr-2 md:pr-3 py-0 pl-0 justify-items-center rounded-lg bg-cyan-50 border border-cyan-500">
                         <div>
@@ -65,11 +77,12 @@
                         <div class="text-center text-gray-900">
                             <p class="font-semibold text text-xl md:text-2xl m-3">{{ $enroll->subject->name }}</p>
                             <p class="underline">
-                                {{ $enroll->subject->teacher->first_name . ' ' . $enroll->subject->teacher->last_name }}</p>
+                                {{ $enroll->subject->teacher->first_name . ' ' . $enroll->subject->teacher->last_name }}
+                            </p>
                         </div>
                         <div class="flex flex-col space-y-2 items-center justify-end">
                             <button type="button"
-                                onclick="redirectToMaterial({{ $enroll->subject->id }}, '{{ $enroll->user->role }}')"
+                                onclick="redirectToMaterialStudent({{ $subjectId }}, {{ $sequence }})"
                                 class=" text-white bg-cyan-500 hover:bg-cyan-600 focus:ring-4 focus:ring-cyan-300 font-medium rounded-md md:rounded-lg text-sm w-16 md:w-20  px-1 py-1 md:px-5 md:py-2 me-2 focus:outline-none  ">
                                 Materi
                             </button>
@@ -174,4 +187,11 @@
             </div>
         </div>
     </div>
+    <script>
+        function redirectToMaterialStudent(idSubject, progres) {
+            var baseUrl = '/student/materials/';
+            var materialUrl = baseUrl + idSubject + '?sequence=' + progres;
+            window.location.href = materialUrl;
+        }
+    </script>
 @endsection
