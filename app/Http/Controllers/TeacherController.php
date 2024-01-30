@@ -280,7 +280,7 @@ class TeacherController extends Controller
 
     public function attachments($id)
     {
-        $attachments = Assignment::where('idSubject', $id)->where('category', 'fromstudent')->paginate(8);
+        $attachments = Assignment::where('idMaterial', $id)->where('category', 'fromstudent')->paginate(8);
         $iteration = $attachments->firstItem();
         $material = Material::findOrFail($id);
 
@@ -297,7 +297,8 @@ class TeacherController extends Controller
             'score.regex' => 'Nilai harus berupa angka atau angka desimal dengan maksimal dua digit di belakang koma'
         ]);
 
-        $attachments = Assignment::findOrFail($id);
+        // $attachments = Assignment::findOrFail($id);
+        $attachments = Assignment::where('id', $id)->first();
 
         $attachments->update([
             'score' => $request->score,
