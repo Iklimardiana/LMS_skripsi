@@ -314,7 +314,7 @@ class TeacherController extends Controller
             ->first();
 
         if ($existingMaterials) {
-            Subject::where('idSubject', $materials->idSubject)
+            Material::where('idSubject', $materials->idSubject)
                 ->where('sequence', '>=', $newSequence)
                 ->where('id', '!=', $id) // Menambahkan kondisi agar tidak memperbarui materi yang sedang diperbarui
                 ->increment('sequence');
