@@ -74,7 +74,7 @@
                     <div class="flex justify-start">
                         <button type="button"
                             class="flex gap-1 text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-500 focus:border-cyan-500 font-medium rounded-md text-sm p-2 me-2 focus:outline-none mt-3 w-auto"
-                            onclick="redirectListMaterials({{ $subjects->id }})">
+                            onclick="redirectToMaterial({{ $subjects->id }}, '{{ $subjects->teacher->role }}')">
                             <svg class="w-5 h-5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                 fill="none" viewBox="0 0 14 10">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
