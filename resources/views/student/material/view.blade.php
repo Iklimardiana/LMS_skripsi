@@ -198,6 +198,7 @@
                                                         </button>
                                                     </form>
                                                     <button type="button"
+                                                        onclick="redirectToEditSubmission({{ $item->id }})"
                                                         class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none"
                                                         title="Klik untuk edit tugas">
                                                         <svg class="feather feather-edit w-5 h-5" fill="none"
@@ -300,6 +301,12 @@
             var baseUrl = '/student/';
             var addSubmissionUrl = baseUrl + idMaterial + '/submission/create/';
             window.location.href = addSubmissionUrl;
+        }
+
+        function redirectToEditSubmission(idSubmission) {
+            var baseUrl = '/student/submission/';
+            var editSubmissionUrl = baseUrl + idSubmission + '/edit';
+            window.location.href = editSubmissionUrl;
         }
     </script>
 @endsection

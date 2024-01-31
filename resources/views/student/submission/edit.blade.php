@@ -11,7 +11,7 @@
                 </div>
             </div>
             <div class="sm:rounded-lg bg-cyan-50 p-4 border border-cyan-500">
-                <form action="/teacher/assignment/{{ $assignment->id }}" enctype="multipart/form-data" method="post"
+                <form action="/student/submission/{{ $submission->id }}" enctype="multipart/form-data" method="post"
                     class="md:w-1/2 w-full">
                     @method('put')
                     @csrf
@@ -22,32 +22,32 @@
                             class="relative mt-2 bg-gray-50 border border-cyan-400 text-gray-900 sm:text-sm rounded-lg block p-2.5 w-full focus:ring-cyan-500 focus:border-cyan-500"
                             name="type" id="type">
                             <option value="">--Pilih Tipe Tugas--</option>
-                            <option value="file" {{ $assignment->type === 'file' ? 'selected' : '' }}>
+                            <option value="file" {{ $submission->type === 'file' ? 'selected' : '' }}>
                                 Upload Pdf</option>
-                            <option value="link" {{ $assignment->type === 'link' ? 'selected' : '' }}>
+                            <option value="link" {{ $submission->type === 'link' ? 'selected' : '' }}>
                                 Tautan/ Link
                             </option>
                         </select>
                     </div>
                     <div class="mt-5 mb-3" id="pdfForm" style="display: none;">
-                        <label for="file" class="font-medium">Assignment</label>
+                        <label for="file" class="font-medium">Submission</label>
                         <input type="file" id="file" name="attachment"
                             class="block text-sm text-gray-900 border border-cyan-400 rounded-md cursor-pointer bg-gray-50 focus:outline-none file:bg-cyan-500 w-full"
                             aria-describedby="file_input_help">
-                        @if ($assignment->type === 'file')
-                            <span>{{ $assignment->attachment }}</span>
+                        @if ($submission->type === 'file')
+                            <span>{{ $submission->attachment }}</span>
                         @endif
                     </div>
                     <div class="mt-5 mb-3 flex flex-col" id="linkForm" style="display: none;">
-                        <label for="link" class="font-medium">Assignment</label>
+                        <label for="link" class="font-medium">Submission</label>
                         <input type="url" id="link" name="attachment"
-                            @if ($assignment->type === 'link') value="{{ $assignment->attachment }}" @endif
+                            @if ($submission->type === 'link') value="{{ $submission->attachment }}" @endif
                             class="flex text-sm text-gray-900 border border-cyan-400 rounded-md bg-gray-50 focus:outline-none file:bg-cyan-500 w-full md:min-w-96 mt-2 focus:ring-cyan-500 focus:border-cyan-500">
                     </div>
                     <div class="flex justify-start">
                         <button type="button"
                             class="flex gap-1 text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-md text-sm p-2 me-2 focus:outline-none mt-3 w-auto"
-                            onclick="redirectToMaterial({{ $material->idSubject }}, '{{ Auth::user()->role }}')">
+                            onclick="redirectToCurrentMaterial({{ $material->idSubject }}, {{ $material->sequence }})">
                             <svg class="w-5 h-5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                 fill="none" viewBox="0 0 14 10">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -100,5 +100,11 @@
 
             }
         });
+
+        function redirectToCurrentMaterial(idSubject, sequence) {
+            var baseUrl = '/student/materials/';
+            var currentMaterialUrl = baseUrl + idSubject + '?sequence=' + sequence;
+            window.location.href = currentMaterialUrl;
+        }
     </script>
 @endsection

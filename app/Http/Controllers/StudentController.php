@@ -267,17 +267,6 @@ class StudentController extends Controller
 
         return redirect('/student/materials/' . $subjects->id . '?sequence=' . $materials->sequence);
     }
-    // public function destroySubmission($id)
-    // {
-    //     $submission = Assignment::findOrFail($id);
-
-    //     File::delete(public_path('attachment/submission/' . $submission->attachment));
-
-    //     $submission->delete();
-
-    //     return redirect()->back();
-    // }
-
     public function destroySubmission($id)
     {
         $submission = Assignment::findOrFail($id);
@@ -307,5 +296,71 @@ class StudentController extends Controller
             $currentProgres->save();
         }
     }
+    public function editSubmission($id)
+    {
+        $submission = Assignment::findOrFail($id);
 
+        $idSubject = $submission->idSubject;
+
+        $material = Material::where('id', $submission->idMaterial)->first();
+
+        return view('student.submission.edit', compact('idSubject', 'submission', 'material'));
+    }
+
+    public function updateSubmission(Request $request, $id)
+    {
+        $submission = Assignment::findOrFail($id);
+        $idMaterial = $submission->idMaterial;
+        $idSubject = $submission->idSubject;
+
+        $request->validate([
+            'type' => 'required',
+            'attachment' => 'required',
+        ]);
+
+        if ($request->has('attachment')) {
+            $attachment = $request->attachment;
+
+            if (filter_var($attachment, FILTER_VALIDATE_URL)) {
+                $request->validate([
+                    'attachment' => 'url',
+                ], [
+                    'attachment.url' => 'The submission must be a valid URL.',
+                ]);
+
+                if ($submission->attachment && File::exists(public_path('attachment/submission/' . $submission->attachment))) {
+                    File::delete(public_path('attachment/submission/' . $submission->attachment));
+                }
+
+                $submission->attachment = $request->attachment;
+            } else {
+                $request->validate([
+                    'attachment' => 'file|mimes:pdf|max:3048',
+                ]);
+
+                if ($request->hasFile('attachment')) {
+                    if ($submission->attachment && File::exists(public_path('attachment/submission/' . $submission->attachment))) {
+                        File::delete(public_path('attachment/submission/' . $submission->attachment));
+                    }
+
+                    $fileName = time() . '.' . $request->attachment->extension();
+                    $request->attachment->move(public_path('attachment/submission/'), $fileName);
+                    $submission->attachment = $fileName;
+                }
+            }
+        } else {
+            return redirect()->back()->withErrors(['submission' => 'The submission field is required.']);
+        }
+
+        $submission->score = $request->score;
+        $submission->category = 'fromstudent';
+        $submission->type = $request->type;
+        $submission->idMaterial = $idMaterial;
+        $submission->idSubject = $idSubject;
+        $submission->idUser = Auth::user()->id;
+
+        $submission->save();
+
+        return redirect('/student/materials/' . $idSubject . '?sequence=' . $submission->material->sequence);
+    }
 }
