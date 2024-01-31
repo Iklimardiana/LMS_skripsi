@@ -382,16 +382,24 @@ class TeacherController extends Controller
             unlink($filePath);
         }
     }
-
     public function destroyMaterial($id)
     {
         $materials = Material::findOrFail($id);
+
+        $this->deleteMaterialImages($materials->content);
 
         $materials->delete();
 
         return back();
     }
+    private function deleteMaterialImages($content)
+    {
+        $existingImageUrls = $this->extractImageUrlsFromContent($content);
 
+        foreach ($existingImageUrls as $imageUrl) {
+            $this->deleteImageFromStorage($imageUrl);
+        }
+    }
     public function attachments($id)
     {
         $attachments = Assignment::where('idMaterial', $id)->where('category', 'fromstudent')->paginate(8);
