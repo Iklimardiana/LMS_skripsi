@@ -11,6 +11,7 @@ use App\Models\Enrollment;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 
 class TeacherController extends Controller
@@ -187,6 +188,42 @@ class TeacherController extends Controller
         return view('teacher.material.create', compact('subjects'));
     }
 
+    // public function storeMaterial(Request $request, $idSubject)
+    // {
+    //     $request->validate([
+    //         'sequence' => 'required|numeric',
+    //         'name' => 'required',
+    //         'content' => 'required'
+    //     ], [
+    //         'sequence.required' => 'Urutan materi harus diisi',
+    //         'sequence.numeric' => 'urutan materi harus berupa angka',
+    //         'name.required' => 'Judul materi harus diisi',
+    //         'content.required' => 'Konten materi harus diisi'
+    //     ]);
+
+    //     $newSequence = $request->sequence;
+
+    //     $existingMaterial = Material::where('idSubject', $idSubject)
+    //         ->where('sequence', $newSequence)->first();
+
+    //     if ($existingMaterial) {
+    //         Material::where('idSubject', $idSubject)
+    //             ->where('sequence', '>=', $newSequence)
+    //             ->increment('sequence');
+    //     }
+
+    //     $materials = new Material;
+
+    //     $materials->name = $request->name;
+    //     $materials->content = $request->input('content');
+    //     $materials->sequence = $request->sequence;
+    //     $materials->idSubject = $idSubject;
+
+    //     $materials->save();
+
+    //     return redirect('/teacher/materials/' . $materials->idSubject);
+    // }
+
     public function storeMaterial(Request $request, $idSubject)
     {
         $request->validate([
@@ -220,8 +257,31 @@ class TeacherController extends Controller
 
         $materials->save();
 
+        // Ambil deskripsi dari formulir
+        $description = $request->input('content');
+
+        // Ambil URL gambar yang diunggah tetapi tidak digunakan dari sesi
+        $uploadedImages = session('uploaded_images', []);
+
+        // Loop melalui URL gambar yang diunggah
+        foreach ($uploadedImages as $imageUrl) {
+            // Jika URL tidak ditemukan dalam deskripsi, hapus gambar dari storage
+            if (strpos($description, $imageUrl) === false) {
+                $fileName = basename($imageUrl);
+                $filePath = public_path('images/media/' . $fileName);
+
+                if (file_exists($filePath)) {
+                    unlink($filePath);
+                }
+            }
+        }
+
+        // Hapus sesi setelah selesai
+        session()->forget('uploaded_images');
+
         return redirect('/teacher/materials/' . $materials->idSubject);
     }
+
 
     public function showMaterial($id)
     {
@@ -236,7 +296,6 @@ class TeacherController extends Controller
 
         return view('teacher.material.edit', compact('materials', 'subjects'));
     }
-
     public function updateMaterial(Request $request, $id)
     {
         $request->validate([
@@ -261,12 +320,67 @@ class TeacherController extends Controller
                 ->increment('sequence');
         }
 
+        // Handle file upload logic
+        $uploadedImages = session('uploaded_images', []);
+
+        // Ambil deskripsi dari formulir
+        $description = $request->input('content');
+
+        // Ambil URL gambar dari deskripsi yang ada di database
+        $existingImageUrls = $this->extractImageUrlsFromContent($materials->content);
+
+        // Loop melalui URL gambar yang diunggah
+        foreach ($uploadedImages as $imageUrl) {
+            if (!in_array($imageUrl, $existingImageUrls) && strpos($description, $imageUrl) === false) {
+                $this->deleteImageFromStorage($imageUrl);
+            }
+        }
+        foreach ($existingImageUrls as $existingImageUrl) {
+            // Hanya hapus gambar jika URL tidak ada di dalam deskripsi saat ini
+            if (strpos($description, $existingImageUrl) === false) {
+                $this->deleteImageFromStorage($existingImageUrl);
+            }
+        }
+
         $materials->sequence = $request->sequence;
         $materials->name = $request->name;
         $materials->content = $request->input('content');
 
         $materials->save();
+
+        session()->forget('uploaded_images');
+
         return redirect('/teacher/materials/' . $materials->idSubject);
+    }
+
+    /**
+     * Extract image URLs from the content.
+     *
+     * @param string $content
+     * @return array
+     */
+    private function extractImageUrlsFromContent($content)
+    {
+        $pattern = '/<img[^>]+src\s*=\s*["\']([^"\']+)["\'][^>]*>/i';
+        preg_match_all($pattern, $content, $matches);
+
+        return $matches[1];
+    }
+
+    /**
+     * Delete image from storage.
+     *
+     * @param string $imageUrl
+     * @return void
+     */
+    private function deleteImageFromStorage($imageUrl)
+    {
+        $fileName = basename($imageUrl);
+        $filePath = public_path('images/media/' . $fileName);
+
+        if (file_exists($filePath)) {
+            unlink($filePath);
+        }
     }
 
     public function destroyMaterial($id)
@@ -297,7 +411,6 @@ class TeacherController extends Controller
             'score.regex' => 'Nilai harus berupa angka atau angka desimal dengan maksimal dua digit di belakang koma'
         ]);
 
-        // $attachments = Assignment::findOrFail($id);
         $attachments = Assignment::where('id', $id)->first();
 
         $attachments->update([
@@ -438,5 +551,24 @@ class TeacherController extends Controller
         $assignment->delete();
 
         return back();
+    }
+    public function uploadImage(Request $request)
+    {
+        if ($request->hasFile('upload')) {
+            $originName = $request->file('upload')->getClientOriginalName();
+            $fileName = pathInfo($originName, PATHINFO_FILENAME);
+            $extension = $request->file('upload')->getClientOriginalExtension();
+            $fileName = $fileName . '_' . time() . '.' . $extension;
+            $request->file('upload')->move(public_path('images/media/'), $fileName);
+
+            $url = asset('images/media/' . $fileName);
+
+            // Simpan URL ke dalam sesi
+            $uploadedImages = session('uploaded_images', []);
+            $uploadedImages[] = $url;
+            session(['uploaded_images' => $uploadedImages]);
+
+            return response()->json(['fileName' => $fileName, 'uploaded' => 1, 'url' => $url]);
+        }
     }
 }

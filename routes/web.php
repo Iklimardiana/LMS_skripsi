@@ -62,25 +62,29 @@ Route::middleware('teacher')->group(function () {
     route::get('/teacher/assignment/{id}/edit', [TeacherController::class, 'editAssigment']);
     route::put('/teacher/assignment/{id}', [TeacherController::class, 'updateAssignment']);
     route::delete('/teacher/assignment/{id}', [TeacherController::class, 'destroyAssignment']);
+
+    // upload image from CKEditor
+    Route::post('/upload', [TeacherController::class, 'uploadImage'])->name('ckeditor.upload');
+    Route::post('/delete-ckeditor-image', [TeacherController::class, 'deleteCkeditorImage'])->name('ckeditor.deleteCkeditorImage');
 });
 
 Route::middleware('student')->group(function () {
     Route::get('/student/subject', [StudentController::class, 'subjects']);
 
-    route::get('/student/profile/{id}/edit', [StudentController::class, 'editProfile']);
-    route::put('/student/profile/{id}', [StudentController::class, 'updateProfile']);
-    route::get('/student/profile/{id}', [StudentController::class, 'profile']);
+    Route::get('/student/profile/{id}/edit', [StudentController::class, 'editProfile']);
+    Route::put('/student/profile/{id}', [StudentController::class, 'updateProfile']);
+    Route::get('/student/profile/{id}', [StudentController::class, 'profile']);
 
     Route::post('/student/enroll/{enrollmentKey}', [StudentController::class, 'enrollSubject'])->name('student.enroll');
 
     Route::get('student/materials/{id}', [StudentController::class, 'materials'])->name('learning-page');
     Route::post('student/materials/{id}', [StudentController::class, 'storeAssignment']);
 
-    route::get('/student/{idMaterial}/submission/create', [StudentController::class, 'createSubmission']);
-    route::post('/student/submission/{id}', [StudentController::class, 'storeSubmission']);
-    route::get('/student/submission/{id}/edit', [StudentController::class, 'editSubmission']);
-    route::put('/student/submission/{id}', [StudentController::class, 'updateSubmission']);
-    route::delete('/student/submission/{id}', [StudentController::class, 'destroySubmission']);
+    Route::get('/student/{idMaterial}/submission/create', [StudentController::class, 'createSubmission']);
+    Route::post('/student/submission/{id}', [StudentController::class, 'storeSubmission']);
+    Route::get('/student/submission/{id}/edit', [StudentController::class, 'editSubmission']);
+    Route::put('/student/submission/{id}', [StudentController::class, 'updateSubmission']);
+    Route::delete('/student/submission/{id}', [StudentController::class, 'destroySubmission']);
 });
 
 Route::get('/login', [LoginController::class, 'login']);
