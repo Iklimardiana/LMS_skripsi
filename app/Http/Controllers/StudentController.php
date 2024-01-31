@@ -132,6 +132,12 @@ class StudentController extends Controller
             ->where('category', 'fromstudent')
             ->get();
 
+        $newAssignments = Assignment::where('idMaterial', $material->id)
+            ->where('category', 'fromteacher')
+            ->get();
+
+        $hasNewAssignments = count($newAssignments) > 0;
+
         $currentSequence = $material ? $material->sequence : null;
 
         $currentProgres = Progres::where('idUser', $user)->where('idSubject', $id)->first();
@@ -161,13 +167,16 @@ class StudentController extends Controller
                     $currentProgres->status = '1';
                     $currentProgres->save();
                 } else {
-                    $currentProgres->status = '0';
+                    $currentProgres->status = $hasNewAssignments ? '0' : '1';
                     $currentProgres->save();
                 }
             }
 
-            if ($currentProgres->sequence == $subject->Material->count()) {
+            if ($currentProgres->sequence == $subject->Material->count() && $currentProgres->status == '1') {
                 $currentProgres->complete = '1';
+                $currentProgres->save();
+            } else {
+                $currentProgres->complete = '0';
                 $currentProgres->save();
             }
 
@@ -258,14 +267,45 @@ class StudentController extends Controller
 
         return redirect('/student/materials/' . $subjects->id . '?sequence=' . $materials->sequence);
     }
+    // public function destroySubmission($id)
+    // {
+    //     $submission = Assignment::findOrFail($id);
+
+    //     File::delete(public_path('attachment/submission/' . $submission->attachment));
+
+    //     $submission->delete();
+
+    //     return redirect()->back();
+    // }
+
     public function destroySubmission($id)
     {
         $submission = Assignment::findOrFail($id);
 
+        $material = $submission->material;
         File::delete(public_path('attachment/submission/' . $submission->attachment));
-
         $submission->delete();
+
+        // update progres setelah penghapusan submission
+        $this->updateProgres($material);
 
         return redirect()->back();
     }
+
+    // Fungsi untuk mengupdate progres setelah submission dihapus
+    protected function updateProgres($material)
+    {
+        $user = Auth::user()->id;
+        $subject = $material->subject;
+
+        $currentProgres = Progres::where('idUser', $user)->where('idSubject', $subject->id)->first();
+
+        if ($currentProgres) {
+            $currentProgres->complete = '0';
+            $currentProgres->sequence = $material->sequence;
+
+            $currentProgres->save();
+        }
+    }
+
 }
