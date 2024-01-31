@@ -112,10 +112,18 @@
                             </p>
                         </div>
                         <div class="flex flex-col space-y-2 items-center justify-end">
-                            <button type="button" data-modal-target="enrollment-modal" data-modal-toggle="enrollment-modal"
-                                class=" text-white bg-cyan-500 hover:bg-cyan-600 focus:ring-4 focus:ring-cyan-300 font-medium rounded-md md:rounded-lg text-sm w-16 md:w-20  px-1 py-1 md:px-5 md:py-2 me-2 focus:outline-none  ">
-                                Enroll
-                            </button>
+                            @if ($subject->enrollment_key !== null)
+                                <button type="button" data-modal-target="enrollment-modal"
+                                    data-modal-toggle="enrollment-modal"
+                                    class=" text-white bg-cyan-500 hover:bg-cyan-600 focus:ring-4 focus:ring-cyan-300 font-medium rounded-md md:rounded-lg text-sm w-16 md:w-20  px-1 py-1 md:px-5 md:py-2 me-2 focus:outline-none  ">
+                                    Enroll
+                                </button>
+                            @else
+                                <button type="button" onclick="showAlert()"
+                                    class=" text-white bg-cyan-500 cursor-not-allowed font-medium rounded-md md:rounded-lg text-sm w-16 md:w-20  px-1 py-1 md:px-5 md:py-2 me-2 focus:outline-none  ">
+                                    Enroll
+                                </button>
+                            @endif
                         </div>
                         <!-- Main modal -->
                         <div id="enrollment-modal" tabindex="-1" aria-hidden="true"
@@ -192,6 +200,10 @@
             var baseUrl = '/student/materials/';
             var materialUrl = baseUrl + idSubject + '?sequence=' + progres;
             window.location.href = materialUrl;
+        }
+
+        function showAlert() {
+            alert("Enrollment Key belum di-set oleh guru");
         }
     </script>
 @endsection

@@ -88,6 +88,7 @@ class StudentController extends Controller
         $user = Auth::user();
 
         $enrollmentkeyStudent = $request->input('enrollment_key');
+
         $subject = Subject::where('enrollment_key', $enrollmentkeyStudent)->first();
 
         if (!$subject) {
