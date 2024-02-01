@@ -20,7 +20,7 @@
                             <h1 class=" text-center font-medium text-3xl">{{ $materials->name }}</h1>
                             <hr class="mt-2 border-cyan-500">
                             <p class="mt-2 text-justify">
-                                {{ $materials->content }}
+                                {!! $materials->content !!}
                             </p>
                         </div>
                     </div>

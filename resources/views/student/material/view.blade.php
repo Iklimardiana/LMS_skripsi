@@ -242,12 +242,21 @@
                         </a>
                     @endif
                     <div class="flex flex-col min-h-80">
-                        <div class="h-auto p-2 rounded-sm bg-white border border-cyan-500 mb-2">
+                        <div id="content" class="h-auto p-2 rounded-sm bg-white border border-cyan-500 mb-2">
                             <h1 class=" text-center font-medium text-3xl">{{ $currentMaterial->name }}</h1>
                             <hr class="mt-2 border-cyan-500">
-                            <p class="mt-2 text-justify">
-                                {{ $currentMaterial->content }}
-                            </p>
+                            <div class="mt-2 text-justify">
+                                {!! $convertedContent !!}
+                            </div>
+                            {{-- @if ($containsImageAndCaption)
+                                <div class="mt-2 text-center">
+                                    {!! $convertedContent !!}
+                                </div>
+                            @else
+                                <div class="mt-2 text-justify">
+                                    {!! $convertedContent !!}
+                                </div>
+                            @endif --}}
                         </div>
                     </div>
                 </div>

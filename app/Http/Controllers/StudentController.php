@@ -123,6 +123,12 @@ class StudentController extends Controller
             $attachment = Assignment::where('idMaterial', $material->id)
                 ->where('category', 'fromteacher')
                 ->get();
+
+            // Konversi tag OEmbed ke tag iframe
+            $convertedContent = $this->convertOEmbedToIframe($material->content);
+            // $containsImageAndCaption = $this->containsImageAndCaption($convertedContent);
+            $containsImageAndCaption = $this->containsImageAndCaption($convertedContent);
+            $materialContent = $this->centerImages($convertedContent, $containsImageAndCaption);
         } else {
             return redirect('/student/subject')->with('error', 'Belum ada modul. Mohon untuk menunggu, Anda dapat mengakses mata pelajaran lain terlebih dahulu');
         }
@@ -194,8 +200,45 @@ class StudentController extends Controller
             }
             $currentProgres->save();
         }
-        return view('student.material.view')->with(compact('currentProgres', 'material', 'subject', 'currentSequence', 'attachment', 'submission'));
+        return view('student.material.view')->with(compact('currentProgres', 'convertedContent', 'material', 'subject', 'currentSequence', 'attachment', 'submission', 'containsImageAndCaption', 'materialContent'));
     }
+    private function convertOEmbedToIframe($content)
+    {
+        // Lakukan konversi sesuai kebutuhan
+        // Contoh: Mengganti tag OEmbed YouTube dengan tag iframe
+        $convertedContent = preg_replace('/<oembed[^>]*url="https:\/\/www.youtube.com\/watch\?v=([^"]+)"[^>]*><\/oembed>/i', '<iframe class="w-full" src="https://www.youtube.com/embed/$1" width="560" height="315" frameborder="0" allowfullscreen></iframe>', $content);
+
+        return $convertedContent;
+    }
+
+    protected function containsImageAndCaption($content)
+    {
+        // Memeriksa apakah konten berisi gambar dan caption
+        return preg_match('/<figure class="image">.*?<\/figure>/', $content) || preg_match('/<figcaption>.*?<\/figcaption>/', $content);
+    }
+
+    protected function centerImages($content, $containsImageAndCaption)
+    {
+        // if ($containsImageAndCaption) {
+        //     // Memusatkan gambar dan caption, tapi tidak mempengaruhi teks lainnya
+        //     // $content = preg_replace('/<figure class="image">(.*?)<\/figure>/', '<div class="text-center">$0</div>', $content);
+
+
+        //     return $content;
+        // }
+        if ($containsImageAndCaption) {
+            // Memusatkan gambar dan caption, tapi tidak mempengaruhi teks lainnya
+            $content = preg_replace_callback('/<figure class="image">(.*?)<\/figure>/', function ($matches) {
+                // Memusatkan gambar dan caption dengan menambahkan wrapper div
+                return '<div class="flex flex-col items-center justify-center">' . $matches[0] . '</div>';
+            }, $content);
+        }
+
+        return $content;
+    }
+
+
+
     public function createSubmission($id)
     {
         $material = Material::findOrFail($id);

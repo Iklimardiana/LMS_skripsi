@@ -104,17 +104,20 @@
         </div>
     </div>
     <script>
-        ClassicEditor
-            .create(document.querySelector('#content'), {
-                ckfinder: {
-                    uploadUrl: '{{ route('ckeditor.upload') . '?_token=' . csrf_token() }}'
-                }
-            })
-            .then(content => {
-                console.log(content);
-            })
-            .catch(error => {
-                console.error(error);
-            });
+        // ClassicEditor
+        //     .create(document.querySelector('#content'), {
+        //         ckfinder: {
+        //             uploadUrl: '{{ route('ckeditor.upload') . '?_token=' . csrf_token() }}'
+        //         },
+        //         mediaEmbed: {
+        //             previewsInData: true
+        //         }
+        //     })
+        //     .then(content => {
+        //         console.log(content);
+        //     })
+        //     .catch(error => {
+        //         console.error(error);
+        //     });
     </script>
 @endsection
