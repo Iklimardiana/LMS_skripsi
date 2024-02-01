@@ -188,42 +188,6 @@ class TeacherController extends Controller
         return view('teacher.material.create', compact('subjects'));
     }
 
-    // public function storeMaterial(Request $request, $idSubject)
-    // {
-    //     $request->validate([
-    //         'sequence' => 'required|numeric',
-    //         'name' => 'required',
-    //         'content' => 'required'
-    //     ], [
-    //         'sequence.required' => 'Urutan materi harus diisi',
-    //         'sequence.numeric' => 'urutan materi harus berupa angka',
-    //         'name.required' => 'Judul materi harus diisi',
-    //         'content.required' => 'Konten materi harus diisi'
-    //     ]);
-
-    //     $newSequence = $request->sequence;
-
-    //     $existingMaterial = Material::where('idSubject', $idSubject)
-    //         ->where('sequence', $newSequence)->first();
-
-    //     if ($existingMaterial) {
-    //         Material::where('idSubject', $idSubject)
-    //             ->where('sequence', '>=', $newSequence)
-    //             ->increment('sequence');
-    //     }
-
-    //     $materials = new Material;
-
-    //     $materials->name = $request->name;
-    //     $materials->content = $request->input('content');
-    //     $materials->sequence = $request->sequence;
-    //     $materials->idSubject = $idSubject;
-
-    //     $materials->save();
-
-    //     return redirect('/teacher/materials/' . $materials->idSubject);
-    // }
-
     public function storeMaterial(Request $request, $idSubject)
     {
         $request->validate([
@@ -257,15 +221,11 @@ class TeacherController extends Controller
 
         $materials->save();
 
-        // Ambil deskripsi dari formulir
         $description = $request->input('content');
 
-        // Ambil URL gambar yang diunggah tetapi tidak digunakan dari sesi
         $uploadedImages = session('uploaded_images', []);
 
-        // Loop melalui URL gambar yang diunggah
         foreach ($uploadedImages as $imageUrl) {
-            // Jika URL tidak ditemukan dalam deskripsi, hapus gambar dari storage
             if (strpos($description, $imageUrl) === false) {
                 $fileName = basename($imageUrl);
                 $filePath = public_path('images/media/' . $fileName);
@@ -279,7 +239,21 @@ class TeacherController extends Controller
         // Hapus sesi setelah selesai
         session()->forget('uploaded_images');
 
-        return redirect('/teacher/materials/' . $materials->idSubject);
+        // Ambil urutan yang ada setelah penyimpanan
+        $existingSequencesAfterSave = Material::where('idSubject', $idSubject)
+            ->orderBy('sequence')
+            ->pluck('sequence')
+            ->toArray();
+
+        // Bandingkan urutan sebelum dan setelah penyimpanan
+        $missingSequences = array_diff(range(1, max($existingSequencesAfterSave)), $existingSequencesAfterSave);
+
+        if (!empty($missingSequences)) {
+            $errorMessage = 'Materi tersimpan, namun urutan ' . implode(', ', $missingSequences) . ' terlewat! Mohon untuk edit terlebih dahulu urutan materi dengan benar!';
+            return redirect('/teacher/materials/' . $idSubject)->with('messageError', $errorMessage);
+        } else {
+            return redirect('/teacher/materials/' . $materials->idSubject);
+        }
     }
 
 
@@ -350,7 +324,21 @@ class TeacherController extends Controller
 
         session()->forget('uploaded_images');
 
-        return redirect('/teacher/materials/' . $materials->idSubject);
+        // Ambil urutan yang ada setelah penyimpanan
+        $existingSequencesAfterSave = Material::where('idSubject', $materials->idSubject)
+            ->orderBy('sequence')
+            ->pluck('sequence')
+            ->toArray();
+
+        // Bandingkan urutan sebelum dan setelah penyimpanan
+        $missingSequences = array_diff(range(1, max($existingSequencesAfterSave)), $existingSequencesAfterSave);
+
+        if (!empty($missingSequences)) {
+            $errorMessage = 'Materi tersimpan, namun urutan ' . implode(', ', $missingSequences) . ' terlewat! Mohon untuk edit terlebih dahulu urutan materi dengan benar!';
+            return redirect('/teacher/materials/' . $materials->idSubject)->with('messageError', $errorMessage);
+        } else {
+            return redirect('/teacher/materials/' . $materials->idSubject);
+        }
     }
 
     /**

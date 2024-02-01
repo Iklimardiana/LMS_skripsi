@@ -15,7 +15,7 @@ class Material extends Model
     protected $fillable = [
         'name',
         'content',
-        'sequences',
+        'sequence',
         'idSubject',
     ];
 

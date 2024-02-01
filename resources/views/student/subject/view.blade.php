@@ -59,11 +59,11 @@
                 @forelse ($enrollment as $enroll)
                     @php
                         // Dapatkan id mata pelajaran dan user
-                        $subjectId = $enroll->idSubject;
-                        $userId = Auth::user()->id;
+                        // $subjectId = $enroll->idSubject;
+                        // $userId = Auth::user()->id;
 
                         // Temukan progres yang sesuai berdasarkan id mata pelajaran dan id user
-                        $currentProgres = $progres->where('idSubject', $subjectId)->first();
+                        $currentProgres = $progres->where('idSubject', $enroll->idSubject)->first();
 
                         // Tentukan sequence yang akan digunakan
                         $sequence = $currentProgres ? $currentProgres->sequence : 1;
@@ -82,7 +82,7 @@
                         </div>
                         <div class="flex flex-col space-y-2 items-center justify-end">
                             <button type="button"
-                                onclick="redirectToMaterialStudent({{ $subjectId }}, {{ $sequence }})"
+                                onclick="redirectToMaterialStudent({{ $enroll->idSubject }}, {{ $sequence }})"
                                 class=" text-white bg-cyan-500 hover:bg-cyan-600 focus:ring-4 focus:ring-cyan-300 font-medium rounded-md md:rounded-lg text-sm w-16 md:w-20  px-1 py-1 md:px-5 md:py-2 me-2 focus:outline-none  ">
                                 Materi
                             </button>

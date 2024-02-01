@@ -117,10 +117,8 @@ class StudentController extends Controller
     {
         $user = Auth::user()->id;
         $sequence = $request->input('sequence', 1);
-
         $subject = Subject::findOrFail($id);
         $material = $subject->Material()->where('sequence', $sequence)->first();
-
         if ($material) {
             $attachment = Assignment::where('idMaterial', $material->id)
                 ->where('category', 'fromteacher')
@@ -128,34 +126,24 @@ class StudentController extends Controller
         } else {
             return redirect('/student/subject')->with('error', 'Belum ada modul. Mohon untuk menunggu, Anda dapat mengakses mata pelajaran lain terlebih dahulu');
         }
-
         $submission = Assignment::where('idUser', $user)
             ->where('category', 'fromstudent')
             ->get();
-
         $newAssignments = Assignment::where('idMaterial', $material->id)
             ->where('category', 'fromteacher')
             ->get();
-
         $hasNewAssignments = count($newAssignments) > 0;
-
         $currentSequence = $material ? $material->sequence : null;
-
         $currentProgres = Progres::where('idUser', $user)->where('idSubject', $id)->first();
-
-
         if ($currentProgres) {
             if ($currentProgres->sequence < $currentSequence)
                 $currentProgres->sequence = $currentSequence;
-
             $progres = Progres::where('idUser', $user)
                 ->where('idSubject', $id)->first();
-
             $currentAttachment = Assignment::where('idMaterial', $material->id)
                 ->where('idSubject', $id)
                 ->where('category', 'fromteacher')
                 ->first();
-
             if ($currentAttachment == null) {
                 $progres->status = '1';
                 $progres->save();
@@ -172,7 +160,6 @@ class StudentController extends Controller
                     $currentProgres->save();
                 }
             }
-
             if ($currentProgres->sequence == $subject->Material->count() && $currentProgres->status == '1') {
                 $currentProgres->complete = '1';
                 $currentProgres->save();
@@ -180,7 +167,6 @@ class StudentController extends Controller
                 $currentProgres->complete = '0';
                 $currentProgres->save();
             }
-
             $currentProgres->save();
         } else {
             $currentAttachment = Assignment::where('idMaterial', $material->id)
@@ -188,7 +174,6 @@ class StudentController extends Controller
                 ->where('category', 'fromteacher')
                 ->first();
             $currentProgres = new Progres;
-
             $currentProgres->idUSer = $user;
             $currentProgres->idSubject = $id;
             $currentProgres->sequence = 1;
@@ -207,10 +192,8 @@ class StudentController extends Controller
                     $currentProgres->save();
                 }
             }
-
             $currentProgres->save();
         }
-
         return view('student.material.view')->with(compact('currentProgres', 'material', 'subject', 'currentSequence', 'attachment', 'submission'));
     }
     public function createSubmission($id)
