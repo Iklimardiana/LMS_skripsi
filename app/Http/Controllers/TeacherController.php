@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Assignment;
 use App\Models\Material;
+use App\Models\Progres;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Subject;
@@ -67,12 +68,13 @@ class TeacherController extends Controller
 
     public function students($id)
     {
-        $subjects = Subject::where('id', $id)->first();
-        $enrollment = Enrollment::where('idSubject', $id)->paginate(10);
+        $subject = Subject::where('id', $id)->first();
+        $enrollment = Enrollment::where('idSubject', $id)->paginate(1);
         $iteration = $enrollment->firstItem();
         $students = $enrollment->pluck('user')->where('role', 'student');
+        $progres = Progres::where('idSubject', $id)->first();
 
-        return view('teacher.student.view', compact('subjects', 'iteration', 'students', 'enrollment'));
+        return view('teacher.student.view', compact('subject', 'progres', 'iteration', 'students', 'enrollment'));
     }
 
     public function materials($id)

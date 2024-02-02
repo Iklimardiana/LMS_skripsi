@@ -15,7 +15,7 @@
                 </a>
             </div>
             <div class="mb-2">
-                <p class="text-center text-gray-900 font-medium text-xl">Daftar Siswa {{ $subjects->name }}</p>
+                <p class="text-center text-gray-900 font-medium text-xl">Daftar Siswa {{ $subject->name }}</p>
             </div>
             <div class="relative overflow-x-auto shadow-md sm:rounded-t-lg">
                 @if (!empty($students))
@@ -43,7 +43,29 @@
                                         {{ $enroll->user->first_name . ' ' . $enroll->user->last_name }}
                                     </td>
                                     <td class="px-6 py-1">
-                                        80%(masih statis)
+                                        @php
+                                            $progresUser = $progres->where('idUser', $enroll->idUser)->first();
+                                        @endphp
+                                        @if ($progresUser ? $progresUser->sequence : '')
+                                            @if ($progresUser->sequence == $subject->Material->count())
+                                                @if ($progresUser->status == 0)
+                                                    {{ round(($progresUser->sequence / $subject->Material->count()) * 100) - 1 }}
+                                                    %
+                                                @else
+                                                    Complete (100%)
+                                                @endif
+                                            @else
+                                                @if ($progresUser->status == 0)
+                                                    {{ round(($progresUser->sequence / $subject->Material->count()) * 100) - 1 }}
+                                                    %
+                                                @else
+                                                    {{ round(($progresUser->sequence / $subject->Material->count()) * 100) }}
+                                                    %
+                                                @endif
+                                            @endif
+                                        @else
+                                            0%
+                                        @endif
                                     </td>
                                 </tr>
                             @empty
@@ -61,6 +83,9 @@
                 @else
                     <p class="text-center text-gray-900 font-medium text-lg">Tidak Ada Daftar Siswa</p>
                 @endif
+            </div>
+            <div class="mt-3">
+                {{ $enrollment->links('pagination::tailwind') }}
             </div>
         </div>
     </div>
