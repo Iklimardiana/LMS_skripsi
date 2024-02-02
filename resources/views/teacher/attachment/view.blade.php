@@ -256,6 +256,9 @@
                     </tbody>
                 </table>
             </div>
+            <div class="mt-3">
+                {{ $attachments->links('pagination::tailwind') }}
+            </div>
         </div>
     </div>
     <script>

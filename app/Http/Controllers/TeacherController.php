@@ -9,10 +9,9 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Subject;
 use App\Models\Enrollment;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 
 class TeacherController extends Controller
@@ -31,11 +30,9 @@ class TeacherController extends Controller
             $enrollments = Enrollment::where('idSubject', $subject->id)->get();
 
             foreach ($enrollments as $enrollment) {
-                // Use the students() relationship to get the students enrolled in the subject
                 $enrollmentStudents = $enrollment->user()->where('role', 'student')->get();
 
                 if ($enrollmentStudents->isNotEmpty()) {
-                    // Store students in an array using subject name as key
                     $students[$subject->name][] = $enrollmentStudents;
                     $totalStudents += $enrollmentStudents->count();
                 }
@@ -48,8 +45,11 @@ class TeacherController extends Controller
     public function subjects()
     {
         $teacherId = Auth::user()->id;
-
         $subjects = Subject::where('idTeacher', $teacherId)->get();
+
+        if (request('keyword')) {
+            $subjects = Subject::where('idTeacher', $teacherId)->where('name', 'LIKE', '%' . request('keyword') . '%')->get();
+        }
 
         if (!empty($subjects)) {
             foreach ($subjects as $subject) {
@@ -62,14 +62,27 @@ class TeacherController extends Controller
         } else {
             $subjects = [];
         }
-
         return view("teacher.subject.view", compact('subjects'));
     }
 
     public function students($id)
     {
         $subject = Subject::where('id', $id)->first();
-        $enrollment = Enrollment::where('idSubject', $id)->paginate(1);
+        $enrollmentQuery = Enrollment::where('idSubject', $id);
+
+        if (request('keyword')) {
+            $enrollmentQuery->whereHas('user', function ($query) {
+                $keyword = request('keyword');
+                $query->where(function ($subquery) use ($keyword) {
+                    $subquery->where('first_name', 'LIKE', '%' . $keyword . '%')
+                        ->orWhere('last_name', 'LIKE', '%' . $keyword . '%')
+                        ->orWhere(DB::raw("CONCAT(first_name, ' ', last_name)"), 'LIKE', '%' . $keyword . '%')
+                        ->where('role', 'student');
+                });
+            });
+        }
+
+        $enrollment = $enrollmentQuery->paginate(10);
         $iteration = $enrollment->firstItem();
         $students = $enrollment->pluck('user')->where('role', 'student');
         $progres = Progres::where('idSubject', $id)->first();
@@ -79,8 +92,17 @@ class TeacherController extends Controller
 
     public function materials($id)
     {
-        $materials = Material::where('idSubject', $id)
-            ->orderBy('sequence', 'ASC')->paginate(7);
+        $materialsQuery = Material::where('idSubject', $id)->orderBy('sequence', 'ASC');
+
+        if (request()->has('keyword')) {
+            $keyword = request('keyword');
+            $materialsQuery->where(function ($query) use ($keyword) {
+                $query->where('name', 'LIKE', '%' . $keyword . '%')
+                    ->orwhere('sequence', 'LIKE', '%' . $keyword . '%');
+            });
+        }
+
+        $materials = $materialsQuery->paginate(10);
         $iteration = $materials->firstItem();
         $subjects = Subject::find($id);
         $assignment = Assignment::where('idSubject', $id)
@@ -88,6 +110,19 @@ class TeacherController extends Controller
 
         return view('teacher.material.view', compact('materials', 'subjects', 'assignment', 'iteration'));
     }
+
+
+    // public function materials($id)
+    // {
+    //     $materials = Material::where('idSubject', $id)
+    //         ->orderBy('sequence', 'ASC')->paginate(10);
+    //     $iteration = $materials->firstItem();
+    //     $subjects = Subject::find($id);
+    //     $assignment = Assignment::where('idSubject', $id)
+    //         ->where('category', 'fromteacher')->get();
+
+    //     return view('teacher.material.view', compact('materials', 'subjects', 'assignment', 'iteration'));
+    // }
 
     public function settingSubject(Request $request, $id)
     {
@@ -437,7 +472,7 @@ class TeacherController extends Controller
     }
     public function attachments($id)
     {
-        $attachments = Assignment::where('idMaterial', $id)->where('category', 'fromstudent')->paginate(8);
+        $attachments = Assignment::where('idMaterial', $id)->where('category', 'fromstudent')->paginate(10);
         $iteration = $attachments->firstItem();
         $material = Material::findOrFail($id);
 
