@@ -126,7 +126,6 @@ class StudentController extends Controller
 
             // Konversi tag OEmbed ke tag iframe
             $convertedContent = $this->convertOEmbedToIframe($material->content);
-            // $containsImageAndCaption = $this->containsImageAndCaption($convertedContent);
             $containsImageAndCaption = $this->containsImageAndCaption($convertedContent);
             $materialContent = $this->centerImages($convertedContent, $containsImageAndCaption);
         } else {
@@ -166,7 +165,16 @@ class StudentController extends Controller
                     $currentProgres->save();
                 }
             }
-            if ($currentProgres->sequence == $subject->Material->count() && $currentProgres->status == '1') {
+            if ($currentProgres->sequence > $subject->Material->count()) {
+                $currentProgres->sequence = $subject->Material->count();
+                if ($currentProgres->status == '1') {
+                    $currentProgres->complete = '1';
+                    $currentProgres->save();
+                } else {
+                    $currentProgres->complete = '0';
+                    $currentProgres->save();
+                }
+            } elseif ($currentProgres->sequence == $subject->Material->count() && $currentProgres->status == '1') {
                 $currentProgres->complete = '1';
                 $currentProgres->save();
             } else {
@@ -204,41 +212,34 @@ class StudentController extends Controller
     }
     private function convertOEmbedToIframe($content)
     {
-        // Lakukan konversi sesuai kebutuhan
-        // Contoh: Mengganti tag OEmbed YouTube dengan tag iframe
         $convertedContent = preg_replace('/<oembed[^>]*url="https:\/\/www.youtube.com\/watch\?v=([^"]+)"[^>]*><\/oembed>/i', '<iframe class="w-full" src="https://www.youtube.com/embed/$1" width="560" height="315" frameborder="0" allowfullscreen></iframe>', $content);
+
+        if ($this->containsImageAndCaption($convertedContent)) {
+            $convertedContent = $this->centerImages($convertedContent, true);
+        }
 
         return $convertedContent;
     }
 
     protected function containsImageAndCaption($content)
     {
-        // Memeriksa apakah konten berisi gambar dan caption
-        return preg_match('/<figure class="image">.*?<\/figure>/', $content) || preg_match('/<figcaption>.*?<\/figcaption>/', $content);
+        return preg_match('/<figure class="image">.*?<\/figure>/', $content) || preg_match('/<figure class="image image_resized">.*?<\/figure>/', $content) || preg_match('/<figcaption>.*?<\/figcaption>/', $content);
     }
 
     protected function centerImages($content, $containsImageAndCaption)
     {
-        // if ($containsImageAndCaption) {
-        //     // Memusatkan gambar dan caption, tapi tidak mempengaruhi teks lainnya
-        //     // $content = preg_replace('/<figure class="image">(.*?)<\/figure>/', '<div class="text-center">$0</div>', $content);
-
-
-        //     return $content;
-        // }
         if ($containsImageAndCaption) {
-            // Memusatkan gambar dan caption, tapi tidak mempengaruhi teks lainnya
-            $content = preg_replace_callback('/<figure class="image">(.*?)<\/figure>/', function ($matches) {
-                // Memusatkan gambar dan caption dengan menambahkan wrapper div
-                return '<div class="flex flex-col items-center justify-center">' . $matches[0] . '</div>';
-            }, $content);
+            $content = preg_replace('/<figure class="image"><img(.*?)<\/figure>/', '<figure class="image"><div class="w-full flex flex-col items-center justify-center text-center"><img$1</div></figure>', $content);
+
+            $content = preg_replace('/<figure class="(image image_resized)"(?: style="(.*?)")?><img(.*?)<\/figure>/', '<div class="w-full flex flex-col items-center justify-center text-center"><figure class="$1 flex flex-col items-center justify-center" style="$2"><img$3</figure></div>', $content);
+
+            $content = preg_replace('/<figcaption>(.*?)<\/figcaption>/', '<figcaption class="text-center">$1</figcaption>', $content);
+
+            return $content;
         }
 
         return $content;
     }
-
-
-
     public function createSubmission($id)
     {
         $material = Material::findOrFail($id);
@@ -302,13 +303,10 @@ class StudentController extends Controller
         File::delete(public_path('attachment/submission/' . $submission->attachment));
         $submission->delete();
 
-        // update progres setelah penghapusan submission
         $this->updateProgres($material);
 
         return redirect()->back();
     }
-
-    // Fungsi untuk mengupdate progres setelah submission dihapus
     protected function updateProgres($material)
     {
         $user = Auth::user()->id;

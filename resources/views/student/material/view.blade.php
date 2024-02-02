@@ -78,7 +78,7 @@
                 <div
                     class="w-full flex flex-col md:flex-row px-5 py-4 gap-2 border-2 border-gray-200 border-dashed h-auto mb-20 rounded-lg min-h-100">
                     <div
-                        class="overflow-x-auto h-auto md:min-w-80 z-30 p-2 rounded-sm bg-cyan-50 border border-cyan-500 text-start">
+                        class="overflow-x-auto h-auto md:min-w-80 z-30 p-2 rounded-lg bg-cyan-50 border border-cyan-500 text-start">
                         <a href="/student/subject/">
                             <svg class="w-6 h-6 text-cyan-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                 fill="none" viewBox="0 0 14 10">
@@ -231,7 +231,7 @@
                 @php
                     $currentMaterial = $subject->material->where('sequence', $currentSequence)->first();
                 @endphp
-                <div class="flex flex-col w-full border border-cyan-500 p-3 bg-cyan-50 mt-2 md:mt-0 space-y-2">
+                <div class="flex flex-col w-full rounded-lg border border-cyan-500 p-3 bg-cyan-50 mt-2 md:mt-0 space-y-2">
                     @if ($attachment->where('idMaterial', $currentMaterialId)->where('category', 'fromteacher')->isEmpty())
                         <a href="/student/subject/">
                             <svg class="w-6 h-6 text-cyan-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -242,59 +242,49 @@
                         </a>
                     @endif
                     <div class="flex flex-col min-h-80">
-                        <div id="content" class="h-auto p-2 rounded-sm bg-white border border-cyan-500 mb-2">
+                        <div id="content" class="h-auto p-2 rounded-lg bg-white border border-cyan-500 mb-2">
                             <h1 class=" text-center font-medium text-3xl">{{ $currentMaterial->name }}</h1>
                             <hr class="mt-2 border-cyan-500">
                             <div class="mt-2 text-justify">
                                 {!! $convertedContent !!}
                             </div>
-                            {{-- @if ($containsImageAndCaption)
-                                <div class="mt-2 text-center">
-                                    {!! $convertedContent !!}
-                                </div>
-                            @else
-                                <div class="mt-2 text-justify">
-                                    {!! $convertedContent !!}
-                                </div>
-                            @endif --}}
                         </div>
                     </div>
-                </div>
-                <div class="mt-4 md:mt-8 mb-2">
-                    <div class="flex justify-between">
-                        <div>
-                            @if ($currentSequence > 1)
-                                <a href="{{ route('learning-page', ['id' => $subject->id, 'sequence' => $currentSequence - 1]) }}"
-                                    class="border bg-cyan-500 hover:bg-cyan-700 text-white rounded-md py-2 px-5">Kembali</a>
-                            @endif
-                        </div>
-                        <div class="text-right">
-                            @if ($currentSequence < $subject->material->count())
-                                @if ($currentProgres->status == '1')
-                                    <a href="{{ route('learning-page', ['id' => $subject->id, 'sequence' => $currentSequence + 1]) }}"
-                                        class="border bg-cyan-500 hover:bg-cyan-700 text-white rounded-md p-2">Selanjutnya</a>
-                                @elseif($currentProgres->status == '0')
-                                    <a class="border bg-cyan-500 cursor-not-allowed text-white rounded-md p-2"
-                                        onclick="showAlert()" disabled>Selanjutnya</a>
+                    <div class="mt-4 md:mt-8 mb-2">
+                        <div class="flex justify-between">
+                            <div>
+                                @if ($currentSequence > 1)
+                                    <a href="{{ route('learning-page', ['id' => $subject->id, 'sequence' => $currentSequence - 1]) }}"
+                                        class="border bg-cyan-500 hover:bg-cyan-700 text-white rounded-md py-2 px-5">Kembali</a>
                                 @endif
-                            @elseif($currentSequence == $subject->material->count())
-                                @if ($currentProgres->status == '1')
-                                    <a href="/student/subject"
-                                        class="border bg-cyan-500 hover:bg-cyan-700 text-white rounded-md py-2 px-5">Kembali
-                                        ke
-                                        Dashboard</a>
-                                @elseif($currentProgres->status == '0')
-                                    <a href=""
-                                        class="border bg-cyan-500 cursor-not-allowed text-white rounded-md py-2 px-5"
-                                        disabled>Kembali ke
-                                        Dashboard</a>
+                            </div>
+                            <div class="text-right">
+                                @if ($currentSequence < $subject->material->count())
+                                    @if ($currentProgres->status == '1')
+                                        <a href="{{ route('learning-page', ['id' => $subject->id, 'sequence' => $currentSequence + 1]) }}"
+                                            class="border bg-cyan-500 hover:bg-cyan-700 text-white rounded-md p-2">Selanjutnya</a>
+                                    @elseif($currentProgres->status == '0')
+                                        <a class="border bg-cyan-500 cursor-not-allowed text-white rounded-md p-2"
+                                            onclick="showAlert()" disabled>Selanjutnya</a>
+                                    @endif
+                                @elseif($currentSequence == $subject->material->count())
+                                    @if ($currentProgres->status == '1')
+                                        <a href="/student/subject"
+                                            class="border bg-cyan-500 hover:bg-cyan-700 text-white rounded-md py-2 px-5">Kembali
+                                            ke
+                                            Dashboard</a>
+                                    @elseif($currentProgres->status == '0')
+                                        <a href=""
+                                            class="border bg-cyan-500 cursor-not-allowed text-white rounded-md py-2 px-5"
+                                            disabled>Kembali ke
+                                            Dashboard</a>
+                                    @endif
                                 @endif
-                            @endif
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
         </div>
     </section>
     <script>
