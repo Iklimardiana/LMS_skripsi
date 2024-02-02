@@ -11,7 +11,7 @@
                 </div>
             </div>
             <div class="sm:rounded-lg bg-cyan-50 p-4 border border-cyan-500">
-                <form action="/teacher/materials/{{ $subjects->id }}" method="post" class="md:w-1/2 w-full">
+                <form action="/teacher/materials/{{ $subjects->id }}" method="post" class="md:w-3/4 w-full">
                     @csrf
                     <div class="mt-5 mb-3 flex flex-col" id="">
                         <label for="title" class="font-medium">Judul Materi</label>
@@ -55,7 +55,7 @@
                         <label for="content" class="font-medium">Konten Materi</label>
                         <textarea
                             class="flex text-sm text-gray-900 border border-cyan-400 rounded-md bg-gray-50 focus:outline-none file:bg-cyan-500 w-full md:min-w-96 mt-2 focus:ring-cyan-500 focus:border-cyan-500"
-                            name="content" id="content" cols="30" rows="10"></textarea>
+                            name="content" id="editor" cols="30" rows="10"></textarea>
                         @error('content')
                             <div id="alert-2" class="flex items-center px-4 py-1 mb-4 text-red-800 rounded-lg bg-red-50"
                                 role="alert">
@@ -103,21 +103,28 @@
             </div>
         </div>
     </div>
+    {{-- <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
     <script>
-        // ClassicEditor
-        //     .create(document.querySelector('#content'), {
-        //         ckfinder: {
-        //             uploadUrl: '{{ route('ckeditor.upload') . '?_token=' . csrf_token() }}'
-        //         },
-        //         mediaEmbed: {
-        //             previewsInData: true
-        //         }
-        //     })
-        //     .then(content => {
-        //         console.log(content);
-        //     })
-        //     .catch(error => {
-        //         console.error(error);
-        //     });
+        CKEDITOR.replace('editor', {
+            filebrowserUploadUrl: "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}",
+            filebrowserUploadMethod: 'form'
+        });
+    </script> --}}
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#editor'), {
+                ckfinder: {
+                    uploadUrl: '{{ route('ckeditor.upload') . '?_token=' . csrf_token() }}'
+                },
+                mediaEmbed: {
+                    previewsInData: true
+                }
+            })
+            .then(editor => {
+                console.log(editor);
+            })
+            .catch(error => {
+                console.error(error);
+            });
     </script>
 @endsection

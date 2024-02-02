@@ -259,8 +259,41 @@ class TeacherController extends Controller
 
     public function showMaterial($id)
     {
-        $materials = Material::findOrFail($id);
-        return view('teacher.material.show-detail', compact('materials'));
+        $material = Material::findOrFail($id);
+        $convertedContent = $this->convertOEmbedToIframe($material->content);
+        $containsImageAndCaption = $this->containsImageAndCaption($convertedContent);
+        $materialContent = $this->centerImages($convertedContent, $containsImageAndCaption);
+        return view('teacher.material.show-detail', compact('convertedContent', 'material'));
+    }
+    private function convertOEmbedToIframe($content)
+    {
+        $convertedContent = preg_replace('/<oembed[^>]*url="https:\/\/www.youtube.com\/watch\?v=([^"]+)"[^>]*><\/oembed>/i', '<iframe class="w-full" src="https://www.youtube.com/embed/$1" width="560" height="315" frameborder="0" allowfullscreen></iframe>', $content);
+
+        if ($this->containsImageAndCaption($convertedContent)) {
+            $convertedContent = $this->centerImages($convertedContent, true);
+        }
+
+        return $convertedContent;
+    }
+
+    protected function containsImageAndCaption($content)
+    {
+        return preg_match('/<figure class="image">.*?<\/figure>/', $content) || preg_match('/<figure class="image image_resized">.*?<\/figure>/', $content) || preg_match('/<figcaption>.*?<\/figcaption>/', $content);
+    }
+
+    protected function centerImages($content, $containsImageAndCaption)
+    {
+        if ($containsImageAndCaption) {
+            $content = preg_replace('/<figure class="image"><img(.*?)<\/figure>/', '<figure class="image"><div class="w-full flex flex-col items-center justify-center text-center"><img$1</div></figure>', $content);
+
+            $content = preg_replace('/<figure class="(image image_resized)"(?: style="(.*?)")?><img(.*?)<\/figure>/', '<div class="w-full flex flex-col items-center justify-center text-center"><figure class="$1 flex flex-col items-center justify-center" style="$2"><img$3</figure></div>', $content);
+
+            $content = preg_replace('/<figcaption>(.*?)<\/figcaption>/', '<figcaption class="text-center">$1</figcaption>', $content);
+
+            return $content;
+        }
+
+        return $content;
     }
 
     public function editMaterial($id)
@@ -377,8 +410,20 @@ class TeacherController extends Controller
         $this->deleteMaterialImages($materials->content);
 
         $materials->delete();
+        $existingSequencesAfterSave = Material::where('idSubject', $materials->idSubject)
+            ->orderBy('sequence')
+            ->pluck('sequence')
+            ->toArray();
 
-        return back();
+        // Bandingkan urutan sebelum dan setelah penyimpanan
+        $missingSequences = array_diff(range(1, max($existingSequencesAfterSave)), $existingSequencesAfterSave);
+
+        if (!empty($missingSequences)) {
+            $errorMessage = 'Materi terhapus, namun urutan ' . implode(', ', $missingSequences) . ' terlewat! Mohon untuk edit terlebih dahulu urutan materi dengan benar!';
+            return back()->with('messageError', $errorMessage);
+        } else {
+            return back();
+        }
     }
     private function deleteMaterialImages($content)
     {

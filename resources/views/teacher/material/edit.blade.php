@@ -11,7 +11,7 @@
                 </div>
             </div>
             <div class="sm:rounded-lg bg-cyan-50 p-4 border border-cyan-500">
-                <form action="/teacher/materials/{{ $materials->id }}" method="post" class="md:w-1/2 w-full">
+                <form action="/teacher/materials/{{ $materials->id }}" method="post" class="md:w-3/4 w-full">
                     @csrf
                     @method('PUT')
                     <div class="mt-5 mb-3 flex flex-col" id="">
