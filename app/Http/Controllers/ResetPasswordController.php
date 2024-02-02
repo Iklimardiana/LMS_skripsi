@@ -25,7 +25,7 @@ class ResetPasswordController extends Controller
             'website' => 'MyEdu',
             'datetime' => date('Y-m-d H:i:s'),
             'url' => request()->getHttpHost() . '/reset/' . $str,
-            'key' => $str
+            'key' => $str,
         ];
 
         $request->validate([
@@ -37,15 +37,8 @@ class ResetPasswordController extends Controller
 
         $user = User::where('email', $request->email)->exists();
 
-        $resetPassword = new ResetPassword();
-        $resetPassword->email = $request->email;
-        $resetPassword->key = $str;
-
-        $resetPassword->save();
-
         if ($user) {
             Mail::to($request->email)->send(new MailResetPassword($details));
-
             $resetPassword = new ResetPassword();
             $resetPassword->email = $request->email;
             $resetPassword->key = $str;
@@ -62,7 +55,6 @@ class ResetPasswordController extends Controller
         $keyCheck = ResetPassword::select('key')
             ->where('key', $key)
             ->exists();
-
         if ($keyCheck) {
             $resetPassword = ResetPassword::where('key', $key)->first();
             return view('auth.new_password', ['resetPassword' => $resetPassword]);
@@ -75,7 +67,11 @@ class ResetPasswordController extends Controller
     {
 
         $request->validate([
-            'password' => 'required',
+            'password' => 'required|string|min:8|confirmed',
+        ], [
+            'password.required' => 'Kolom Kata Sandi Harus Diisi',
+            'password.min' => 'Panjang Kata Sandi minimal 8 karakter',
+            'password.confirmed' => 'Konfirmasi Kata Sandi tidak cocok',
         ]);
 
         $user = User::where('email', $request->email)->first();
