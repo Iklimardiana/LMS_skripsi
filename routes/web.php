@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ExamController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
 use Illuminate\Support\Facades\Route;
@@ -49,7 +50,7 @@ Route::middleware('teacher')->group(function () {
     route::get('/teacher/materials/create/{idSubject}', [TeacherController::class, 'createMaterial']);
     route::get('/teacher/materials/{id}', [TeacherController::class, 'materials']);
     route::get('/teacher/materials/{id}/detail', [TeacherController::class, 'showMaterial']);
-    route::put('/teacher/materials/{idSubject}', [TeacherController::class, 'updateMaterial']);
+    route::put('/teacher/materials/{id}', [TeacherController::class, 'updateMaterial']);
     route::post('/teacher/materials/{idSubject}', [TeacherController::class, 'storeMaterial']);
     route::get('/teacher/materials/{id}/edit', [TeacherController::class, 'editMaterial']);
     route::delete('/teacher/materials/{idSubject}', [TeacherController::class, 'destroyMaterial']);
@@ -66,6 +67,12 @@ Route::middleware('teacher')->group(function () {
     // upload image from CKEditor
     Route::post('/upload', [TeacherController::class, 'uploadImage'])->name('ckeditor.upload');
     Route::post('/delete-ckeditor-image', [TeacherController::class, 'deleteCkeditorImage'])->name('ckeditor.deleteCkeditorImage');
+
+    Route::get('/teacher/exam/{idSubject}', [ExamController::class, 'exams']);
+    route::post('/teacher/exam/{idSubject}', [ExamController::class, 'storeExam']);
+    route::delete('/teacher/exam/{id}', [ExamController::class, 'destroyExam']);
+    route::put('/teacher/exam/{id}/update-status', [ExamController::class, 'updateStatus']);
+    route::put('/teacher/exam/{id}', [ExamController::class, 'updateExam']);
 });
 
 Route::middleware('student')->group(function () {
