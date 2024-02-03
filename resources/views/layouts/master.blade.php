@@ -23,6 +23,7 @@
         </section>
     </main>
     @include('partials.footer')
+    @stack('scripts')
     <script>
         function redirectToAddTeacher() {
             window.location.href = '/admin/teacher/create';
@@ -50,10 +51,6 @@
             var baseUrl = '/teacher/attachment/';
             var attachmentUrl = baseUrl + idMaterial
             window.location.href = attachmentUrl;
-        }
-
-        function redirectToExam() {
-            window.location.href = 'exam_list.html'
         }
 
         function redirectToStudent(subjectId) {
