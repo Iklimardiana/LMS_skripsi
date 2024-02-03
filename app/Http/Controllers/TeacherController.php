@@ -111,19 +111,6 @@ class TeacherController extends Controller
         return view('teacher.material.view', compact('materials', 'subjects', 'assignment', 'iteration'));
     }
 
-
-    // public function materials($id)
-    // {
-    //     $materials = Material::where('idSubject', $id)
-    //         ->orderBy('sequence', 'ASC')->paginate(10);
-    //     $iteration = $materials->firstItem();
-    //     $subjects = Subject::find($id);
-    //     $assignment = Assignment::where('idSubject', $id)
-    //         ->where('category', 'fromteacher')->get();
-
-    //     return view('teacher.material.view', compact('materials', 'subjects', 'assignment', 'iteration'));
-    // }
-
     public function settingSubject(Request $request, $id)
     {
         $request->validate([
