@@ -69,7 +69,7 @@ Route::middleware('teacher')->group(function () {
 });
 
 Route::middleware('student')->group(function () {
-    Route::get('/student/subject', [StudentController::class, 'subjects']);
+    Route::get('/student/subject', [StudentController::class, 'subjects'])->name('subjects');
 
     Route::get('/student/profile/{id}/edit', [StudentController::class, 'editProfile']);
     Route::put('/student/profile/{id}', [StudentController::class, 'updateProfile']);

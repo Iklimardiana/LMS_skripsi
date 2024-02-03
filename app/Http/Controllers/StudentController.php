@@ -17,9 +17,23 @@ class StudentController extends Controller
     public function subjects()
     {
         $id = Auth::user()->id;
-        $enrollment = Enrollment::where('idUser', $id)->get();
+        $enrollmentQuery = Enrollment::where('idUser', $id);
         $enrolledSubjectIds = Enrollment::where('idUser', $id)->pluck('idSubject')->toArray();
-        $subjects = Subject::whereNotIn('id', $enrolledSubjectIds)->get();
+        $unenrolledSubjectsQuery = Subject::whereNotIn('id', $enrolledSubjectIds);
+
+        if (request('enrolled_keyword')) {
+            $enrollmentQuery->whereHas('subject', function ($query) {
+                $keyword = request('enrolled_keyword');
+                $query->where(function ($subquery) use ($keyword) {
+                    $subquery->where('name', 'LIKE', '%' . $keyword . '%');
+                });
+            });
+        } elseif (request('unenrolled_keyword')) {
+            $unenrolledSubjectsQuery->where('name', 'LIKE', '%' . request('unenrolled_keyword') . '%');
+        }
+
+        $subjects = $unenrolledSubjectsQuery->get();
+        $enrollment = $enrollmentQuery->get();
         $progres = Progres::where('idUser', $id)->get();
 
         return view("student.subject.view", compact('subjects', 'enrollment', 'progres'));

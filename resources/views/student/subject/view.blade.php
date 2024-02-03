@@ -3,7 +3,7 @@
     Subject-Student
 @endsection
 @section('content')
-    <div class="mb-4 border-b border-cyan-200 md:ml-64 lg:ml-64">
+    <div class="mb-2 border-b border-cyan-200 md:ml-64 lg:ml-64">
         <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-tab"
             data-tabs-toggle="#default-tab-content" role="tablist">
             <li class="me-2" role="presentation">
@@ -22,6 +22,25 @@
     </div>
     <div id="default-tab-content" class="md:ml-64 lg:ml-64">
         <div class="hidden p-4 rounded-lg " id="enrolled" role="tabpanel" aria-labelledby="enrolled-tab">
+            <form id="search" action="/student/subject/" class="w-full mb-3">
+                <div class="flex">
+                    <div class="relative w-full">
+                        <input type="search" name="enrolled_keyword" id="enrolled_keyword"
+                            value="{{ request('enrolled_keyword') }}"
+                            class="block rounded-l-md p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border border-cyan-300 focus:ring-cyan-500 focus:border-cyan-500"
+                            placeholder="Cari mata pelajaran...">
+                        <button type="submit" id="search"
+                            class="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-cyan-500 rounded-e-lg border border-cyan-500 hover:bg-cyan-600 focus:ring-4 focus:outline-none focus:ring-cyan-300">
+                            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                            </svg>
+                            <span class="sr-only">Search</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
             <div
                 class="flex flex-col space-y-3 px-4 pb-4 pt-3 border-2 border-gray-200 border-dashed h-auto mb-20 rounded-lg">
                 @if (session('error'))
@@ -58,14 +77,7 @@
                 @endif
                 @forelse ($enrollment as $enroll)
                     @php
-                        // Dapatkan id mata pelajaran dan user
-                        // $subjectId = $enroll->idSubject;
-                        // $userId = Auth::user()->id;
-
-                        // Temukan progres yang sesuai berdasarkan id mata pelajaran dan id user
                         $currentProgres = $progres->where('idSubject', $enroll->idSubject)->first();
-
-                        // Tentukan sequence yang akan digunakan
                         $sequence = $currentProgres ? $currentProgres->sequence : 1;
                     @endphp
                     <div
@@ -93,14 +105,33 @@
                         </div>
                     </div>
                 @empty
-                    <p>Belum ada mata pelajaran yang di-enroll</p>
+                    <p>Mata Pelajaran yang terdaftar tidak ditemukan</p>
                 @endforelse
             </div>
         </div>
         <div class="hidden p-4 rounded-lg" id="unenrolled" role="tabpanel" aria-labelledby="unenrolled-tab">
+            <form action="/student/subject/" class="w-full mb-3">
+                <div class="flex">
+                    <div class="relative w-full">
+                        <input type="search" name="unenrolled_keyword" id="unenrolled_keyword"
+                            value="{{ request('unenrolled_keyword') }}"
+                            class="block rounded-l-md p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border border-cyan-300 focus:ring-cyan-500 focus:border-cyan-500"
+                            placeholder="Cari mata pelajaran...">
+                        <button type="submit"
+                            class="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-cyan-500 rounded-e-lg border border-cyan-500 hover:bg-cyan-600 focus:ring-4 focus:outline-none focus:ring-cyan-300">
+                            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                            </svg>
+                            <span class="sr-only">Search</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
             <div class="flex flex-col space-y-3 p-4 border-2 border-gray-200 border-dashed h-auto mb-20 rounded-lg">
                 @forelse ($subjects as $subject)
-                    <div
+                    <div id="subject-item"
                         class="flex items-center justify-between h-36 pr-2 md:pr-3 py-0 pl-0 justify-items-center rounded-lg bg-cyan-50 border border-cyan-500">
                         <div>
                             <img class="rounded-l-lg w-28 md:w-80 h-36 border-y border-cyan-500 object-cover"
@@ -190,7 +221,7 @@
                         <!-- end modal -->
                     </div>
                 @empty
-                    <p>Belum Ada Mata Pelajaran</p>
+                    <p>Tidak ada mata pelajaran</p>
                 @endforelse
             </div>
         </div>
