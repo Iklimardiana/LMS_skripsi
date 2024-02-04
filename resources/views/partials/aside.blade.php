@@ -1,5 +1,5 @@
 @if (!in_array(request()->path(), ['login', 'register', '/']))
-    @if (!(request()->is('student/materials*') || request()->is('student/exam*')))
+    @if (!(request()->is('student/materials*') || request()->is('student/exam-begin*')))
         <aside id="logo-sidebar"
             class="fixed top-16 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
             aria-label="Sidebar">
@@ -129,7 +129,7 @@
                     @if (Auth()->user()->role == 'student')
                         <li>
                             <a href="/student/subject"
-                                class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-white hover:border hover:border-cyan-500 group {{ request()->is('student/subject*') ? ' active' : '' }}">
+                                class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-white hover:border hover:border-cyan-500 group {{ (request()->is('student/subject*') ? ' active' : '' || request()->is('student/exam*')) ? ' active' : '' }}">
                                 <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900 "
                                     xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 20">
                                     <path
