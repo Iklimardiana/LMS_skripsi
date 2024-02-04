@@ -98,7 +98,7 @@
                                 class=" text-white bg-cyan-500 hover:bg-cyan-600 focus:ring-4 focus:ring-cyan-300 font-medium rounded-md md:rounded-lg text-sm w-16 md:w-20  px-1 py-1 md:px-5 md:py-2 me-2 focus:outline-none  ">
                                 Materi
                             </button>
-                            <button type="button" onclick="redirectToExam()"
+                            <button type="button" onclick="redirectToExam({{ $enroll->idSubject }})"
                                 class=" text-white bg-cyan-500 hover:bg-cyan-600 focus:ring-4 focus:ring-cyan-300 font-medium rounded-md md:rounded-lg text-sm w-16 md:w-20  px-1 py-1 md:px-5 md:py-2 me-2 focus:outline-none  ">
                                 Ujian
                             </button>
@@ -235,6 +235,12 @@
 
         function showAlert() {
             alert("Enrollment Key belum di-set oleh guru");
+        }
+
+        function redirectToExam(idSubject) {
+            var baseUrl = '/student/exam/';
+            var examUrl = baseUrl + idSubject;
+            window.location.href = examUrl;
         }
     </script>
 @endsection

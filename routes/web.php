@@ -92,6 +92,8 @@ Route::middleware('student')->group(function () {
     Route::get('/student/submission/{id}/edit', [StudentController::class, 'editSubmission']);
     Route::put('/student/submission/{id}', [StudentController::class, 'updateSubmission']);
     Route::delete('/student/submission/{id}', [StudentController::class, 'destroySubmission']);
+
+    Route::get('/student/exam/{idSubject}', [ExamController::class, 'ExamStudent']);
 });
 
 Route::get('/login', [LoginController::class, 'login']);
