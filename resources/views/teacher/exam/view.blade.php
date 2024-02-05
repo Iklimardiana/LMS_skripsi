@@ -224,7 +224,7 @@
                                     <form action="/teacher/exam/{{ $exam->id }}" method="POST" id="deleteForm">
                                         @method('DELETE')
                                         @csrf
-                                        <button type="button" onclick="showAlertDelete()"
+                                        <button type="button" onclick="showAlertDelete()" title="Hapus Ujian"
                                             class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none">
                                             <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                                 fill="none" viewBox="0 0 18 20">
@@ -264,7 +264,7 @@
                                     <button type="button" data-modal-target="editExam-modal-{{ $exam->id }}"
                                         data-modal-toggle="editExam-modal-{{ $exam->id }}"
                                         class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none"
-                                        title="Klik untuk edit tugas">
+                                        title="Klik untuk edit ujian">
                                         <svg class="feather feather-edit w-5 h-5" fill="none" stroke="currentColor"
                                             stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             viewBox="0 0 24 24" xmlns=" http://www.w3.org/2000/svg">
@@ -369,6 +369,7 @@
                                 <td class="px-2 font-medium text-gray-900 whitespace-nowrap border border-cyan-500">
                                     <div class="flex flex-items-center justify-center gap-1">
                                         <button type="button" title="Klik untuk membuat soal"
+                                            onclick="redirectToCreateQuestion({{ $exam->id }})"
                                             class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none">
                                             <svg class="w-5 h-5 text-white" aria-hidden="true"
                                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -377,10 +378,10 @@
                                                     d="M10 5.757v8.486M5.757 10h8.486M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                             </svg>
                                         </button>
-                                        <form action="/teacher/exam/{{ $exam->id }}" method="POST" id="deleteForm">
+                                        <form action="/teacher/exam/" method="POST" id="deleteForm">
                                             @method('DELETE')
                                             @csrf
-                                            <button type="button" onclick="showAlertDelete()"
+                                            <button type="button" onclick="showAlertDelete()" title="Hapus seluruh soal"
                                                 class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none">
                                                 <svg class="w-5 h-5" aria-hidden="true"
                                                     xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -391,7 +392,7 @@
                                                 </svg>
                                             </button>
                                         </form>
-                                        <button type="button"
+                                        <button type="button" title="klik untuk pratinjau soal"
                                             class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none">
                                             <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                                 fill="none" viewBox="0 0 20 14">
@@ -405,7 +406,7 @@
                                         </button>
                                         <button type="button"
                                             class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none"
-                                            title="Klik untuk edit tugas">
+                                            title="Klik untuk edit soal">
                                             <svg class="feather feather-edit w-5 h-5" fill="none"
                                                 stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                                 stroke-width="2" viewBox="0 0 24 24" xmlns=" http://www.w3.org/2000/svg">
@@ -435,12 +436,16 @@
             var isConfirmed = confirm('Yakin ingin menghapus ujian ini?');
 
             if (isConfirmed) {
-                // Jika pengguna mengklik "OK", kirimkan formulir
                 document.getElementById('deleteForm').submit();
             } else {
-                // Jika pengguna mengklik "Batal" atau menutup dialog, lakukan apa pun yang diperlukan (opsional)
                 console.log('Penghapusan dibatalkan.');
             }
+        }
+
+        function redirectToCreateQuestion(idExam) {
+            var baseUrl = '/teacher/';
+            var cretaeQuestionUrl = baseUrl + idExam + '/question/create';
+            window.location.href = cretaeQuestionUrl;
         }
 
         function changeStatus(examId) {
@@ -449,13 +454,11 @@
 
             if (form) {
                 var statusInput = form.querySelector('input[name="status"]');
-                console.log(statusInput); // Cek apakah statusInput terdefinisi dan tidak null
+                console.log(statusInput);
 
                 if (statusInput) {
-                    // Ganti nilai input _status menjadi 'PUT' sesuai dengan status saat ini
                     statusInput.value = 'PUT';
 
-                    // Submit formulir
                     form.submit();
                 } else {
                     console.error("Input status tidak ditemukan dalam formulir.");

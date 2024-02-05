@@ -112,4 +112,11 @@ class ExamController extends Controller
         $subject = Subject::find($id);
         return view('student.exam.view', compact('exams', 'subject'));
     }
+
+    public function createQuestion($id)
+    {
+        $exam = Exam::findOrFail($id);
+
+        return view('teacher.exam.question.create', compact('exam'));
+    }
 }
