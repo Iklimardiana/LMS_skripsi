@@ -73,6 +73,7 @@ Route::middleware('teacher')->group(function () {
     route::delete('/teacher/exam/{id}', [ExamController::class, 'destroyExam']);
     route::put('/teacher/exam/{id}/update-status', [ExamController::class, 'updateStatus']);
     route::put('/teacher/exam/{id}', [ExamController::class, 'updateExam']);
+    Route::get('/teacher/{idExam}/question/create', [ExamController::class, 'createQuestion']);
 });
 
 Route::middleware('student')->group(function () {
