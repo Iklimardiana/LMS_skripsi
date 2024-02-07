@@ -84,25 +84,30 @@
                                     {{ $subject->Teacher->first_name }}
                                 </span>
                             </div>
-                            <div class="flex flex-wrap gap-y-1 items-end justify-center w-full mx-5 p-3 text-gray-900">
+                            <div class="flex flex-wrap gap-1 items-end justify-center w-full mx-1 py-3 px-1 text-gray-900">
                                 <button type="button" onclick="redirectToStudent('{{ $subject->id }}')"
-                                    class=" text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-md md:rounded-lg text-sm w-16 md:w-20  px-1 py-1 md:px-5 md:py-2 me-2 focus:outline-none  ">
+                                    class=" text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-md md:rounded-lg text-sm w-16 md:w-20  px-1 py-1 md:px-5 md:py-2 focus:outline-none  ">
                                     Siswa
                                 </button>
                                 <button type="button"
                                     onclick="redirectToMaterial('{{ $subject->id }}','{{ $subject->teacher->role }}')"
-                                    class=" text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-md md:rounded-lg text-sm w-16 md:w-20  px-1 py-1 md:px-5 md:py-2 me-2 focus:outline-none  ">
+                                    class=" text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-md md:rounded-lg text-sm w-16 md:w-20  px-1 py-1 md:px-5 md:py-2 focus:outline-none  ">
                                     Materi
                                 </button>
                                 <button type="button" onclick="redirectToExam({{ $subject->id }})"
-                                    class=" text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-md md:rounded-lg text-sm w-16 md:w-20  px-1 py-1 md:px-5 md:py-2 me-2 focus:outline-none  ">
+                                    class=" text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-md md:rounded-lg text-sm w-16 md:w-20  px-1 py-1 md:px-5 md:py-2 focus:outline-none  ">
                                     Ujian
                                 </button>
                                 <button type="button"
-                                    class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-md md:rounded-lg text-sm md:w-20 w-auto px-1 py-1 md:py-2 me-2 focus:outline-none"
+                                    class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-md md:rounded-lg text-sm md:w-20 w-auto px-1 py-1 md:py-2 focus:outline-none"
                                     title="edit mata pelajaran" data-modal-target="setting-modal-{{ $subject->id }}"
                                     data-modal-toggle="setting-modal-{{ $subject->id }}">
                                     Pengaturan
+                                </button>
+                                <button type="button"
+                                    class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-md md:rounded-lg text-sm md:w-20 w-auto px-1 py-1 md:py-2 focus:outline-none"
+                                    title="Diskusi">
+                                    Diskusi
                                 </button>
                                 <div id="setting-modal-{{ $subject->id }}" tabindex="-1" aria-hidden="true"
                                     class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
