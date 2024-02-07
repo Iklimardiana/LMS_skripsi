@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Answer;
 use App\Models\Exam;
+use App\Models\Question;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -118,5 +120,96 @@ class ExamController extends Controller
         $exam = Exam::findOrFail($id);
 
         return view('teacher.exam.question.create', compact('exam'));
+    }
+
+    public function storeQuestion(Request $request, $idExam)
+    {
+        $request->validate([
+            'content' => 'required',
+        ], [
+            'content.required' => 'Konten soal harus diisi'
+        ]);
+
+        $exam = Exam::findOrFail($idExam);
+        $idExam = $exam->id;
+
+        $question = new Question;
+        $question->content = $request->input('content');
+        $question->idExam = $idExam;
+        $question->save();
+
+
+        $description = $request->input('content');
+
+        $uploadedImages = session('uploaded_images', []);
+
+        foreach ($uploadedImages as $imageUrl) {
+            if (strpos($description, $imageUrl) === false) {
+                $fileName = basename($imageUrl);
+                $filePath = public_path('images/media/' . $fileName);
+
+                if (file_exists($filePath)) {
+                    unlink($filePath);
+                }
+            }
+        }
+
+        // Hapus sesi setelah selesai
+        session()->forget('uploaded_images');
+
+        // Return the compact form of the question
+        return response()->json([
+            'id' => $question->id,
+            'content' => $question->content,
+            'idExam' => $question->idExam,
+            // Add more fields as needed
+        ]);
+    }
+
+    public function storeOption(Request $request, $idQuestion)
+    {
+        $request->validate([
+            'content' => 'required',
+            'isCorrect' => 'required',
+        ], [
+            'content.required' => 'Konten soal harus diisi',
+            'isCorrect.required' => 'Mohon pilih benar atau salahnya option',
+        ]);
+
+        $question = Question::findOrFail($idQuestion);
+        $idQuestion = $question->id;
+
+        $option = new Answer;
+
+        $option->content = $request->input('content');
+        $option->idQuestion = $idQuestion;
+
+        $option->save();
+
+        $description = $request->input('content');
+
+        $uploadedImages = session('uploaded_images', []);
+
+        foreach ($uploadedImages as $imageUrl) {
+            if (strpos($description, $imageUrl) === false) {
+                $fileName = basename($imageUrl);
+                $filePath = public_path('images/media/' . $fileName);
+
+                if (file_exists($filePath)) {
+                    unlink($filePath);
+                }
+            }
+        }
+
+        // Hapus sesi setelah selesai
+        session()->forget('uploaded_images');
+
+        return response()->json([
+            'id' => $option->id,
+            'content' => $option->content,
+            'idQuestion' => $option->idQuestion,
+            'isCorrect' => $option->isCorrect
+            // Add more fields as needed
+        ]);
     }
 }
