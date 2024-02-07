@@ -38,4 +38,8 @@ class Subject extends Model
     {
         return $this->belongsTo(User::class, 'idTeacher');
     }
+    public function Discussion()
+    {
+        return $this->hasMany(DiscussionQuestion::class, 'idSubject');
+    }
 }

@@ -69,11 +69,14 @@ Route::middleware('teacher')->group(function () {
     Route::post('/delete-ckeditor-image', [TeacherController::class, 'deleteCkeditorImage'])->name('ckeditor.deleteCkeditorImage');
 
     Route::get('/teacher/exam/{idSubject}', [ExamController::class, 'exams']);
-    route::post('/teacher/exam/{idSubject}', [ExamController::class, 'storeExam']);
-    route::delete('/teacher/exam/{id}', [ExamController::class, 'destroyExam']);
-    route::put('/teacher/exam/{id}/update-status', [ExamController::class, 'updateStatus']);
-    route::put('/teacher/exam/{id}', [ExamController::class, 'updateExam']);
+    Route::post('/teacher/exam/{idSubject}', [ExamController::class, 'storeExam']);
+    Route::delete('/teacher/exam/{id}', [ExamController::class, 'destroyExam']);
+    Route::put('/teacher/exam/{id}/update-status', [ExamController::class, 'updateStatus']);
+    Route::put('/teacher/exam/{id}', [ExamController::class, 'updateExam']);
     Route::get('/teacher/{idExam}/question/create', [ExamController::class, 'createQuestion']);
+    Route::post('teacher/question/{idExam}', [ExamController::class, 'storeQuestion']);
+    Route::post('teacher/option/{idQuestion}', [ExamController::class, 'storeOption']);
+
 });
 
 Route::middleware('student')->group(function () {
