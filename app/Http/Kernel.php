@@ -14,7 +14,7 @@ class Kernel extends HttpKernel
      * @var array<int, class-string|string>
      */
     protected $middleware = [
-            // \App\Http\Middleware\TrustHosts::class,
+        // \App\Http\Middleware\TrustHosts::class,
         \App\Http\Middleware\TrustProxies::class,
         \Illuminate\Http\Middleware\HandleCors::class,
         \App\Http\Middleware\PreventRequestsDuringMaintenance::class,
@@ -66,6 +66,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'admin' => \App\Http\Middleware\isAdmin::class,
         'teacher' => \App\Http\Middleware\isTeacher::class,
-        'student' => \App\Http\Middleware\isStudent::class
+        'student' => \App\Http\Middleware\isStudent::class,
+        'studentOrTeacher' => \App\Http\Middleware\isStudentOrTeacher::class,
     ];
 }
