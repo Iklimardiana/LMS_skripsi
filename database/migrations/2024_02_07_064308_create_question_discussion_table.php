@@ -14,10 +14,10 @@ return new class extends Migration {
     {
         Schema::create('question_discussion', function (Blueprint $table) {
             $table->id();
-            $table->string('question');
+            $table->longText('question');
             $table->string('image')->nullable();
-            $table->unsignedBigInteger('idCategory');
-            $table->foreign('idCategory')->references('id')->on('category_discussion')->onDelete('cascade');
+            $table->unsignedBigInteger('idMaterial');
+            $table->foreign('idMaterial')->references('id')->on('material')->onDelete('cascade');
             $table->unsignedBigInteger('idUser');
             $table->foreign('idUser')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('idSubject');

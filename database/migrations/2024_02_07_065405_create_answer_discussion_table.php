@@ -14,7 +14,7 @@ return new class extends Migration {
     {
         Schema::create('answer_discussion', function (Blueprint $table) {
             $table->id();
-            $table->string('answer');
+            $table->longText('answer');
             $table->string('image')->nullable();
             $table->unsignedBigInteger('idUser');
             $table->foreign('idUser')->references('id')->on('users')->onDelete('cascade');
