@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AnswerDiscussion;
 use App\Models\DiscussionQuestion;
 use App\Models\Subject;
 use App\Models\Material;
@@ -11,34 +12,6 @@ use Illuminate\Support\Facades\File;
 
 class DiscussionController extends Controller
 {
-    // public function questions($id)
-    // {
-    //     $subject = Subject::findOrFail($id);
-
-    //     // Mengambil nama-nama materi unik dari kumpulan pertanyaan pada subjek ini
-    //     $uniqueMaterials = Material::whereIn('id', function ($query) use ($subject) {
-    //         $query->select('idMaterial')
-    //             ->from('question_discussion')
-    //             ->where('idSubject', $subject->id)
-    //             ->distinct();
-    //     })->pluck('name', 'id');
-
-    //     // Mengambil semua materi terkait dengan subjek
-    //     $materials = Material::where('idSubject', $subject->id)->get();
-
-    //     // Mengambil pertanyaan berdasarkan materi yang dipilih (jika ada)
-    //     $selectedMaterial = request('material');
-    //     $questions = DiscussionQuestion::where('idSubject', $subject->id)
-    //         ->when($selectedMaterial, function ($query) use ($selectedMaterial) {
-    //             return $query->where('idMaterial', $selectedMaterial);
-    //         })
-    //         ->get();
-
-    //     $questionCount = count($questions);
-
-    //     return view("teacher.discussion.view", compact("subject", "questions", "questionCount", "uniqueMaterials", "materials"));
-    // }
-
     public function questions($id)
     {
         $subject = Subject::findOrFail($id);
@@ -63,13 +36,13 @@ class DiscussionController extends Controller
 
         $questionCount = count($questions);
 
-        return view("teacher.discussion.view", compact("subject", "questions", "questionCount", "materials", "allMaterials"));
+        return view("discussion.view", compact("subject", "questions", "questionCount", "materials", "allMaterials"));
     }
 
     public function showQuestion($id)
     {
         $question = DiscussionQuestion::findOrFail($id);
-        return view("teacher.discussion.show", compact("question"));
+        return view("discussion.show", compact("question"));
     }
 
     public function storeQuestion(Request $request, $id)
@@ -156,6 +129,55 @@ class DiscussionController extends Controller
             $question->image = $imageName;
             $question->save();
         }
+
+        return back();
+    }
+
+    public function storeAnswer(Request $request, $id)
+    {
+        $request->validate([
+            'answer' => 'required',
+        ]);
+
+        $question = DiscussionQuestion::findOrFail($id);
+        $iduser = Auth::id();
+
+        $answer = new AnswerDiscussion;
+
+        $answer->idUser = $iduser;
+        $answer->answer = $request->answer;
+        $answer->idQuestion = $question->id;
+
+        $answer->save();
+
+        return back();
+
+    }
+
+    public function updateAnswer(Request $request, $id)
+    {
+        $request->validate([
+            'answer' => 'required'
+        ]);
+        $idUser = Auth::id();
+
+        $answer = AnswerDiscussion::findOrFail($id);
+        $idQuestion = $answer->idQuestion;
+
+        $answer->update([
+            'answer' => $request->answer,
+            'idQuestion' => $idQuestion,
+            'idUser' => $idUser
+        ]);
+
+        return back();
+    }
+
+    public function destroyAnswer($id)
+    {
+        $answer = AnswerDiscussion::findOrFail($id);
+
+        $answer->delete();
 
         return back();
     }
