@@ -102,6 +102,10 @@
                                 class=" text-white bg-cyan-500 hover:bg-cyan-600 focus:ring-4 focus:ring-cyan-300 font-medium rounded-md md:rounded-lg text-sm w-16 md:w-20  px-1 py-1 md:px-5 md:py-2 me-2 focus:outline-none  ">
                                 Ujian
                             </button>
+                            <button type="button" onclick="redirectToDiscussion({{ $enroll->idSubject }})"
+                                class=" text-white bg-cyan-500 hover:bg-cyan-600 focus:ring-4 focus:ring-cyan-300 font-medium rounded-md md:rounded-lg text-sm w-16 md:w-20  px-1 py-1 md:px-5 md:py-2 me-2 focus:outline-none  ">
+                                Diskusi
+                            </button>
                         </div>
                     </div>
                 @empty
@@ -241,6 +245,11 @@
             var baseUrl = '/student/exam/';
             var examUrl = baseUrl + idSubject;
             window.location.href = examUrl;
+        }
+
+        function redirectToDiscussion(idSubject) {
+            var discussionUrl = '/discussion/' + idSubject;
+            window.location.href = discussionUrl;
         }
     </script>
 @endsection
