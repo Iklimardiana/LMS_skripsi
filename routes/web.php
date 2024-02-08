@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Discussion_QuestionController;
 use App\Http\Controllers\DiscussionController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\SubjectController;
@@ -46,6 +45,11 @@ Route::middleware('studentOrTeacher')->group(function () {
     Route::post('/discussion/{idSubject}', [DiscussionController::class, 'storeQuestion']);
     Route::delete('/discussion/{id}', [DiscussionController::class, 'destroyQuestion']);
     Route::put('/discussion/{id}', [DiscussionController::class, 'updateQuestion']);
+    Route::get('/discussion/{id}/detail', [DiscussionController::class, 'showQuestion']);
+
+    Route::get('/discussion/{idQuestion}/reply', [DiscussionController::class, 'storeAnswer']);
+    Route::delete('/discussion/reply/{id}', [DiscussionController::class, 'destroyAnswer']);
+    Route::put('/discussion/reply/{id}', [DiscussionController::class, 'updateAnswer']);
 });
 
 Route::middleware('teacher')->group(function () {
