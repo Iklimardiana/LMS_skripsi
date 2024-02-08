@@ -15,43 +15,43 @@ class QuestionDiscussionSeeder extends Seeder
     public function run()
     {
         DiscussionQuestion::create([
-            'question' => 'pertanyaan 1',
+            'question' => 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
             'idUser' => '1',
-            'idCategory' => '1',
+            'idMaterial' => '1',
             'idSubject' => '1'
         ]);
         DiscussionQuestion::create([
-            'question' => 'pertanyaan 2',
+            'question' => 'pertanyaan 1 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
             'idUser' => '1',
-            'idCategory' => '1',
-            'idSubject' => '2'
-        ]);
-        DiscussionQuestion::create([
-            'question' => 'pertanyaan 3',
-            'image' => 'thumbnailDefault.jpg',
-            'idUser' => '2',
-            'idCategory' => '1',
-            'idSubject' => '2'
-        ]);
-        DiscussionQuestion::create([
-            'question' => 'pertanyaan 1',
-            'image' => 'thumbnailDefault.jpg',
-            'idUser' => '3',
-            'idCategory' => '2',
+            'idMaterial' => '1',
             'idSubject' => '1'
         ]);
         DiscussionQuestion::create([
-            'question' => 'pertanyaan 2',
+            'question' => 'pertanyaan 3 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
             'image' => 'thumbnailDefault.jpg',
             'idUser' => '2',
-            'idCategory' => '2',
-            'idSubject' => '2'
+            'idMaterial' => '1',
+            'idSubject' => '1'
         ]);
         DiscussionQuestion::create([
-            'question' => 'pertanyaan 3',
+            'question' => 'pertanyaan 1 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
             'image' => 'thumbnailDefault.jpg',
             'idUser' => '3',
-            'idCategory' => '2',
+            'idMaterial' => '4',
+            'idSubject' => '1'
+        ]);
+        DiscussionQuestion::create([
+            'question' => 'pertanyaan 2 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+            'image' => 'thumbnailDefault.jpg',
+            'idUser' => '2',
+            'idMaterial' => '4',
+            'idSubject' => '1'
+        ]);
+        DiscussionQuestion::create([
+            'question' => 'pertanyaan 3 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+            'image' => 'thumbnailDefault.jpg',
+            'idUser' => '3',
+            'idMaterial' => '7',
             'idSubject' => '1'
         ]);
     }
