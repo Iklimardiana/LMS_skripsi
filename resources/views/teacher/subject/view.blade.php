@@ -104,7 +104,7 @@
                                     data-modal-toggle="setting-modal-{{ $subject->id }}">
                                     Pengaturan
                                 </button>
-                                <button type="button"
+                                <button type="button" onclick="redirectToDiscussion({{ $subject->id }})"
                                     class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-md md:rounded-lg text-sm md:w-20 w-auto px-1 py-1 md:py-2 focus:outline-none"
                                     title="Diskusi">
                                     Diskusi
@@ -208,6 +208,12 @@
             var baseUrl = '/teacher/exam/';
             var ExamUrl = baseUrl + idSubject;
             window.location.href = ExamUrl;
+        }
+
+        function redirectToDiscussion(idSubject) {
+            var baseUrl = '/discussion/';
+            var discussionUrl = baseUrl + idSubject;
+            window.location.href = discussionUrl;
         }
     </script>
 @endpush
