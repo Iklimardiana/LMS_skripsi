@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Discussion_QuestionController;
+use App\Http\Controllers\DiscussionController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
@@ -35,6 +37,15 @@ Route::middleware('admin')->group(function () {
     Route::delete('/admin/student/{id}', [AdminController::class, 'destroyStudent'])->name('student.destroy');
 
     Route::resource('/admin/subject', SubjectController::class);
+});
+
+Route::middleware('studentOrTeacher')->group(function () {
+    Route::get('/discussion/{idSubject}', [DiscussionController::class, 'questions'])
+        ->name('discussion.view');
+
+    Route::post('/discussion/{idSubject}', [DiscussionController::class, 'storeQuestion']);
+    Route::delete('/discussion/{id}', [DiscussionController::class, 'destroyQuestion']);
+    Route::put('/discussion/{id}', [DiscussionController::class, 'updateQuestion']);
 });
 
 Route::middleware('teacher')->group(function () {
@@ -74,9 +85,8 @@ Route::middleware('teacher')->group(function () {
     Route::put('/teacher/exam/{id}/update-status', [ExamController::class, 'updateStatus']);
     Route::put('/teacher/exam/{id}', [ExamController::class, 'updateExam']);
     Route::get('/teacher/{idExam}/question/create', [ExamController::class, 'createQuestion']);
-    Route::post('teacher/question/{idExam}', [ExamController::class, 'storeQuestion']);
-    Route::post('teacher/option/{idQuestion}', [ExamController::class, 'storeOption']);
-
+    Route::post('/teacher/question/{idExam}', [ExamController::class, 'storeQuestion']);
+    Route::post('/teacher/option/{idQuestion}', [ExamController::class, 'storeOption']);
 });
 
 Route::middleware('student')->group(function () {
