@@ -28,4 +28,9 @@ class Material extends Model
     {
         return $this->hasMany(Assignment::class, 'idMaterial');
     }
+
+    public function DiscussionQuestion()
+    {
+        return $this->hasMany(DiscussionQuestion::class, 'idMaterial');
+    }
 }

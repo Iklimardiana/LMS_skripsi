@@ -8,12 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class DiscussionQuestion extends Model
 {
     protected $table = 'question_discussion';
-    protected $fillable = ['question', 'image', 'idCategory', 'idUser', 'idSubject'];
+    protected $fillable = ['question', 'image', 'idMaterial', 'idUser', 'idSubject'];
     use HasFactory;
 
-    public function category()
+    public function material()
     {
-        return $this->belongsTo(CategoryDiscussion::class, 'idCategory');
+        return $this->belongsTo(Material::class, 'idMaterial');
     }
 
     public function user()
