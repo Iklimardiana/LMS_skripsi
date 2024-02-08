@@ -129,13 +129,13 @@
                         <img src="{{ asset('/images/discussion/' . $question->image) }}" alt="gambar pertanyaan/ komentar">
                     @endif
                 </div>
-                <div class="flex mt-2">
-                    <svg class="w-6 h-6 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                <div class="flex mt-4">
+                    <svg class="w-7 h-7 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                         fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M9 17h6l3 3v-3h2V9h-2M4 4h11v8H9l-3 3v-3H4V4Z" />
                     </svg>
-                    <p class="text-gray-900">{{ $question->answer_discussion->count() }} jawaban</p>
+                    <p class="text-gray-900 text-lg">{{ $question->answer_discussion->count() }} jawaban</p>
                 </div>
             </div>
             <div class="flex flex-col mt-6">
@@ -165,8 +165,8 @@
                     </form>
                 </div>
             </div>
-            @forelse ($question->answer_discussion as $reply)
-                <div class="flex flex-col min-h-36 p-2 rounded-lg bg-gray-50 border border-cyan-500 mt-3">
+            @foreach ($question->answer_discussion as $reply)
+                <div class="flex flex-col h-auto p-2 rounded-lg bg-gray-50 border border-cyan-500 mt-3">
                     <div class="flex items-center justify-between flex-wrap mb-3">
                         <div class="flex items-center">
                             <div class="flex items-center justify-between">
@@ -272,9 +272,7 @@
                         </p>
                     </div>
                 </div>
-            @empty
-                <p>Belum ada jawaban</p>
-            @endforelse
+            @endforeach
         </div>
     </div>
 @endsection
