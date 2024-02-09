@@ -132,6 +132,7 @@ class StudentController extends Controller
         $user = Auth::user()->id;
         $sequence = $request->input('sequence', 1);
         $subject = Subject::findOrFail($id);
+
         $material = $subject->Material()->where('sequence', $sequence)->first();
         if ($material) {
             $attachment = Assignment::where('idMaterial', $material->id)
@@ -148,15 +149,19 @@ class StudentController extends Controller
         $submission = Assignment::where('idUser', $user)
             ->where('category', 'fromstudent')
             ->get();
+
         $newAssignments = Assignment::where('idMaterial', $material->id)
             ->where('category', 'fromteacher')
             ->get();
+
         $hasNewAssignments = count($newAssignments) > 0;
+
         $currentSequence = $material ? $material->sequence : null;
         $currentProgres = Progres::where('idUser', $user)->where('idSubject', $id)->first();
         if ($currentProgres) {
-            if ($currentProgres->sequence < $currentSequence)
+            if ($currentProgres->sequence < $currentSequence) {
                 $currentProgres->sequence = $currentSequence;
+            }
             $progres = Progres::where('idUser', $user)
                 ->where('idSubject', $id)->first();
             $currentAttachment = Assignment::where('idMaterial', $material->id)

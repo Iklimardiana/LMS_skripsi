@@ -34,7 +34,64 @@
                 </svg>
                 <span class="sr-only">Close menu</span>
             </button>
-
+            <div class="flex items-center justify-between gap-1">
+                @if ($currentProgres ? $currentProgres->sequence : '')
+                    @if ($currentProgres->sequence == $subject->Material->count())
+                        @if ($currentProgres->status == 0)
+                            <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                                <div class="bg-cyan-500 h-2.5 rounded-full"
+                                    style="width: {{ round(($currentProgres->sequence / $subject->Material->count()) * 100) - 2 }}%">
+                                </div>
+                            </div>
+                            <p>
+                                {{ round(($currentProgres->sequence / $subject->Material->count()) * 100) - 2 }}%
+                            </p>
+                        @else
+                            <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                                <div class="bg-cyan-500 h-2.5 rounded-full" style="width: 100%">
+                                </div>
+                            </div>
+                            <p>
+                                100%
+                            </p>
+                        @endif
+                    @else
+                        @if ($currentProgres->status == 0)
+                            <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                                <div class="bg-cyan-500 h-2.5 rounded-full"
+                                    style="width: {{ round(($currentProgres->sequence / $subject->Material->count()) * 100) - 2 }}%">
+                                </div>
+                            </div>
+                            <p>
+                                {{ round(($currentProgres->sequence / $subject->Material->count()) * 100) - 2 }}%
+                            </p>
+                        @else
+                            <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                                <div class="bg-cyan-500 h-2.5 rounded-full"
+                                    style="width: {{ round(($currentProgres->sequence / $subject->Material->count()) * 100) }}%">
+                                </div>
+                            </div>
+                            <p>
+                                {{ round(($currentProgres->sequence / $subject->Material->count()) * 100) }}%
+                            </p>
+                        @endif
+                    @endif
+                @else
+                    <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                        <div class="bg-cyan-500 h-2.5 rounded-full" style="width: 0%">
+                        </div>
+                    </div>
+                    <p>
+                        0%
+                    </p>
+                @endif
+                {{-- <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                    <div class="bg-cyan-500 h-2.5 rounded-full" style="width: 45%"></div>
+                </div>
+                <p>
+                    45%
+                </p> --}}
+            </div>
             <div class="py-4 overflow-y-auto">
                 <ul class=" font-medium">
                     @foreach ($subject->material->sortBy('sequence') as $material)
@@ -68,10 +125,7 @@
 
         <div class="p-4 mt-16">
             @php
-                $currentMaterial = $subject
-                    ->Material()
-                    ->where('sequence', $currentSequence)
-                    ->first();
+                $currentMaterial = $subject->Material()->where('sequence', $currentSequence)->first();
                 $currentMaterialId = $currentMaterial ? $currentMaterial->id : null;
             @endphp
             @if ($attachment->where('idMaterial', $currentMaterialId)->where('category', 'fromteacher')->isNotEmpty())

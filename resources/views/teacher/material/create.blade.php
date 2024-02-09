@@ -15,7 +15,7 @@
                     @csrf
                     <div class="mt-5 mb-3 flex flex-col" id="">
                         <label for="title" class="font-medium">Judul Materi</label>
-                        <input type="text" id="title" name="name"
+                        <input type="text" id="title" name="name" value="{{ old('name') }}"
                             class="flex text-sm text-gray-900 border border-cyan-400 focus:ring-cyan-500 focus:border-cyan-500 rounded-md bg-gray-50 focus:outline-none file:bg-cyan-500 w-full md:min-w-96 mt-2">
                         @error('name')
                             <div id="alert-2" class="flex items-center px-4 py-1 mb-4 text-red-800 rounded-lg bg-red-50"
@@ -35,6 +35,7 @@
                     <div class="mt-5 mb-3 flex flex-col" id="">
                         <label for="sequnce" class="font-medium">Urutan Materi ke-</label>
                         <input type="number" id="sequence" name="sequence" placeholder="Tulis dalam bentuk angka"
+                            value="{{ old('sequence') }}"
                             class="flex text-sm text-gray-900 border border-cyan-400 rounded-md bg-gray-50 focus:outline-none file:bg-cyan-500 w-full md:min-w-96 mt-2 focus:ring-cyan-500 focus:border-cyan-500">
                         @error('sequence')
                             <div id="alert-2" class="flex items-center px-4 py-1 mb-4 text-red-800 rounded-lg bg-red-50"
@@ -55,7 +56,7 @@
                         <label for="content" class="font-medium">Konten Materi</label>
                         <textarea
                             class="flex text-sm text-gray-900 border border-cyan-400 rounded-md bg-gray-50 focus:outline-none file:bg-cyan-500 w-full md:min-w-96 mt-2 focus:ring-cyan-500 focus:border-cyan-500"
-                            name="content" id="editor" cols="30" rows="10"></textarea>
+                            name="content" id="editor" cols="30" rows="10">{{ old('content') }}</textarea>
                         @error('content')
                             <div id="alert-2" class="flex items-center px-4 py-1 mb-4 text-red-800 rounded-lg bg-red-50"
                                 role="alert">

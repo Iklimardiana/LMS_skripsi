@@ -63,19 +63,18 @@
                                     <td class="px-6 py-1">
                                         @php
                                             $progresUser = $progres->where('idUser', $enroll->user->id)->first();
-                                            // dd($progresUser);
                                         @endphp
                                         @if ($progresUser ? $progresUser->sequence : '')
                                             @if ($progresUser->sequence == $subject->Material->count())
                                                 @if ($progresUser->status == 0)
-                                                    {{ round(($progresUser->sequence / $subject->Material->count()) * 100) - 1 }}
+                                                    {{ round(($progresUser->sequence / $subject->Material->count()) * 100) - 2 }}
                                                     %
                                                 @else
                                                     Complete (100%)
                                                 @endif
                                             @else
                                                 @if ($progresUser->status == 0)
-                                                    {{ round(($progresUser->sequence / $subject->Material->count()) * 100) - 1 }}
+                                                    {{ round(($progresUser->sequence / $subject->Material->count()) * 100) - 2 }}
                                                     %
                                                 @else
                                                     {{ round(($progresUser->sequence / $subject->Material->count()) * 100) }}
