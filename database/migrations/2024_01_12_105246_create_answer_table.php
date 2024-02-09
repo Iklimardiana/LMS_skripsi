@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -15,8 +14,8 @@ return new class extends Migration
     {
         Schema::create('answer', function (Blueprint $table) {
             $table->id();
-            $table->mediumText('content');
-            $table->enum('isCorrect', [0,1]);
+            $table->longText('content');
+            $table->enum('isCorrect', [0, 1]);
             $table->unsignedBigInteger('idQuestion');
             $table->foreign('idQuestion')->references('id')->on('question')->onDelete('cascade');
             $table->timestamps();

@@ -91,6 +91,8 @@ Route::middleware('teacher')->group(function () {
     Route::get('/teacher/{idExam}/question/create', [ExamController::class, 'createQuestion']);
     Route::post('/teacher/question/{idExam}', [ExamController::class, 'storeQuestion']);
     Route::post('/teacher/option/{idQuestion}', [ExamController::class, 'storeOption']);
+
+    Route::post('/teacher/question/{idExam}', [ExamController::class, 'storeQuestion']);
 });
 
 Route::middleware('student')->group(function () {

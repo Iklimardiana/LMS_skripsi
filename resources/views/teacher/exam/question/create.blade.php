@@ -11,32 +11,37 @@
                 </div>
             </div>
             <div class="sm:rounded-lg bg-cyan-50 p-4 border border-cyan-500">
-                <form id="questionForm" enctype="multipart/form-data" method="POST" class="md:w-3/4 w-full">
+                @error('content')
+                    {{ $message }}
+                @enderror
+                @error('answer')
+                    {{ $message }}
+                @enderror
+                @error('isCorrect')
+                    {{ $message }}
+                @enderror
+                @error('answer.*.answer_content')
+                    {{ $message }}
+                @enderror
+                @error('answer_content')
+                    {{ $message }}
+                @enderror
+                <form action="/teacher/question/{{ $exam->id }}" id="questionForm" enctype="multipart/form-data"
+                    method="POST" class="md:w-3/4 w-full">
                     @csrf
                     <div id="questionsContainer">
                         <!-- Container untuk satu textarea soal -->
                         <div class="mb-3">
-                            <label for="content" class="font-medium"> Soal 1</label>
-                            {{-- <div class="gap-1">
-                                <textarea
-                                    class="flex text-sm text-gray-900 border border-cyan-400 rounded-md bg-gray-50 focus:outline-none file:bg-cyan-500 w-full md:min-w-96 mt-2 focus:ring-cyan-500 focus:border-cyan-500"
-                                    name="content" id="editor{{ $exam->id }}"></textarea>
-                                <button type="button" id="addOptionBtn" onclick="addOption({{ $exam->id }})"
-                                    class="text-red-500">Tambah
-                                    opsi jawaban</button>
-                            </div> --}}
+                            <label for="content" class="font-medium">Soal Nomor {{ $exam->question->count() + 1 }}</label>
                             <div class="gap-1">
                                 <textarea
                                     class="flex text-sm text-gray-900 border border-cyan-400 rounded-md bg-gray-50 focus:outline-none file:bg-cyan-500 w-full md:min-w-96 mt-2 focus:ring-cyan-500 focus:border-cyan-500"
                                     name="content" id="editor{{ $exam->id }}"></textarea>
-                                <button type="button" id="addOptionBtn" onclick="addOption({{ $exam->id }})"
-                                    class="text-red-500">Tambah
-                                    opsi jawaban</button>
                             </div>
                         </div>
                     </div>
                     <div class="flex justify-start">
-                        <button type="button" onclick="saveOption()"
+                        <button type="submit"
                             class="flex text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-md text-sm p-2 me-2 focus:outline-none mt-3 w-auto">
                             <svg class="me-1 -ms-1 w-5 h-5" xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"
                                 viewBox="0 0 64 64" id="save">
@@ -52,6 +57,15 @@
                             </svg>
                             Simpan
                         </button>
+                        <button type="button" onclick="addOptionForm()"
+                            class="flex text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-md text-sm p-2 me-2 focus:outline-none mt-3 w-auto">
+                            <svg class="w-5 h-5 text-white mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M10 5.757v8.486M5.757 10h8.486M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                            </svg>
+                            Tambah opsi jawaban
+                        </button>
                     </div>
                 </form>
             </div>
@@ -60,160 +74,121 @@
 @endsection
 @push('scripts')
     <script>
-        let firstOptionAdded = false;
-        let optionCount = 0;
-
-        function addOption(idExam) {
-            const questionContent = document.querySelector(`#editor${idExam}`).value;
-
-            // Menambahkan logika AJAX untuk menyimpan pertanyaan ke database
-            $.ajax({
-                url: '/teacher/question/' + idExam,
-                method: 'POST',
-                data: {
-                    content: questionContent,
-                    // tambahkan data lainnya sesuai kebutuhan
+        ClassicEditor
+            .create(document.querySelector(`#editor{!! $exam->id !!}`), {
+                ckfinder: {
+                    uploadUrl: '{{ route('ckeditor.upload') . '?_token=' . csrf_token() }}'
                 },
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(response) {
-                    // Logika setelah pertanyaan berhasil disimpan
-                    console.log('Question AJAX Success - Response:', response);
-
-                    // Mendapatkan idQuestion dari response
-                    const idQuestion = response.id;
-
-                    // Menambahkan form option setelah pertanyaan disimpan
-                    addOptionForm(idQuestion);
-
-                    if (!firstOptionAdded) {
-                        document.getElementById('addOptionBtn').style.display = 'none';
-                        firstOptionAdded = true;
-                    } else {
-                        // Jika bukan pertama kali, panggil addOptionForm
-                        addOptionForm(idQuestion);
-                    }
-                },
-                error: function(error) {
-                    // Logika jika ada kesalahan
-                    console.error('Question AJAX Error - Error:', error);
+                mediaEmbed: {
+                    previewsInData: true
                 }
+            })
+            .then(editor => {
+                console.log('CKEditor initialized successfully');
+            })
+            .catch(error => {
+                console.error(error);
             });
-        }
 
-        function addOptionForm(idQuestion) {
+        let optionCount = 0;
+        let editorInstances = {}; // Pemetaan antara nomor opsi dan instans CKEditor
+        function addOptionForm() {
             const optionsContainer = document.getElementById('questionsContainer');
             optionCount++;
 
             const optionDiv = document.createElement('div');
-            optionDiv.classList.add('mb-3');
-            optionDiv.id = `optionContainer${idQuestion}-${optionCount}`;
+            optionDiv.classList.add('mb-3', 'flex', 'flex-col'); // Menambahkan class flex dan flex-col
+            optionDiv.id = `optionContainer${optionCount}`;
 
+            const labelContainer = document.createElement('div'); // Container untuk label
+            labelContainer.classList.add('ml-6', 'mb-2');
             const label = document.createElement('label');
-            label.htmlFor = `option${optionCount}`;
+            label.htmlFor = `answer${optionCount}`;
             label.className = 'font-medium';
             label.innerText = `Option ${optionCount}`;
-            optionDiv.appendChild(label);
+            labelContainer.appendChild(label);
+            optionDiv.appendChild(labelContainer);
 
-            const inputContainer = document.createElement('div');
-            inputContainer.classList.add('mb-3', 'gap-1');
+            const editorRadioContainer = document.createElement('div');
+            editorRadioContainer.classList.add('flex', 'mb-2', 'gap-1');
 
-            const input = document.createElement('input');
-            input.id = `editorOption${idQuestion}-${optionCount}`;
-            input.type = 'text';
-            input.name = 'content';
-            input.className = 'border border-cyan-400 rounded-md p-2 w-full';
-            inputContainer.appendChild(input);
+            const radio = document.createElement('input');
+            radio.id = `editorOption${optionCount}`;
+            radio.type = 'radio';
+            radio.name = 'answer_content';
+            radio.value = optionCount;
 
-            // Dropdown (select) element
-            const select = document.createElement('select');
-            select.id = `selectOption${idQuestion}-${optionCount}`;
-            select.name = 'isCorrect';
-            select.className = 'border border-cyan-400 rounded-md p-2';
+            const editorElement = document.createElement('textarea');
+            editorElement.id = `editorOptionContent${optionCount}`;
+            editorElement.className = 'border border-cyan-400 rounded-md p-2 w-full';
+            editorElement.name = `answer[${optionCount}][answer_content]`
 
-            // Opsi "Benar"
-            const optionTrue = document.createElement('option');
-            optionTrue.value = '1';
-            optionTrue.text = 'Benar';
-            select.appendChild(optionTrue);
+            editorRadioContainer.appendChild(radio);
+            editorRadioContainer.appendChild(editorElement);
 
-            // Opsi "Salah"
-            const optionFalse = document.createElement('option');
-            optionFalse.value = '0';
-            optionFalse.text = 'Salah';
-            select.appendChild(optionFalse);
+            optionDiv.appendChild(editorRadioContainer);
 
-            inputContainer.appendChild(select);
-
+            const deleteButtonContainer = document.createElement('div');
             const deleteButton = document.createElement('button');
             deleteButton.type = 'button';
             deleteButton.innerText = 'Hapus Option';
-            deleteButton.className = 'text-red-500';
-            deleteButton.addEventListener('click', () => removeOption(idQuestion, optionCount));
-            inputContainer.appendChild(deleteButton);
+            deleteButton.className = 'text-red-500 ml-6';
+            deleteButton.addEventListener('click', () => removeOption(optionCount));
+            deleteButtonContainer.appendChild(deleteButton);
+            optionDiv.appendChild(deleteButtonContainer);
 
-            optionDiv.appendChild(inputContainer);
             optionsContainer.appendChild(optionDiv);
 
-            const addOptionButton = document.createElement('button');
-            addOptionButton.type = 'button';
-            addOptionButton.innerText = 'Tambah Option';
-            addOptionButton.className = 'text-green-500';
-            addOptionButton.addEventListener('click', function() {
-                // Mendapatkan nilai input dan select di sini
-                const optionContent = document.querySelector(`#editorOption${idQuestion}-${optionCount}`).value;
-                const selectElement = document.getElementById(`selectOption${idQuestion}-${optionCount}`);
-                const correctAnswer = selectElement.options[selectElement.selectedIndex].value;
-
-                // Menambahkan logika AJAX untuk menyimpan option ke database
-                $.ajax({
-                    url: '/teacher/option/' + idQuestion,
-                    method: 'POST',
-                    data: {
-                        content: optionContent,
-                        isCorrect: correctAnswer,
-                        // tambahkan data lainnya sesuai kebutuhan
-                    },
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(response) {
-                        // Logika setelah option berhasil disimpan
-                        console.log('Option AJAX Success - Response:', response);
-
-                        // Menambahkan form option setelah option disimpan
-                        addOptionForm(idQuestion);
-                    },
-                    error: function(error) {
-                        // Logika jika ada kesalahan
-                        console.error('Option AJAX Error - Error:', error);
-                    }
-                });
-            });
-            optionsContainer.appendChild(addOptionButton);
+            if (editorElement) {
+                ClassicEditor
+                    .create(editorElement, {
+                        ckfinder: {
+                            uploadUrl: '{{ route('ckeditor.upload') . '?_token=' . csrf_token() }}'
+                        },
+                        mediaEmbed: {
+                            previewsInData: true
+                        }
+                    })
+                    .then(editor => {
+                        console.log('CKEditor berhasil diinisialisasi');
+                        editorInstances[optionCount] = editor;
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            }
         }
 
 
-        function removeOption(idQuestion, optionNumber) {
+        function removeOption(optionNumber) {
             const optionsContainer = document.getElementById('questionsContainer');
-            const optionDiv = document.getElementById(`optionContainer${idQuestion}-${optionNumber}`);
-            optionsContainer.removeChild(optionDiv);
+            const optionDiv = document.getElementById(`optionContainer${optionNumber}`);
 
-            ClassicEditor
-                .instances
-                .find(editor => editor.sourceElement.id === `editorOption${idQuestion}-${optionNumber}`)
-                .destroy();
-            // Reorder option numbers
-            const optionDivs = optionsContainer.children;
-            for (let i = optionNumber; i < optionDivs.length; i++) {
-                const currentOptionNumber = parseInt(optionDivs[i].id.replace(`optionContainer${idQuestion}-`, ''));
-                const newOptionNumber = currentOptionNumber - 1;
-                optionDivs[i].id = `optionContainer${idQuestion}-${newOptionNumber}`;
-                optionDivs[i].querySelector('label').innerText = `Option ${newOptionNumber}`;
+            if (optionDiv) {
+                const editorInstance = editorInstances[optionNumber];
+
+                if (editorInstance) {
+                    editorInstance.destroy();
+                    delete editorInstances[optionNumber];
+                }
+
+                optionsContainer.removeChild(optionDiv);
+
+                for (let i = optionNumber + 1; i <= optionCount; i++) {
+                    const currentOptionDiv = document.getElementById(`optionContainer${i}`);
+                    const updatedOptionNumber = i - 1;
+
+                    currentOptionDiv.id = `optionContainer${updatedOptionNumber}`;
+                    currentOptionDiv.querySelector('label').innerText = `Option${updatedOptionNumber}`;
+
+                    editorInstances[updatedOptionNumber] = editorInstances[i];
+                    delete editorInstances[i];
+                }
+
+                optionCount--;
+            } else {
+                console.error(`Option Container dengan ID 'optionContainer${optionNumber}'tidak ditemukan.`);
             }
-
-            optionCount--;
         }
     </script>
 @endpush

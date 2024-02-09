@@ -10,11 +10,11 @@ class Answer extends Model
     use HasFactory;
 
     protected $table = 'answer';
-    protected $primaryKey ='id';
+    protected $primaryKey = 'id';
 
     protected $fillable = [
         'id',
-        'content',
+        'answer_content',
         'isCorrect',
         'idQuestion',
     ];

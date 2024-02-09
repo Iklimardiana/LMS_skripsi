@@ -8,6 +8,7 @@ use App\Models\Question;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ExamController extends Controller
 {
@@ -124,46 +125,51 @@ class ExamController extends Controller
 
     public function storeQuestion(Request $request, $idExam)
     {
-        $request->validate([
-            'content' => 'required',
-        ], [
-            'content.required' => 'Konten soal harus diisi'
-        ]);
-
+        DB::beginTransaction();
         $exam = Exam::findOrFail($idExam);
-        $idExam = $exam->id;
 
-        $question = new Question;
-        $question->content = $request->input('content');
-        $question->idExam = $idExam;
-        $question->save();
+        $request->validate([
+            'content' => 'required|string',
+            'answer_content' => 'required|string',
+        ], [
+            'content.required' => 'Kolom uraian Pertanyan harus diisi',
+            'answer_content.required' => 'Jawaban harus dipilih',
+        ]);
+        try {
+            $question = new Question;
+            $question->content = strip_tags($request->content);
+            $question->idExam = $exam->id;
 
-
-        $description = $request->input('content');
-
-        $uploadedImages = session('uploaded_images', []);
-
-        foreach ($uploadedImages as $imageUrl) {
-            if (strpos($description, $imageUrl) === false) {
-                $fileName = basename($imageUrl);
-                $filePath = public_path('images/media/' . $fileName);
-
-                if (file_exists($filePath)) {
-                    unlink($filePath);
+            $question->save();
+            foreach ($request->answer as $key => $choice) {
+                if (!empty($choice['answer_content'])) {
+                    $answer = new Answer;
+                    $answer->idQuestion = $question->id;
+                    $answer->answer_content = strip_tags($choice['answer_content']);
+                    $answer->isCorrect = $key == $request->answer_content ? '1' : '0';
+                    $answer->save();
+                } else {
+                    return back()->with('error', 'Jawaban tidak boleh kosong.');
                 }
             }
+
+            DB::commit();
+
+            // return response()->json([
+            //     'status' => TRUE,
+            //     'message' => 'Question and answers saved successfully.',
+            //     'data' => $question
+            // ], 200);
+            return redirect('/teacher/exam/' . $exam->idSubject)->with('success', 'Anda berhasil menambahkan soal');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            // return response()->json([
+            //     'status' => FALSE,
+            //     'message' => 'Failed to save question and answers. ' . $e->getMessage()
+            // ], 500);
+            return back()->with('error', $e->getMessage());
         }
-
-        // Hapus sesi setelah selesai
-        session()->forget('uploaded_images');
-
-        // Return the compact form of the question
-        return response()->json([
-            'id' => $question->id,
-            'content' => $question->content,
-            'idExam' => $question->idExam,
-            // Add more fields as needed
-        ]);
     }
 
     public function storeOption(Request $request, $idQuestion)
