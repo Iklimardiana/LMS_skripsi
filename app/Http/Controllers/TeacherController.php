@@ -85,7 +85,7 @@ class TeacherController extends Controller
         $enrollment = $enrollmentQuery->paginate(10);
         $iteration = $enrollment->firstItem();
         $students = $enrollment->pluck('user')->where('role', 'student');
-        $progres = Progres::where('idSubject', $id)->first();
+        $progres = Progres::where('idSubject', $id)->get();
 
         return view('teacher.student.view', compact('subject', 'progres', 'iteration', 'students', 'enrollment'));
     }

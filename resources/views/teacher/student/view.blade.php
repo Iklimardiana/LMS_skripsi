@@ -62,7 +62,8 @@
                                     </td>
                                     <td class="px-6 py-1">
                                         @php
-                                            $progresUser = $progres->where('idUser', $enroll->idUser)->first();
+                                            $progresUser = $progres->where('idUser', $enroll->user->id)->first();
+                                            // dd($progresUser);
                                         @endphp
                                         @if ($progresUser ? $progresUser->sequence : '')
                                             @if ($progresUser->sequence == $subject->Material->count())

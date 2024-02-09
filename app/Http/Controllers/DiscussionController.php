@@ -16,27 +16,23 @@ class DiscussionController extends Controller
     {
         $subject = Subject::findOrFail($id);
 
-        // Mengambil nama-nama materi unik dari kumpulan pertanyaan pada subjek ini
         $materials = Material::where('id', function ($query) use ($subject) {
             $query->select('id')
                 ->where('idSubject', $subject->id)
                 ->distinct();
         })->pluck('name', 'id');
 
-        // Mengambil semua materi terkait dengan subjek
-        $allMaterials = Material::where('idSubject', $subject->id)->get();
-
-        // Mengambil pertanyaan berdasarkan materi yang dipilih (jika ada)
         $selectedMaterial = request('material');
         $questions = DiscussionQuestion::where('idSubject', $subject->id)
             ->when($selectedMaterial, function ($query) use ($selectedMaterial) {
                 return $query->where('idMaterial', $selectedMaterial);
             })
+            ->orderBy('created_at', 'desc')
             ->get();
 
         $questionCount = count($questions);
 
-        return view("discussion.view", compact("subject", "questions", "questionCount", "materials", "allMaterials"));
+        return view("discussion.view", compact("subject", "questions", "questionCount", "materials"));
     }
 
     public function showQuestion($id)
@@ -51,6 +47,11 @@ class DiscussionController extends Controller
             'question' => 'required',
             'image' => 'nullable|mimes:png,jpeg,jpg|max:2048',
             'idMaterial' => 'required',
+        ], [
+            'question.required' => 'Kolom uraian pertanyaan harus diisi',
+            'image.mimes' => 'Gambar harus berformat PNG, JPEG, atau JPG',
+            'idMaterial.required' => 'Materi Harus dipilih',
+            'image.max' => 'Gambar tidak lebih dari 2 mb',
         ]);
 
         $subject = Subject::findOrFail($id);
@@ -104,8 +105,10 @@ class DiscussionController extends Controller
             'image' => 'mimes:png,jpeg,jpg|max:2048',
             'idMaterial' => 'required',
         ], [
-            'idMaterial.required' => 'Materi Harus Dipilih',
-            'question.required' => 'Kolom pertanyaan Harus Diisi',
+            'question.required' => 'Kolom uraian pertanyaan harus diisi',
+            'image.mimes' => 'Gambar harus berformat PNG, JPEG, atau JPG',
+            'idMaterial.required' => 'Materi Harus dipilih',
+            'image.max' => 'Gambar tidak lebih dari 2 mb',
         ]);
 
         if ($request->hasFile('image')) {
@@ -137,6 +140,8 @@ class DiscussionController extends Controller
     {
         $request->validate([
             'answer' => 'required',
+        ], [
+            'answer.required' => 'Kolom pertanyaan harus diisi'
         ]);
 
         $question = DiscussionQuestion::findOrFail($id);
@@ -158,6 +163,8 @@ class DiscussionController extends Controller
     {
         $request->validate([
             'answer' => 'required'
+        ], [
+            'answer.required' => 'Kolom pertanyaan harus diisi'
         ]);
         $idUser = Auth::id();
 

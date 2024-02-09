@@ -11,6 +11,7 @@
     <script src="https://cdn.jsdelivr.net/npm/ckeditor5-build-classic-with-image-resize@12.4.0/build/ckeditor.min.js">
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    {{-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> --}}
 </head>
 
 <body>
@@ -25,6 +26,46 @@
     </main>
     @include('partials.footer')
     @stack('scripts')
+
+    {{-- sweetAlert --}}
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        const deleteData = (event, url) => {
+            event.preventDefault();
+
+            swal({
+                    title: "Anda yakin akan menghapusnya?",
+                    text: "Setelah dihapus, Anda tidak akan dapat memulihkan data ini!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        swal("Data Anda telah dihapus!", {
+                            icon: "success",
+                        });
+
+                        fetch(url, {
+                                method: "DELETE",
+                                headers: {
+                                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                                }
+                            })
+                            .then(response => {
+                                location.reload();
+                            })
+                            .catch(error => {
+                                // 
+                            });
+
+                    } else {
+                        swal("Data Anda aman!");
+                    }
+                });
+        }
+    </script>
+
     <script>
         function redirectToAddTeacher() {
             window.location.href = '/admin/teacher/create';

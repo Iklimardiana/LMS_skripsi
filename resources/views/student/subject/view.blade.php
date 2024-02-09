@@ -79,6 +79,8 @@
                     @php
                         $currentProgres = $progres->where('idSubject', $enroll->idSubject)->first();
                         $sequence = $currentProgres ? $currentProgres->sequence : 1;
+                        $materialCount = $enroll->subject->material->count();
+                        $sequence = $sequence > $materialCount ? $materialCount : $sequence;
                     @endphp
                     <div
                         class="flex items-center justify-between h-36 pr-2 md:pr-3 py-0 pl-0 justify-items-center rounded-lg bg-cyan-50 border border-cyan-500">

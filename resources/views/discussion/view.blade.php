@@ -106,27 +106,18 @@
                                         @endforelse
                                     </select>
                                 </div>
-                                @error('idMaterial')
-                                    {{ $message }}
-                                @enderror
                                 <div class="col-span-2">
                                     <label for="question" class="block mb-2 text-sm font-medium text-gray-900">Uraian
                                         Pertanyaan</label>
                                     <textarea type="text" name="question" id="question"
                                         class="bg-gray-50 h-28 border border-cyan-400 text-gray-900 text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 block w-full p-2.5 "></textarea>
                                 </div>
-                                @error('questio')
-                                    {{ $message }}
-                                @enderror
                                 <div class="col-span-2">
                                     <label for="image" class="block mb-2 text-sm font-medium text-gray-900">Unggah
                                         Gambar</label>
                                     <input type="file" name="image" id="image"
                                         class="bg-gray-50 border border-cyan-400 text-gray-900 text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 block w-full">
                                 </div>
-                                @error('image')
-                                    {{ $message }}
-                                @enderror
                             </div>
                             <button type="submit"
                                 class="text-white inline-flex items-center bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
@@ -251,6 +242,7 @@
                                             @method('DELETE')
                                             @csrf
                                             <button type="submit"
+                                                onclick="deleteData(event, '/discussion/{{ $question->id }}')"
                                                 class="block px-4 py-2 mx-auto text-sm text-gray-700 hover:bg-cyan-100"
                                                 role="menuitem">Hapus</button>
                                         </form>

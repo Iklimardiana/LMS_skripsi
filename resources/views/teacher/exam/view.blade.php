@@ -224,7 +224,9 @@
                                     <form action="/teacher/exam/{{ $exam->id }}" method="POST" id="deleteForm">
                                         @method('DELETE')
                                         @csrf
-                                        <button type="button" onclick="showAlertDelete()" title="Hapus Ujian"
+                                        <button type="button"
+                                            onclick="deleteData(event, '/teacher/exam/{{ $exam->id }}')"
+                                            title="Hapus Ujian"
                                             class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none">
                                             <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                                 fill="none" viewBox="0 0 18 20">
@@ -381,7 +383,8 @@
                                         <form action="/teacher/exam/" method="POST" id="deleteForm">
                                             @method('DELETE')
                                             @csrf
-                                            <button type="button" onclick="showAlertDelete()" title="Hapus seluruh soal"
+                                            <button type="button" onclick="deleteData(event, '/teacher/exam/')"
+                                                title="Hapus seluruh soal"
                                                 class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none">
                                                 <svg class="w-5 h-5" aria-hidden="true"
                                                     xmlns="http://www.w3.org/2000/svg" fill="none"
