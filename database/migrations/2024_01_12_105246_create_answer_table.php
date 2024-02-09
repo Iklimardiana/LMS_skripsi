@@ -14,8 +14,8 @@ return new class extends Migration {
     {
         Schema::create('answer', function (Blueprint $table) {
             $table->id();
-            $table->longText('content');
-            $table->enum('isCorrect', [0, 1]);
+            $table->longText('answer_content');
+            $table->enum('isCorrect', ['0', '1']);
             $table->unsignedBigInteger('idQuestion');
             $table->foreign('idQuestion')->references('id')->on('question')->onDelete('cascade');
             $table->timestamps();
