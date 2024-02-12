@@ -9,6 +9,8 @@ use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 
 class ExamController extends Controller
 {
@@ -141,6 +143,26 @@ class ExamController extends Controller
             $question->idExam = $exam->id;
 
             $question->save();
+            $description = $request->input('content');
+            // dd("Description question: $description");
+
+            $uploadedImages = session('uploaded_images_questions', []);
+
+            foreach ($uploadedImages as $imageUrl) {
+                // dd("Description question: $description", "Image URL: $imageUrl");
+                if (strpos($description, $imageUrl) === false) {
+                    $fileName = basename($imageUrl);
+                    $filePath = public_path('images/media/questions/' . $fileName);
+
+                    if (file_exists($filePath)) {
+                        unlink($filePath);
+                    }
+                }
+            }
+
+            // Hapus sesi setelah selesai
+            session()->forget('uploaded_images_questions');
+
             foreach ($request->answer as $key => $choice) {
                 if (!empty($choice['answer_content'])) {
                     $answer = new Answer;
@@ -148,74 +170,44 @@ class ExamController extends Controller
                     $answer->answer_content = strip_tags($choice['answer_content']);
                     $answer->isCorrect = $key == $request->answer_content ? '1' : '0';
                     $answer->save();
+
+                    $description = $choice['answer_content'];
+                    $uploadedImages = session("uploaded_images_answers_$key", []);
+                    // $uploadedImages = session('uploaded_images_answers', []);
+                    // dd($uploadedImages);
+
+                    foreach ($uploadedImages as $imageUrl) {
+                        // dd($description, $imageUrl);
+                        if (strpos($description, $imageUrl) === false) {
+                            $fileName = basename($imageUrl);
+                            $filePath = public_path("images/media/answers_$key/" . $fileName);
+
+                            if (file_exists($filePath)) {
+                                unlink($filePath);
+                            }
+                        }
+                    }
+
+                    // Hapus sesi setelah selesai
+                    session()->forget("uploaded_images_answers_$key");
                 } else {
                     return back()->with('error', 'Jawaban tidak boleh kosong.');
                 }
             }
 
             DB::commit();
-
-            // return response()->json([
-            //     'status' => TRUE,
-            //     'message' => 'Question and answers saved successfully.',
-            //     'data' => $question
-            // ], 200);
             return redirect('/teacher/exam/' . $exam->idSubject)->with('success', 'Anda berhasil menambahkan soal');
         } catch (\Exception $e) {
             DB::rollBack();
-
-            // return response()->json([
-            //     'status' => FALSE,
-            //     'message' => 'Failed to save question and answers. ' . $e->getMessage()
-            // ], 500);
             return back()->with('error', $e->getMessage());
         }
     }
 
-    public function storeOption(Request $request, $idQuestion)
+    public function editQuestion($id)
     {
-        $request->validate([
-            'content' => 'required',
-            'isCorrect' => 'required',
-        ], [
-            'content.required' => 'Konten soal harus diisi',
-            'isCorrect.required' => 'Mohon pilih benar atau salahnya option',
-        ]);
+        $question = Question::findOrFail($id);
+        $answer = Answer::where('idQuestion', $question->id)->get();
 
-        $question = Question::findOrFail($idQuestion);
-        $idQuestion = $question->id;
-
-        $option = new Answer;
-
-        $option->content = $request->input('content');
-        $option->idQuestion = $idQuestion;
-
-        $option->save();
-
-        $description = $request->input('content');
-
-        $uploadedImages = session('uploaded_images', []);
-
-        foreach ($uploadedImages as $imageUrl) {
-            if (strpos($description, $imageUrl) === false) {
-                $fileName = basename($imageUrl);
-                $filePath = public_path('images/media/' . $fileName);
-
-                if (file_exists($filePath)) {
-                    unlink($filePath);
-                }
-            }
-        }
-
-        // Hapus sesi setelah selesai
-        session()->forget('uploaded_images');
-
-        return response()->json([
-            'id' => $option->id,
-            'content' => $option->content,
-            'idQuestion' => $option->idQuestion,
-            'isCorrect' => $option->isCorrect
-            // Add more fields as needed
-        ]);
+        return view('teacher.question.edit', compact('question', 'answer'));
     }
 }

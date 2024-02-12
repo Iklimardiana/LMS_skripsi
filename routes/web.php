@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CKEditorController;
 use App\Http\Controllers\DiscussionController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\SubjectController;
@@ -80,8 +81,10 @@ Route::middleware('teacher')->group(function () {
     route::delete('/teacher/assignment/{id}', [TeacherController::class, 'destroyAssignment']);
 
     // upload image from CKEditor
-    Route::post('/upload', [TeacherController::class, 'uploadImage'])->name('ckeditor.upload');
+    // Route::post('/upload', [TeacherController::class, 'uploadImage'])->name('ckeditor.upload');
     Route::post('/delete-ckeditor-image', [TeacherController::class, 'deleteCkeditorImage'])->name('ckeditor.deleteCkeditorImage');
+    Route::post('/upload', [CKEditorController::class, 'uploadImage'])->name('ckeditor.upload');
+    Route::post('/upload-image-answer', [CKEditorController::class, 'uploadImageAnswer'])->name('ckeditor-answer.upload');
 
     Route::get('/teacher/exam/{idSubject}', [ExamController::class, 'exams']);
     Route::post('/teacher/exam/{idSubject}', [ExamController::class, 'storeExam']);
@@ -89,9 +92,6 @@ Route::middleware('teacher')->group(function () {
     Route::put('/teacher/exam/{id}/update-status', [ExamController::class, 'updateStatus']);
     Route::put('/teacher/exam/{id}', [ExamController::class, 'updateExam']);
     Route::get('/teacher/{idExam}/question/create', [ExamController::class, 'createQuestion']);
-    Route::post('/teacher/question/{idExam}', [ExamController::class, 'storeQuestion']);
-    Route::post('/teacher/option/{idQuestion}', [ExamController::class, 'storeOption']);
-
     Route::post('/teacher/question/{idExam}', [ExamController::class, 'storeQuestion']);
 });
 

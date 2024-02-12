@@ -247,12 +247,12 @@ class TeacherController extends Controller
 
         $description = $request->input('content');
 
-        $uploadedImages = session('uploaded_images', []);
+        $uploadedImages = session('uploaded_images_materials', []);
 
         foreach ($uploadedImages as $imageUrl) {
             if (strpos($description, $imageUrl) === false) {
                 $fileName = basename($imageUrl);
-                $filePath = public_path('images/media/' . $fileName);
+                $filePath = public_path('images/media/materials/' . $fileName);
 
                 if (file_exists($filePath)) {
                     unlink($filePath);
@@ -261,7 +261,7 @@ class TeacherController extends Controller
         }
 
         // Hapus sesi setelah selesai
-        session()->forget('uploaded_images');
+        session()->forget('uploaded_images_materials');
 
         // Ambil urutan yang ada setelah penyimpanan
         $existingSequencesAfterSave = Material::where('idSubject', $idSubject)
@@ -421,7 +421,7 @@ class TeacherController extends Controller
     private function deleteImageFromStorage($imageUrl)
     {
         $fileName = basename($imageUrl);
-        $filePath = public_path('images/media/' . $fileName);
+        $filePath = public_path('images/media/materials/' . $fileName);
 
         if (file_exists($filePath)) {
             unlink($filePath);

@@ -30,7 +30,7 @@
     {{-- sweetAlert --}}
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
-        const deleteData = (event, url) => {
+        const deleteData = (event, url, elementId) => {
             event.preventDefault();
 
             swal({
@@ -53,7 +53,11 @@
                                 }
                             })
                             .then(response => {
-                                location.reload();
+                                const elementToRemove = document.getElementById(elementId);
+                                if (elementToRemove) {
+                                    elementToRemove.remove();
+                                }
+                                location.reload()
                             })
                             .catch(error => {
                                 // 

@@ -150,7 +150,7 @@
                             <div class="gap-1">
                                 <textarea
                                     class="flex text-sm text-gray-900 border border-cyan-400 rounded-md bg-gray-50 focus:outline-none file:bg-cyan-500 w-full md:min-w-96 mt-2 focus:ring-cyan-500 focus:border-cyan-500"
-                                    name="content" id="editor{{ $exam->id }}"></textarea>
+                                    name="content" id="editor{{ $exam->id }}" value="{{ old('content') }}"></textarea>
                             </div>
                             @error('content')
                                 <div id="alert-questionContent"
@@ -179,6 +179,15 @@
                         </div>
                     </div>
                     <div class="flex justify-start">
+                        <a href="/teacher/exam/{{ $exam->idSubject }}"
+                            class="flex gap-1 cursor-pointer text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-md text-sm p-2 me-2 focus:outline-none mt-3 w-auto">
+                            <svg class="w-5 h-5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 14 10">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="M13 5H1m0 0 4 4M1 5l4-4" />
+                            </svg>
+                            Kembali
+                        </a>
                         <button type="submit"
                             class="flex text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-md text-sm p-2 me-2 focus:outline-none mt-3 w-auto">
                             <svg class="me-1 -ms-1 w-5 h-5" xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"
@@ -216,7 +225,8 @@
         ClassicEditor
             .create(document.querySelector(`#editor{!! $exam->id !!}`), {
                 ckfinder: {
-                    uploadUrl: '{{ route('ckeditor.upload') . '?_token=' . csrf_token() }}'
+                    uploadUrl: '{{ route('ckeditor.upload') . '?_token=' . csrf_token() }}&upload_type=question'
+                    // uploadUrl: '{{ route('ckeditor.upload') . '?_token=' . csrf_token() }}'
                 },
                 mediaEmbed: {
                     previewsInData: true
@@ -231,9 +241,12 @@
 
         let optionCount = 0;
         let editorInstances = {}; // Pemetaan antara nomor opsi dan instans CKEditor
+        let answerIndex = 0;
+
         function addOptionForm() {
             const optionsContainer = document.getElementById('questionsContainer');
             optionCount++;
+            answerIndex = optionCount;
 
             const optionDiv = document.createElement('div');
             optionDiv.classList.add('mb-3', 'flex', 'flex-col'); // Menambahkan class flex dan flex-col
@@ -260,7 +273,12 @@
             const editorElement = document.createElement('textarea');
             editorElement.id = `editorOptionContent${optionCount}`;
             editorElement.className = 'border border-cyan-400 rounded-md p-2 w-full';
-            editorElement.name = `answer[${optionCount}][answer_content]`
+            editorElement.name = `answer[${optionCount}][answer_content]`;
+
+            const oldContent = document.getElementById(`old_answer_content_${optionCount}`);
+            if (oldContent) {
+                editorElement.value = oldContent.value;
+            }
 
             editorRadioContainer.appendChild(radio);
             editorRadioContainer.appendChild(editorElement);
@@ -282,7 +300,10 @@
                 ClassicEditor
                     .create(editorElement, {
                         ckfinder: {
-                            uploadUrl: '{{ route('ckeditor.upload') . '?_token=' . csrf_token() }}'
+                            uploadUrl: '{{ route('ckeditor.upload') }}?_token=' + encodeURIComponent(
+                                '{{ csrf_token() }}') + '&upload_type=answer&answer_index=' + encodeURIComponent(
+                                answerIndex)
+                            // uploadUrl: '{{ route('ckeditor.upload') . '?_token=' . csrf_token() }}&upload_type=answer'
                         },
                         mediaEmbed: {
                             previewsInData: true

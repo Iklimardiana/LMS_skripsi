@@ -210,7 +210,8 @@
                     </thead>
                     <tbody class="text-center">
                         @forelse ($exams as $exam)
-                            <tr class="odd:bg-gray-50 even:bg-cyan-50 border border-cyan-500">
+                            <tr class="odd:bg-gray-50 even:bg-cyan-50 border border-cyan-500"
+                                id="exam-{{ $exam->id }}">
                                 <td class="px-1 py-4 font-medium text-gray-900 whitespace-nowrap border border-cyan-500">
                                     {{ $iteration++ }}
                                 </td>
@@ -221,11 +222,11 @@
                                     {{ $exam->type }}
                                 </td>
                                 <td class="p-2 flex flex-items-center justify-center gap-1">
-                                    <form action="/teacher/exam/{{ $exam->id }}" method="POST" id="deleteForm">
+                                    <form action="/teacher/exam/{{ $exam->id }}" method="POST">
                                         @method('DELETE')
                                         @csrf
                                         <button type="button"
-                                            onclick="deleteData(event, '/teacher/exam/{{ $exam->id }}')"
+                                            onclick="deleteData(event, '/teacher/exam/{{ $exam->id }}','exam-{{ $exam->id }}')"
                                             title="Hapus Ujian"
                                             class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none">
                                             <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -435,16 +436,6 @@
 @endsection
 @push('scripts')
     <script>
-        function showAlertDelete() {
-            var isConfirmed = confirm('Yakin ingin menghapus ujian ini?');
-
-            if (isConfirmed) {
-                document.getElementById('deleteForm').submit();
-            } else {
-                console.log('Penghapusan dibatalkan.');
-            }
-        }
-
         function redirectToCreateQuestion(idExam) {
             var baseUrl = '/teacher/';
             var cretaeQuestionUrl = baseUrl + idExam + '/question/create';
@@ -452,23 +443,38 @@
         }
 
         function changeStatus(examId) {
-            console.log("Button Clicked for Exam ID: " + examId);
-            var form = document.getElementById('statusForm' + examId);
+            swal({
+                    title: "Konfirmasi",
+                    text: "Anda yakin ingin mengubah status ujian?",
+                    icon: "warning",
+                    buttons: ["Batal", "Ya"],
+                    dangerMode: true,
+                })
+                .then((willChange) => {
+                    if (willChange) {
+                        swal("Status akses ujian telah berubah!", {
+                            icon: "success",
+                        });
 
-            if (form) {
-                var statusInput = form.querySelector('input[name="status"]');
-                console.log(statusInput);
+                        var form = document.getElementById('statusForm' + examId);
 
-                if (statusInput) {
-                    statusInput.value = 'PUT';
+                        if (form) {
+                            var statusInput = form.querySelector('input[name="status"]');
+                            console.log(statusInput);
 
-                    form.submit();
-                } else {
-                    console.error("Input status tidak ditemukan dalam formulir.");
-                }
-            } else {
-                console.error("Formulir dengan ID tidak ditemukan.");
-            }
+                            if (statusInput) {
+                                statusInput.value = 'PUT';
+                                form.submit();
+                            } else {
+                                console.error("Input status tidak ditemukan dalam formulir.");
+                            }
+                        } else {
+                            console.error("Formulir dengan ID tidak ditemukan.");
+                        }
+                    } else {
+                        swal("Perubahan dibatalkan!");
+                    }
+                });
         }
     </script>
 @endpush
