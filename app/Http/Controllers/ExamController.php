@@ -139,17 +139,15 @@ class ExamController extends Controller
         ]);
         try {
             $question = new Question;
-            $question->content = strip_tags($request->content);
+            $question->content = $request->input('content');
             $question->idExam = $exam->id;
 
             $question->save();
             $description = $request->input('content');
-            // dd("Description question: $description");
 
             $uploadedImages = session('uploaded_images_questions', []);
 
             foreach ($uploadedImages as $imageUrl) {
-                // dd("Description question: $description", "Image URL: $imageUrl");
                 if (strpos($description, $imageUrl) === false) {
                     $fileName = basename($imageUrl);
                     $filePath = public_path('images/media/questions/' . $fileName);
@@ -167,17 +165,14 @@ class ExamController extends Controller
                 if (!empty($choice['answer_content'])) {
                     $answer = new Answer;
                     $answer->idQuestion = $question->id;
-                    $answer->answer_content = strip_tags($choice['answer_content']);
+                    $answer->answer_content = $choice['answer_content'];
                     $answer->isCorrect = $key == $request->answer_content ? '1' : '0';
                     $answer->save();
 
                     $description = $choice['answer_content'];
                     $uploadedImages = session("uploaded_images_answers_$key", []);
-                    // $uploadedImages = session('uploaded_images_answers', []);
-                    // dd($uploadedImages);
 
                     foreach ($uploadedImages as $imageUrl) {
-                        // dd($description, $imageUrl);
                         if (strpos($description, $imageUrl) === false) {
                             $fileName = basename($imageUrl);
                             $filePath = public_path("images/media/answers_$key/" . $fileName);
@@ -208,6 +203,14 @@ class ExamController extends Controller
         $question = Question::findOrFail($id);
         $answer = Answer::where('idQuestion', $question->id)->get();
 
-        return view('teacher.question.edit', compact('question', 'answer'));
+        return view('teacher.exam.question.edit', compact('question', 'answer'));
+    }
+
+    public function showQuestion($idExam)
+    {
+        $exam = Exam::findOrFail($idExam);
+        $questions = Question::where('idExam', $exam->id)->get();
+
+        return view('teacher.exam.question.show', compact('exam', 'questions'));
     }
 }

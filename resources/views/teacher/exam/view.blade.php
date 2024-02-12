@@ -396,7 +396,8 @@
                                                 </svg>
                                             </button>
                                         </form>
-                                        <button type="button" title="klik untuk pratinjau soal"
+                                        <button type="button" onclick="redirectToShowQuestions({{ $exam->id }})"
+                                            title="klik untuk pratinjau soal"
                                             class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none">
                                             <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                                 fill="none" viewBox="0 0 20 14">
@@ -408,7 +409,7 @@
                                                 </g>
                                             </svg>
                                         </button>
-                                        <button type="button"
+                                        {{-- <button type="button" onclick="redirectToEditQuestion({{ $question->id }})"
                                             class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none"
                                             title="Klik untuk edit soal">
                                             <svg class="feather feather-edit w-5 h-5" fill="none"
@@ -417,7 +418,7 @@
                                                 <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
                                                 <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
                                             </svg>
-                                        </button>
+                                        </button> --}}
                                     </div>
                                 </td>
                             </tr>
@@ -440,6 +441,12 @@
             var baseUrl = '/teacher/';
             var cretaeQuestionUrl = baseUrl + idExam + '/question/create';
             window.location.href = cretaeQuestionUrl;
+        }
+
+        function redirectToShowQuestions(idExam) {
+            var baserUrl = '/teacher/';
+            var showQuestionsUrl = baserUrl + idExam + '/questions/show'
+            window.location.href = showQuestionsUrl;
         }
 
         function changeStatus(examId) {

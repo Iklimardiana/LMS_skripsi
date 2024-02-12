@@ -7,7 +7,7 @@
         <div class="p-4 border-2 border-gray-200 min-h-56 border-dashed h-auto mb-20 rounded-lg ">
             <div class="gap-2 mb-2">
                 <div class="text-white font-medium text-lg">
-                    <p class="text-cyan-500">Tambah Soal Pada {{ $exam->title }}</p>
+                    <p class="text-cyan-500">Edit Soal Pada {{ $question->exam->title }}</p>
                 </div>
             </div>
             <div class="sm:rounded-lg bg-cyan-50 p-4 border border-cyan-500">
@@ -139,18 +139,18 @@
                         </button>
                     </div>
                 @enderror
-                <form action="/teacher/question/{{ $exam->id }}" id="questionForm" enctype="multipart/form-data"
+                <form action="/teacher/question/{{ $question->id }}" id="questionForm" enctype="multipart/form-data"
                     method="POST" class="md:w-3/4 w-full">
                     @csrf
                     <div id="questionsContainer">
                         <!-- Container untuk satu textarea soal -->
                         <div class="mb-3">
                             <label for="content" class="font-medium">Soal Nomor
-                                {{ $exam->question->count() + 1 }}</label>
+                                {{ $question->count() + 1 }}</label>
                             <div class="gap-1">
                                 <textarea
                                     class="flex text-sm text-gray-900 border border-cyan-400 rounded-md bg-gray-50 focus:outline-none file:bg-cyan-500 w-full md:min-w-96 mt-2 focus:ring-cyan-500 focus:border-cyan-500"
-                                    name="content" id="editor{{ $exam->id }}">{{ old('content') }}</textarea>
+                                    name="content" id="editor{{ $question->idExam }}">{{ old('content') }}</textarea>
                             </div>
                             @error('content')
                                 <div id="alert-questionContent"
@@ -179,7 +179,7 @@
                         </div>
                     </div>
                     <div class="flex justify-start">
-                        <a href="/teacher/exam/{{ $exam->idSubject }}"
+                        <a href="/teacher/exam/{{ $question->exam->idSubject }}"
                             class="flex gap-1 cursor-pointer text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-md text-sm p-2 me-2 focus:outline-none mt-3 w-auto">
                             <svg class="w-5 h-5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                 fill="none" viewBox="0 0 14 10">
