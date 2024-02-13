@@ -95,6 +95,8 @@ Route::middleware('teacher')->group(function () {
     Route::post('/teacher/question/{idExam}', [ExamController::class, 'storeQuestion']);
     Route::get('/teacher/{idExam}/questions/show', [ExamController::class, 'showQuestion']);
     Route::get('/teacher/question/{id}/edit', [ExamController::class, 'editQuestion']);
+    Route::put('/exam/{idExam}/question/{idQuestion}', [ExamController::class, 'updateQuestion']);
+    Route::delete('/exam/question/{id}', [ExamController::class, 'destroyQuestion']);
 });
 
 Route::middleware('student')->group(function () {

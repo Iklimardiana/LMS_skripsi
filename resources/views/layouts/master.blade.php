@@ -32,7 +32,6 @@
     <script>
         const deleteData = (event, url, elementId) => {
             event.preventDefault();
-
             swal({
                     title: "Anda yakin akan menghapusnya?",
                     text: "Setelah dihapus, Anda tidak akan dapat memulihkan data ini!",

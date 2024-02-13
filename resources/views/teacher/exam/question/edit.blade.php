@@ -139,8 +139,9 @@
                         </button>
                     </div>
                 @enderror
-                <form action="/teacher/question/{{ $question->id }}" id="questionForm" enctype="multipart/form-data"
-                    method="POST" class="md:w-3/4 w-full">
+                <form action="/exam/{{ $question->idExam }}/question/{{ $question->id }}" id="questionForm"
+                    enctype="multipart/form-data" method="POST" class="md:w-3/4 w-full">
+                    @method('PUT')
                     @csrf
                     <div id="questionsContainer">
                         <!-- Container untuk satu textarea soal -->
@@ -150,7 +151,7 @@
                             <div class="gap-1">
                                 <textarea
                                     class="flex text-sm text-gray-900 border border-cyan-400 rounded-md bg-gray-50 focus:outline-none file:bg-cyan-500 w-full md:min-w-96 mt-2 focus:ring-cyan-500 focus:border-cyan-500"
-                                    name="content" id="editor{{ $question->idExam }}">{{ old('content') }}</textarea>
+                                    name="content" id="editor{{ $question->idExam }}">{{ $question->content }}</textarea>
                             </div>
                             @error('content')
                                 <div id="alert-questionContent"
@@ -177,9 +178,24 @@
                                 </div>
                             @enderror
                         </div>
+                        @foreach ($answers as $answer)
+                            <div class="mb-3" id="optionContainer-{{ $answer->id }}">
+                                <label for="editorOption{{ $loop->index + 1 }}" class="font-medium">Opsi
+                                    {{ $loop->index + 1 }}</label>
+                                <div class="flex mb-2 gap-1">
+                                    <input type="radio" name="answer_content" value="{{ $loop->index + 1 }}"
+                                        id="editorOption{{ $loop->index + 1 }}"
+                                        @if ($answer->isCorrect == '1') checked @endif>
+                                    <textarea id="editorOptionContent{{ $loop->index + 1 }}" name="answer[{{ $loop->index + 1 }}][answer_content]"
+                                        class="border border-cyan-400 rounded-md p-2 w-full">{{ $answer->answer_content }}</textarea>
+                                </div>
+                                <button type="button" onclick="removeOption({{ $loop->index + 1 }})"
+                                    class="text-red-500 ml-6">Hapus Opsi</button>
+                            </div>
+                        @endforeach
                     </div>
                     <div class="flex justify-start">
-                        <a href="/teacher/exam/{{ $question->exam->idSubject }}"
+                        <a href="/teacher/{{ $question->idExam }}/questions/show"
                             class="flex gap-1 cursor-pointer text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-md text-sm p-2 me-2 focus:outline-none mt-3 w-auto">
                             <svg class="w-5 h-5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                 fill="none" viewBox="0 0 14 10">
@@ -202,7 +218,7 @@
                                 <line x1="26" x2="26" y1="48" y2="58" fill="none"
                                     stroke="#FFFFFF" stroke-miterlimit="10" stroke-width="4"></line>
                             </svg>
-                            Simpan
+                            Perbarui
                         </button>
                         <button type="button" onclick="addOptionForm()"
                             class="flex text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-md text-sm p-2 me-2 focus:outline-none mt-3 w-auto">
@@ -223,7 +239,7 @@
 @push('scripts')
     <script>
         ClassicEditor
-            .create(document.querySelector(`#editor{!! $exam->id !!}`), {
+            .create(document.querySelector(`#editor{!! $question->idExam !!}`), {
                 ckfinder: {
                     uploadUrl: '{{ route('ckeditor.upload') . '?_token=' . csrf_token() }}&upload_type=question'
                 },
@@ -238,7 +254,7 @@
                 console.error(error);
             });
 
-        let optionCount = 0;
+        let optionCount = {{ $answerCount }};
         let editorInstances = {}; // Pemetaan antara nomor opsi dan instans CKEditor
         let answerIndex = 0;
 
@@ -311,7 +327,6 @@
             }
         }
 
-
         function removeOption(optionNumber) {
             const optionsContainer = document.getElementById('questionsContainer');
             const optionDiv = document.getElementById(`optionContainer${optionNumber}`);
@@ -342,5 +357,31 @@
                 console.error(`Option Container dengan ID 'optionContainer${optionNumber}'tidak ditemukan.`);
             }
         }
+
+        var answerConfigs = [];
+        @foreach ($answers as $answer)
+            answerConfigs.push({
+                editorId: `editorOptionContent{{ $loop->index + 1 }}`,
+                ckfinderUploadUrl: '{{ route('ckeditor.upload') }}?_token={{ csrf_token() }}&upload_type=answer&answer_index={{ $loop->index + 1 }}',
+                mediaEmbedPreviewsInData: true,
+                answerId: {{ $answer->id }}
+            });
+        @endforeach
+
+        answerConfigs.forEach(config => {
+            ClassicEditor
+                .create(document.querySelector(`#${config.editorId}`), {
+                    ckfinder: {
+                        uploadUrl: config.ckfinderUploadUrl
+                    },
+                })
+                .then(editor => {
+                    console.log(`CKEditor initialized successfully for ${config.editorId}`);
+                    const answerId = config.answerId;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        });
     </script>
 @endpush

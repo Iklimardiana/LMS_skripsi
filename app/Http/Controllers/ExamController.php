@@ -201,9 +201,10 @@ class ExamController extends Controller
     public function editQuestion($id)
     {
         $question = Question::findOrFail($id);
-        $answer = Answer::where('idQuestion', $question->id)->get();
+        $answers = Answer::where('idQuestion', $question->id)->get();
+        $answerCount = $answers->count();
 
-        return view('teacher.exam.question.edit', compact('question', 'answer'));
+        return view('teacher.exam.question.edit', compact('question', 'answers', 'answerCount'));
     }
 
     public function showQuestion($idExam)
@@ -212,5 +213,132 @@ class ExamController extends Controller
         $questions = Question::where('idExam', $exam->id)->get();
 
         return view('teacher.exam.question.show', compact('exam', 'questions'));
+    }
+
+    public function updateQuestion(Request $request, $idExam, $idQuestion)
+    {
+        DB::beginTransaction();
+        $exam = Exam::findOrFail($idExam);
+        $question = Question::findOrFail($idQuestion);
+        $answers = Answer::where('idQuestion', $question->id)->get();
+
+        $request->validate([
+            'content' => 'required|string',
+            'answer_content' => 'required|string',
+        ], [
+            'content.required' => 'Kolom uraian Pertanyan harus diisi',
+            'answer_content.required' => 'Jawaban harus dipilih',
+        ]);
+
+        try {
+            $question->content = $request->input('content');
+            $question->idExam = $exam->id;
+
+            $description = $request->input('content');
+
+            $uploadedImages = session('uploaded_images_questions', []);
+
+            $existingImageUrls = $this->extractImageUrlsFromContent($question->content);
+
+            foreach ($uploadedImages as $imageUrl) {
+                if (!in_array($imageUrl, $existingImageUrls) && strpos($description, $imageUrl) === false) {
+                    $this->deleteImageFromStorage($imageUrl);
+                }
+            }
+
+            foreach ($existingImageUrls as $existingImageUrl) {
+                // Hanya hapus gambar jika URL tidak ada di dalam deskripsi saat ini
+                if (strpos($description, $existingImageUrl) === false) {
+                    $this->deleteImageFromStorage($existingImageUrl);
+                }
+            }
+
+            $question->update();
+
+            // Hapus sesi setelah selesai
+            session()->forget('uploaded_images_questions');
+
+            // $answers sekarang berisi kumpulan ID jawaban yang sesuai dengan pertanyaan tertentu
+            $answers = Answer::where('idQuestion', $question->id)->get();
+            $idAnswer = $answers->pluck('id');
+
+            foreach ($request->answer as $key => $choice) {
+                if (!empty($choice['answer_content'])) {
+                    $answerId = $idAnswer[$key - 1] ?? null;
+
+                    if ($answerId !== null) {
+                        $answer = Answer::findOrFail($answerId);
+                        $answer->answer_content = $choice['answer_content'];
+                        $answer->isCorrect = $key == $request->answer_content ? '1' : '0';
+                        $answer->update();
+                    } else {
+                        $answer = new Answer;
+                        $answer->idQuestion = $question->id;
+                        $answer->answer_content = $choice['answer_content'];
+                        $answer->isCorrect = $key == $request->answer_content ? '1' : '0';
+                        $answer->save();
+                    }
+                } else {
+                    return back()->with('error', 'Jawaban tidak boleh kosong.');
+                }
+            }
+
+
+            DB::commit();
+            return redirect('/teacher/exam/' . $exam->idSubject)->with('success', 'Anda berhasil mengubah soal');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function destroyQuestion($id)
+    {
+        $question = Question::findOrFail($id);
+
+        $this->deleteQuestionImages($question->content);
+
+        $question->delete();
+        // dd($question);
+        return back();
+    }
+
+    /**
+     * Extract image URLs from the content.
+     *
+     * @param string $content
+     * @return array
+     */
+    private function extractImageUrlsFromContent($content)
+    {
+        $pattern = '/<img[^>]+src\s*=\s*["\']([^"\']+)["\'][^>]*>/i';
+        preg_match_all($pattern, $content, $matches);
+
+        return $matches[1];
+    }
+
+    /**
+     * Delete image from storage.
+     *
+     * @param string $imageUrl
+     * @return void
+     */
+    private function deleteImageFromStorage($imageUrl)
+    {
+        $fileName = basename($imageUrl);
+        $filePath = public_path('images/media/questions/' . $fileName);
+
+        if (file_exists($filePath)) {
+            unlink($filePath);
+        }
+    }
+
+    private function deleteQuestionImages($content)
+    {
+        $existingImageUrls = $this->extractImageUrlsFromContent($content);
+
+        foreach ($existingImageUrls as $imageUrl) {
+            $this->deleteImageFromStorage($imageUrl);
+        }
     }
 }

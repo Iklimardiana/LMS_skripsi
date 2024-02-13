@@ -5,27 +5,47 @@
 @section('content')
     <div class="p-4 mt-16 sm:ml-64">
         <div class="p-4 border-2 border-gray-200 min-h-56 border-dashed h-auto mb-20 rounded-lg ">
+            <div class="w-8">
+                <a href="/teacher/exam/{{ $exam->idSubject }}">
+                    <svg class="w-6 h-6 text-cyan-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 14 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13 5H1m0 0 4 4M1 5l4-4" />
+                    </svg>
+                </a>
+            </div>
             <div class="flex flex-col gap-2">
                 @forelse ($questions as $question)
-                    <div class="flex flex-row justify-between gap-2 bg-cyan-50 p-3 rounded-md text-gray-900">
+                    <div id="question-{{ $question->id }}')"
+                        class="flex flex-row justify-between gap-2 bg-cyan-50 p-3 rounded-md text-gray-900">
                         <div class="flex flex-col max-w-3xl">
                             <div class="flex justify-start">
                                 <div>
                                     {{ $loop->iteration . '.' }}&nbsp;
                                 </div>
-                                <div class="border-b border-cyan-500 min-w-96 mb-2 pb-2">
+                                <div class="border-b border-cyan-500 min-w-96 mb-2 pb-2" id="question-{{ $question->id }}">
                                     {!! $question->content !!}
                                 </div>
                             </div>
-                            <div class="text-justify ml-4">
+                            <div class="flex flex-col gap-2 text-justify ml-4">
                                 @forelse ($question->answer as $answer)
                                     @if ($answer->isCorrect == '1')
-                                        <div class="flex text-green-500 font-medium bg-green-100 p-1">
-                                            {{ chr(64 + $loop->iteration) }}.&nbsp;{!! $answer->answer_content !!}
+                                        <div class="flex justify-start  text-green-500 font-medium bg-green-100 p-1">
+                                            <div>
+                                                {{ chr(64 + $loop->iteration) }}.&nbsp;
+                                            </div>
+                                            <div class="flex flex-col">
+                                                {!! $answer->answer_content !!}
+                                            </div>
                                         </div>
                                     @else
-                                        <div class="flex p-1">
-                                            {{ chr(64 + $loop->iteration) }}.&nbsp;{!! $answer->answer_content !!}
+                                        <div class="flex justify-start">
+                                            <div>
+                                                {{ chr(64 + $loop->iteration) }}.&nbsp;
+                                            </div>
+                                            <div class="flex flex-col">
+                                                {!! $answer->answer_content !!}
+                                            </div>
                                         </div>
                                     @endif
                                 @empty
@@ -35,10 +55,11 @@
                         </div>
                         <div class="inline">
                             <div class="flex gap-1">
-                                <form action="" method="POST" id="deleteForm">
+                                <form action="/exam/question/{{ $question->id }}" method="POST" id="deleteForm">
                                     @method('DELETE')
                                     @csrf
-                                    <button type="button" onclick="deleteData(event, '')" title="Hapus seluruh soal"
+                                    <button type="button" title="Hapus soal"
+                                        onclick="deleteData(event, '/exam/question/{{ $question->id }}','question-{{ $question->id }}')"
                                         class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none">
                                         <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                             fill="none" viewBox="0 0 18 20">
