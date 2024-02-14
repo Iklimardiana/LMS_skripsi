@@ -104,13 +104,6 @@
             </div>
         </div>
     </div>
-    {{-- <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
-    <script>
-        CKEDITOR.replace('editor', {
-            filebrowserUploadUrl: "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}",
-            filebrowserUploadMethod: 'form'
-        });
-    </script> --}}
     <script>
         ClassicEditor
             .create(document.querySelector('#editor'), {

@@ -231,21 +231,23 @@ class ExamController extends Controller
         ]);
 
         try {
-            $question->content = $request->input('content');
-            $question->idExam = $exam->id;
-
             $description = $request->input('content');
 
+            // Handle file upload logic
             $uploadedImages = session('uploaded_images_questions', []);
 
+            // Ambil deskripsi dari formulir
+            $description = $request->input('content');
+
+            // Ambil URL gambar dari deskripsi yang ada di database
             $existingImageUrls = $this->extractImageUrlsFromContent($question->content);
 
+            // Loop melalui URL gambar yang diunggah
             foreach ($uploadedImages as $imageUrl) {
                 if (!in_array($imageUrl, $existingImageUrls) && strpos($description, $imageUrl) === false) {
                     $this->deleteImageFromStorage($imageUrl);
                 }
             }
-
             foreach ($existingImageUrls as $existingImageUrl) {
                 // Hanya hapus gambar jika URL tidak ada di dalam deskripsi saat ini
                 if (strpos($description, $existingImageUrl) === false) {
@@ -253,7 +255,9 @@ class ExamController extends Controller
                 }
             }
 
-            $question->update();
+            $question->content = $request->input('content');
+            $question->idExam = $exam->id;
+            $question->save();
 
             // Hapus sesi setelah selesai
             session()->forget('uploaded_images_questions');
@@ -268,15 +272,62 @@ class ExamController extends Controller
 
                     if ($answerId !== null) {
                         $answer = Answer::findOrFail($answerId);
+
+                        $description = $choice['answer_content'];
+                        $uploadedImages = session("uploaded_images_answers_$key", []);
+
+                        // Ambil URL gambar dari deskripsi yang ada di database
+                        $existingImageUrls = $this->extractImageUrlsFromContent($description);
+
+                        // Loop melalui URL gambar yang diunggah
+                        foreach ($uploadedImages as $imageUrl) {
+                            if (!in_array($imageUrl, $existingImageUrls) && strpos($description, $imageUrl) === false) {
+                                $fileName = basename($imageUrl);
+                                $filePath = public_path("images/media/answers_$key/" . $fileName);
+
+                                if (file_exists($filePath)) {
+                                    unlink($filePath);
+                                }
+                            }
+                        }
+                        foreach ($existingImageUrls as $existingImageUrl) {
+                            // Hanya hapus gambar jika URL tidak ada di dalam deskripsi saat ini
+                            if (strpos($description, $existingImageUrl) === false) {
+                                $fileName = basename($existingImageUrl);
+                                $filePath = public_path("images/media/answers_$key/" . $fileName);
+
+                                if (file_exists($filePath)) {
+                                    unlink($filePath);
+                                }
+                            }
+                        }
                         $answer->answer_content = $choice['answer_content'];
                         $answer->isCorrect = $key == $request->answer_content ? '1' : '0';
-                        $answer->update();
+
+                        $answer->save();
                     } else {
                         $answer = new Answer;
                         $answer->idQuestion = $question->id;
                         $answer->answer_content = $choice['answer_content'];
                         $answer->isCorrect = $key == $request->answer_content ? '1' : '0';
                         $answer->save();
+
+                        $description = $choice['answer_content'];
+                        $uploadedImages = session("uploaded_images_answers_$key", []);
+
+                        foreach ($uploadedImages as $imageUrl) {
+                            if (strpos($description, $imageUrl) === false) {
+                                $fileName = basename($imageUrl);
+                                $filePath = public_path("images/media/answers_$key/" . $fileName);
+
+                                if (file_exists($filePath)) {
+                                    unlink($filePath);
+                                }
+                            }
+                        }
+
+                        // Hapus sesi setelah selesai
+                        session()->forget("uploaded_images_answers_$key");
                     }
                 } else {
                     return back()->with('error', 'Jawaban tidak boleh kosong.');
@@ -294,14 +345,66 @@ class ExamController extends Controller
 
     public function destroyQuestion($id)
     {
-        $question = Question::findOrFail($id);
+        DB::beginTransaction();
 
-        $this->deleteQuestionImages($question->content);
+        try {
+            // Ambil pertanyaan berdasarkan ID
+            $question = Question::findOrFail($id);
+            // Hapus gambar-gambar terkait pertanyaan
+            $this->deleteQuestionImages($question->content);
 
-        $question->delete();
-        // dd($question);
-        return back();
+            // Ambil jawaban-jawaban terkait pertanyaan
+            $answers = Answer::where('idQuestion', $id)->get();
+            $idAnswer = $answers->pluck('id');
+
+            foreach ($answers as $key => $answer) {
+                $answerId = $idAnswer[$key] ?? null;
+                $answer = Answer::findOrFail($answerId);
+                $uploadedimages = $answer['answer_content'];
+                $existingImageUrls = $this->extractImageUrlsFromContent($uploadedimages);
+
+                foreach ($existingImageUrls as $imageUrl) {
+                    $fileName = basename($imageUrl);
+                    $filePath = public_path("images/media/answers_" . ($key + 1) . "/" . $fileName);
+
+                    if (file_exists($filePath)) {
+                        unlink($filePath);
+                    }
+                }
+                $answer->delete();
+            }
+
+            // Hapus jawaban-jawaban terkait pertanyaan
+            Answer::where('idQuestion', $id)->delete();
+
+            // Hapus pertanyaan
+            $question->delete();
+
+            DB::commit();
+
+            return back()->with('success', 'Pertanyaan dan jawabannya berhasil dihapus.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
+
+    private function deleteAnswerImages($content, $key)
+    {
+        // Saring gambar-gambar yang seharusnya dihapus
+        $existingImageUrls = $this->extractImageUrlsFromContent($content);
+
+        foreach ($existingImageUrls as $imageUrl) {
+            $fileName = basename($imageUrl);
+            $filePath = public_path("images/media/answers$key/" . $fileName);
+
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
+        }
+    }
+
+
 
     /**
      * Extract image URLs from the content.
@@ -341,4 +444,20 @@ class ExamController extends Controller
             $this->deleteImageFromStorage($imageUrl);
         }
     }
+
+    // private function deleteAnswerImages($content, $key)
+    // {
+    //     $existingImageUrls = $this->extractImageUrlsFromContent($content);
+
+    //     foreach ($existingImageUrls as $imageUrl) {
+    //         $fileName = basename($imageUrl);
+    //         $folderName = "answers_$key";
+    //         $filePath = public_path("images/media/$folderName/" . $fileName);
+
+    //         if (file_exists($filePath)) {
+    //             unlink($filePath);
+    //         }
+    //     }
+    // }
+
 }

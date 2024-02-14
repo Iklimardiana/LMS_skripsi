@@ -352,7 +352,7 @@ class TeacherController extends Controller
         }
 
         // Handle file upload logic
-        $uploadedImages = session('uploaded_images', []);
+        $uploadedImages = session('uploaded_images_materials', []);
 
         // Ambil deskripsi dari formulir
         $description = $request->input('content');
@@ -379,7 +379,7 @@ class TeacherController extends Controller
 
         $materials->save();
 
-        session()->forget('uploaded_images');
+        session()->forget('uploaded_images_materials');
 
         // Ambil urutan yang ada setelah penyimpanan
         $existingSequencesAfterSave = Material::where('idSubject', $materials->idSubject)
@@ -616,24 +616,5 @@ class TeacherController extends Controller
         $assignment->delete();
 
         return back();
-    }
-    public function uploadImage(Request $request)
-    {
-        if ($request->hasFile('upload')) {
-            $originName = $request->file('upload')->getClientOriginalName();
-            $fileName = pathInfo($originName, PATHINFO_FILENAME);
-            $extension = $request->file('upload')->getClientOriginalExtension();
-            $fileName = $fileName . '_' . time() . '.' . $extension;
-            $request->file('upload')->move(public_path('images/media/'), $fileName);
-
-            $url = asset('images/media/' . $fileName);
-
-            // Simpan URL ke dalam sesi
-            $uploadedImages = session('uploaded_images', []);
-            $uploadedImages[] = $url;
-            session(['uploaded_images' => $uploadedImages]);
-
-            return response()->json(['fileName' => $fileName, 'uploaded' => 1, 'url' => $url]);
-        }
     }
 }

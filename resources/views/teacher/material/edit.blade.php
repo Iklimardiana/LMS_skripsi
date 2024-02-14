@@ -111,7 +111,7 @@
         ClassicEditor
             .create(document.querySelector('#content'), {
                 ckfinder: {
-                    uploadUrl: '{{ route('ckeditor.upload') . '?_token=' . csrf_token() }}'
+                    uploadUrl: '{{ route('ckeditor.upload') . '?_token=' . csrf_token() }}&upload_type=materi'
                 }
             })
             .then(content => {
