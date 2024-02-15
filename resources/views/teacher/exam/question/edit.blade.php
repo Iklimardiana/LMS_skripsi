@@ -182,14 +182,15 @@
                             <div class="mb-3" id="optionContainer-{{ $answer->id }}">
                                 <label for="editorOption{{ $loop->index + 1 }}" class="font-medium">Opsi
                                     {{ $loop->index + 1 }}</label>
-                                <div class="flex mb-2 gap-1">
+                                <div class="flex mb-2 gap-1" id="answer-{{ $answer->id }}">
                                     <input type="radio" name="answer_content" value="{{ $loop->index + 1 }}"
                                         id="editorOption{{ $loop->index + 1 }}"
                                         @if ($answer->isCorrect == '1') checked @endif>
                                     <textarea id="editorOptionContent{{ $loop->index + 1 }}" name="answer[{{ $loop->index + 1 }}][answer_content]"
                                         class="border border-cyan-400 rounded-md p-2 w-full">{{ $answer->answer_content }}</textarea>
                                 </div>
-                                <button type="button" onclick="removeOption({{ $loop->index + 1 }})"
+                                <button type="button"
+                                    onclick="deleteData(event, '/exam/answer/{{ $answer->id }}','answer-{{ $answer->id }}')"
                                     class="text-red-500 ml-6">Hapus Opsi</button>
                             </div>
                         @endforeach

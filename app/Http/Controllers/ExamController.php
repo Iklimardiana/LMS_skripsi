@@ -348,12 +348,10 @@ class ExamController extends Controller
         DB::beginTransaction();
 
         try {
-            // Ambil pertanyaan berdasarkan ID
             $question = Question::findOrFail($id);
-            // Hapus gambar-gambar terkait pertanyaan
+
             $this->deleteQuestionImages($question->content);
 
-            // Ambil jawaban-jawaban terkait pertanyaan
             $answers = Answer::where('idQuestion', $id)->get();
             $idAnswer = $answers->pluck('id');
 
@@ -374,10 +372,8 @@ class ExamController extends Controller
                 $answer->delete();
             }
 
-            // Hapus jawaban-jawaban terkait pertanyaan
             Answer::where('idQuestion', $id)->delete();
 
-            // Hapus pertanyaan
             $question->delete();
 
             DB::commit();
@@ -389,6 +385,48 @@ class ExamController extends Controller
         }
     }
 
+    public function destroyAnswer($id)
+    {
+        // Mengambil jawaban berdasarkan ID
+        $answer = Answer::findOrFail($id);
+        // Menghapus jawaban dari database
+        $answer->delete();
+
+        // Menyimpan ID pertanyaan untuk penggunaan berikutnya
+        // $idQuestion = $answer->idQuestion;
+
+        // // Menghitung jumlah jawaban yang masih terkait dengan pertanyaan
+        // $remainingAnswersCount = Answer::where('idQuestion', $idQuestion)->count();
+
+        // $uploadedImages = $this->extractImageUrlsFromContent($answer->answer_content);
+        // dd($uploadedImages);
+
+        // // Loop untuk setiap gambar dan hapus
+        // foreach ($uploadedImages as $imageUrl) {
+        //     $fileName = basename($imageUrl);
+
+        //     // Menghapus gambar dari folder answers_1 hingga answers_n
+        //     for ($key = 1; $key <= $remainingAnswersCount; $key++) {
+        //         $filePath = public_path("images/media/answers_$key/" . $fileName);
+
+        //         if (file_exists($filePath)) {
+        //             unlink($filePath);
+        //         }
+        //     }
+        // }
+
+        // // Menghapus folder answers_1 hingga answers_n
+        // for ($key = 1; $key <= $remainingAnswersCount; $key++) {
+        //     $folderPath = public_path("images/media/answers_" . $key);
+
+        //     if (is_dir($folderPath)) {
+        //         rmdir($folderPath);
+        //     }
+        // }
+
+        return back()->with('success', 'Jawaban berhasil dihapus.');
+    }
+
     private function deleteAnswerImages($content, $key)
     {
         // Saring gambar-gambar yang seharusnya dihapus
@@ -396,15 +434,13 @@ class ExamController extends Controller
 
         foreach ($existingImageUrls as $imageUrl) {
             $fileName = basename($imageUrl);
-            $filePath = public_path("images/media/answers$key/" . $fileName);
+            $filePath = public_path("images/media/answers_$key/" . $fileName);
 
             if (file_exists($filePath)) {
                 unlink($filePath);
             }
         }
     }
-
-
 
     /**
      * Extract image URLs from the content.
@@ -444,20 +480,4 @@ class ExamController extends Controller
             $this->deleteImageFromStorage($imageUrl);
         }
     }
-
-    // private function deleteAnswerImages($content, $key)
-    // {
-    //     $existingImageUrls = $this->extractImageUrlsFromContent($content);
-
-    //     foreach ($existingImageUrls as $imageUrl) {
-    //         $fileName = basename($imageUrl);
-    //         $folderName = "answers_$key";
-    //         $filePath = public_path("images/media/$folderName/" . $fileName);
-
-    //         if (file_exists($filePath)) {
-    //             unlink($filePath);
-    //         }
-    //     }
-    // }
-
 }
