@@ -15,17 +15,16 @@ class UserAnswer extends Model
     protected $fillable = [
         'user_answer',
         'is_correct',
-        'idStudent',
+        'idUserExam',
         'idQuestion',
     ];
-
-    public function User()
-    {
-        return $this->belongsTo(User::class, 'idStudent');
-    }
-
     public function Question()
     {
         return $this->belongsTo(Question::class, 'idQuestion');
+    }
+
+    public function userExam()
+    {
+        return $this->belongsTo(UserExam::class, 'idUserExam');
     }
 }

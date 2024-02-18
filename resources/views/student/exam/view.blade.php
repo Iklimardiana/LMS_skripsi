@@ -23,34 +23,42 @@
             </div>
         </form>
         <div class="flex flex-col space-y-3 p-4 border-2 border-gray-200 border-dashed h-auto mb-20 rounded-lg">
-            <a href="/student/subject">
-                <svg class="w-6 h-6 text-cyan-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                    viewBox="0 0 14 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M13 5H1m0 0 4 4M1 5l4-4" />
-                </svg>
-            </a>
-            @forelse ($exams as $exam)
-                <div
-                    class="flex items-center justify-between h-36 pr-2 md:pr-3 py-0 pl-0 justify-items-center rounded-lg bg-cyan-50 border border-cyan-500">
-                    <div>
-                        <img class="rounded-l-lg w-28 md:w-80 h-36 border-y border-cyan-500 object-cover"
-                            src="{{ asset('images/thumbnail/thumbnailDefault.jpg') }}" alt="Subject Image">
-                    </div>
-                    <div class="text-center text-gray-900">
-                        <p class="font-semibold text text-xl md:text-2xl m-3">{{ $exam->title }}</p>
-                        <p class="underline">{{ $exam->type }} | {{ $exam->duration }} menit</p>
-                    </div>
-                    <div class="flex flex-col space-y-2 items-center justify-end">
-                        <button type="button" onclick="redirectToBeginExam()"
-                            class=" text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-md md:rounded-lg text-sm w-16 md:w-20  px-1 py-1 md:px-5 md:py-2 me-2 focus:outline-none  ">
-                            Mulai
-                        </button>
-                    </div>
-                </div>
-            @empty
-                <p>Ujian Tidak Ditemukan</p>
-            @endforelse
+            <div class="w-7">
+                <a href="/student/subject">
+                    <svg class="w-6 h-6 text-cyan-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 14 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13 5H1m0 0 4 4M1 5l4-4" />
+                    </svg>
+                </a>
+            </div>
+            @unless ($exams->where('status', '1')->isNotEmpty())
+                <p class="text-gray-900 text-center font-medium">Ujian Tidak Ditemukan</p>
+            @else
+                @forelse ($exams as $exam)
+                    @if ($exam->status == '1')
+                        <div
+                            class="flex items-center justify-between h-36 pr-2 md:pr-3 py-0 pl-0 justify-items-center rounded-lg bg-cyan-50 border border-cyan-500">
+                            <div>
+                                <img class="rounded-l-lg w-28 md:w-80 h-36 border-y border-cyan-500 object-cover"
+                                    src="{{ asset('images/thumbnail/thumbnailDefault.jpg') }}" alt="Subject Image">
+                            </div>
+                            <div class="text-center text-gray-900">
+                                <p class="font-semibold text text-xl md:text-2xl m-3">{{ $exam->title }}</p>
+                                <p class="underline">{{ $exam->type }} | {{ $exam->duration }} menit</p>
+                            </div>
+                            <div class="flex flex-col space-y-2 items-center justify-end">
+                                <button type="button" onclick="redirectToBeginExam()"
+                                    class=" text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-md md:rounded-lg text-sm w-16 md:w-20  px-1 py-1 md:px-5 md:py-2 me-2 focus:outline-none  ">
+                                    Mulai
+                                </button>
+                            </div>
+                        </div>
+                    @endif
+                @empty
+                    <p class="text-gray-900 text-center">Ujian Tidak Ditemukan</p>
+                @endforelse
+            @endunless
         </div>
     </div>
 @endsection
