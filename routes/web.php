@@ -99,6 +99,7 @@ Route::middleware('teacher')->group(function () {
     Route::put('/exam/{idExam}/question/{idQuestion}', [ExamController::class, 'updateQuestion']);
     Route::delete('/exam/question/{id}', [ExamController::class, 'destroyQuestion']);
     Route::delete('/exam/answer/{id}', [ExamController::class, 'destroyAnswer']);
+    Route::get('/teacher/exam/student-list/{idExam}', [ExamController::class, 'listStudentExam']);
 });
 
 Route::middleware('student')->group(function () {

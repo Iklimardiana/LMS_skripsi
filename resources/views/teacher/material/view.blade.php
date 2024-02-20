@@ -239,3 +239,12 @@
         </div>
     </div>
 @endsection
+@push('scripts')
+    <script>
+        function redirectToAttachmentStudent(idMaterial) {
+            var baseUrl = '/teacher/attachment/';
+            var attachmentUrl = baseUrl + idMaterial
+            window.location.href = attachmentUrl;
+        }
+    </script>
+@endpush

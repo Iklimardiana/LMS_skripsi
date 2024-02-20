@@ -201,6 +201,9 @@
                                 Jenis Ujian
                             </th>
                             <th scope="col" class="px-2 py-3 border border-cyan-50">
+                                Daftar Siswa
+                            </th>
+                            <th scope="col" class="px-2 py-3 border border-cyan-50">
                                 Aksi Ujian
                             </th>
                             <th scope="col" class="px-2 py-3 border border-cyan-50">
@@ -221,7 +224,19 @@
                                 <td class="px-2 py-4 font-medium text-gray-900 whitespace-nowrap border border-cyan-500">
                                     {{ $exam->type }}
                                 </td>
-                                <td class="p-2 flex flex-items-center justify-center gap-1">
+                                <td class="px-2 py-4 font-medium text-gray-900 whitespace-nowrap border border-cyan-500">
+                                    <button type="button" title="List siswa"
+                                        onclick="redirectToListStudentExam({{ $exam->id }})"
+                                        class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none">
+                                        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="none" viewBox="0 0 16 20">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M4.828 10h6.239m-6.239 4h6.239M6 1v4a1 1 0 0 1-1 1H1m14-4v16a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2Z" />
+                                        </svg>
+                                    </button>
+                                </td>
+                                <td class="px-2 py-4 flex flex-items-center justify-center gap-1">
                                     <form action="/teacher/exam/{{ $exam->id }}" method="POST">
                                         @method('DELETE')
                                         @csrf
@@ -369,7 +384,7 @@
                                     </div>
                                     <!-- end modal -->
                                 </td>
-                                <td class="px-2 font-medium text-gray-900 whitespace-nowrap border border-cyan-500">
+                                <td class="px-2 py-4 font-medium text-gray-900 whitespace-nowrap border border-cyan-500">
                                     <div class="flex flex-items-center justify-center gap-1">
                                         <button type="button" title="Klik untuk membuat soal"
                                             onclick="redirectToCreateQuestion({{ $exam->id }})"
@@ -437,6 +452,12 @@
             var baserUrl = '/teacher/';
             var showQuestionsUrl = baserUrl + idExam + '/questions/show'
             window.location.href = showQuestionsUrl;
+        }
+
+        function redirectToListStudentExam(idExam) {
+            var baseUrl = '/teacher/exam/student-list/';
+            var listStudentUrl = baseUrl + idExam
+            window.location.href = listStudentUrl;
         }
 
         function changeStatus(examId) {

@@ -90,12 +90,6 @@
             window.location.href = materialUrl;
         }
 
-        function redirectToAttachmentStudent(idMaterial) {
-            var baseUrl = '/teacher/attachment/';
-            var attachmentUrl = baseUrl + idMaterial
-            window.location.href = attachmentUrl;
-        }
-
         function redirectToStudent(subjectId) {
             var baseUrl = '/teacher/subject/';
             var studentUrl = baseUrl + subjectId + '/student';

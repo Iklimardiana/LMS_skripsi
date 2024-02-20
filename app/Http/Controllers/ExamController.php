@@ -6,6 +6,7 @@ use App\Models\Answer;
 use App\Models\Exam;
 use App\Models\Question;
 use App\Models\Subject;
+use App\Models\UserExam;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -370,49 +371,14 @@ class ExamController extends Controller
 
     public function destroyAnswer($id)
     {
-        // Mengambil jawaban berdasarkan ID
         $answer = Answer::findOrFail($id);
-        // Menghapus jawaban dari database
         $answer->delete();
-
-        // Menyimpan ID pertanyaan untuk penggunaan berikutnya
-        // $idQuestion = $answer->idQuestion;
-
-        // // Menghitung jumlah jawaban yang masih terkait dengan pertanyaan
-        // $remainingAnswersCount = Answer::where('idQuestion', $idQuestion)->count();
-
-        // $uploadedImages = $this->extractImageUrlsFromContent($answer->answer_content);
-        // dd($uploadedImages);
-
-        // // Loop untuk setiap gambar dan hapus
-        // foreach ($uploadedImages as $imageUrl) {
-        //     $fileName = basename($imageUrl);
-
-        //     // Menghapus gambar dari folder answers_1 hingga answers_n
-        //     for ($key = 1; $key <= $remainingAnswersCount; $key++) {
-        //         $filePath = public_path("images/media/answers_$key/" . $fileName);
-
-        //         if (file_exists($filePath)) {
-        //             unlink($filePath);
-        //         }
-        //     }
-        // }
-
-        // // Menghapus folder answers_1 hingga answers_n
-        // for ($key = 1; $key <= $remainingAnswersCount; $key++) {
-        //     $folderPath = public_path("images/media/answers_" . $key);
-
-        //     if (is_dir($folderPath)) {
-        //         rmdir($folderPath);
-        //     }
-        // }
 
         return back()->with('success', 'Jawaban berhasil dihapus.');
     }
 
     private function deleteAnswerImages($content, $key)
     {
-        // Saring gambar-gambar yang seharusnya dihapus
         $existingImageUrls = $this->extractImageUrlsFromContent($content);
 
         foreach ($existingImageUrls as $imageUrl) {
@@ -462,5 +428,28 @@ class ExamController extends Controller
         foreach ($existingImageUrls as $imageUrl) {
             $this->deleteImageFromStorage($imageUrl);
         }
+    }
+
+    public function listStudentExam($idExam)
+    {
+        $userExamsQuery = UserExam::where('idExam', $idExam);
+
+        if (request('keyword')) {
+            $userExamsQuery->whereHas('student', function ($query) {
+                $keyword = request('keyword');
+                $query->where(function ($subquery) use ($keyword) {
+                    $subquery->where('first_name', 'LIKE', '%' . $keyword . '%')
+                        ->orWhere('last_name', 'LIKE', '%' . $keyword . '%')
+                        ->orWhere(DB::raw("CONCAT(first_name, ' ', last_name)"), 'LIKE', '%' . $keyword . '%')
+                        ->where('role', 'student');
+                });
+            });
+        }
+
+        $userExams = $userExamsQuery->paginate(1);
+        $iteration = $userExams->firstItem();
+        $exam = Exam::findOrFail($idExam);
+
+        return view('teacher.exam.list-student', compact('userExams', 'iteration', 'exam'));
     }
 }

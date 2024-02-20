@@ -34,8 +34,8 @@ class ExamStudentController extends Controller
             });
         }
 
-        $exams = $examsQuery->paginate(7);
-        $iteration = $exams->firstItem();
+        $exams = $examsQuery->get();
+        $iteration = 1;
 
         $ongoingExam = UserExam::where('idStudent', auth()->id())
             ->where('status', 0)

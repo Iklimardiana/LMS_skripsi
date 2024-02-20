@@ -217,8 +217,12 @@
                         </svg>
                     </a>
                 </div>
-                @unless ($exams->where('status', '1')->isNotEmpty())
-                    <p class="text-gray-900 text-center font-medium">Ujian Tidak Ditemukan</p>
+                {{-- @unless ($exams->where('status', '1')->isNotEmpty()) --}}
+                @unless (
+                    $exams->where('status', '1')->where(function ($item) use ($examAvailability) {
+                            return in_array($examAvailability[$item->id]['availability'], ['score']);
+                        })->isNotEmpty())
+                    <p class="text-gray-900 text-center font-medium">Tidak ada riwayat ujian</p>
                 @else
                     <div class="relative overflow-x-auto shadow-md sm:rounded-t-lg">
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500">
@@ -252,7 +256,7 @@
                                                 {{ $exam->duration }} menit
                                             </td>
                                             <td class="p-2 font-medium text-gray-900 whitespace-nowrap border border-cyan-500">
-                                                {{ round($examAvailability[$exam->id]['score']) }}
+                                                {{ $examAvailability[$exam->id]['score'] }}
                                             </td>
                                         </tr>
                                     @endif
@@ -266,9 +270,6 @@
                                 @endforelse
                             </tbody>
                         </table>
-                    </div>
-                    <div class="mt-3">
-                        {{ $exams->links('pagination::tailwind') }}
                     </div>
                 @endunless
             </div>
