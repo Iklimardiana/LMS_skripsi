@@ -89,7 +89,7 @@
                                 src="{{ asset('images/thumbnail/' . $enroll->subject->thumbnail) }}" alt="Subject Image">
                         </div>
                         <div class="text-center text-gray-900">
-                            <p class="font-semibold text text-xl md:text-2xl m-3">{{ $enroll->subject->name }}</p>
+                            <p class="font-semibold text text-lg sm:text-2xl m-3">{{ $enroll->subject->name }}</p>
                             <p class="underline">
                                 {{ $enroll->subject->teacher->first_name . ' ' . $enroll->subject->teacher->last_name }}
                             </p>
@@ -97,15 +97,15 @@
                         <div class="flex flex-col space-y-2 items-center justify-end">
                             <button type="button"
                                 onclick="redirectToMaterialStudent({{ $enroll->idSubject }}, {{ $sequence }})"
-                                class=" text-white bg-cyan-500 hover:bg-cyan-600 focus:ring-4 focus:ring-cyan-300 font-medium rounded-md md:rounded-lg text-sm w-16 md:w-20  px-1 py-1 md:px-5 md:py-2 me-2 focus:outline-none  ">
+                                class=" text-white bg-cyan-500 hover:bg-cyan-600 focus:ring-4 focus:ring-cyan-300 font-medium rounded-md md:rounded-lg text-xs md:text-sm w-16 md:w-20  px-1 py-1 md:px-5 md:py-2 me-2 focus:outline-none  ">
                                 Materi
                             </button>
                             <button type="button" onclick="redirectToExam({{ $enroll->idSubject }})"
-                                class=" text-white bg-cyan-500 hover:bg-cyan-600 focus:ring-4 focus:ring-cyan-300 font-medium rounded-md md:rounded-lg text-sm w-16 md:w-20  px-1 py-1 md:px-5 md:py-2 me-2 focus:outline-none  ">
+                                class=" text-white bg-cyan-500 hover:bg-cyan-600 focus:ring-4 focus:ring-cyan-300 font-medium rounded-md md:rounded-lg text-xs md:text-sm w-16 md:w-20  px-1 py-1 md:px-5 md:py-2 me-2 focus:outline-none  ">
                                 Ujian
                             </button>
                             <button type="button" onclick="redirectToDiscussion({{ $enroll->idSubject }})"
-                                class=" text-white bg-cyan-500 hover:bg-cyan-600 focus:ring-4 focus:ring-cyan-300 font-medium rounded-md md:rounded-lg text-sm w-16 md:w-20  px-1 py-1 md:px-5 md:py-2 me-2 focus:outline-none  ">
+                                class=" text-white bg-cyan-500 hover:bg-cyan-600 focus:ring-4 focus:ring-cyan-300 font-medium rounded-md md:rounded-lg text-xs md:text-sm w-16 md:w-20  px-1 py-1 md:px-5 md:py-2 me-2 focus:outline-none  ">
                                 Diskusi
                             </button>
                         </div>

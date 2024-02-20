@@ -26,7 +26,6 @@
     @include('partials.footer')
     @stack('scripts')
 
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
     {{-- sweetAlert --}}
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
@@ -68,7 +67,6 @@
                 });
         }
     </script>
-
     <script>
         function redirectToAddTeacher() {
             window.location.href = '/admin/teacher/create';

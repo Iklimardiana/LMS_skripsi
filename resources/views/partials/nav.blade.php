@@ -53,7 +53,12 @@
 @auth
     <nav class="fixed top-0 w-full border-gray-200 bg-cyan-500 z-50">
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-            @if (!(request()->is('student/materials*') || request()->is('student/exam-begin*') || request()->is('discussion*')))
+            @if (
+                !(request()->is('student/materials*') ||
+                    request()->is('student/exam-start*') ||
+                    request()->is('/') ||
+                    request()->is('discussion*')
+                ))
                 <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar"
                     type="button"
                     class="inline-flex items-center p-2 mt-15 ms-3 text-sm text-white rounded-lg sm:hidden hover:bg-transparant focus:outline-none focus:ring-2 focus:ring-gray-200">

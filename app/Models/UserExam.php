@@ -33,4 +33,13 @@ class UserExam extends Model
     {
         return $this->hasMany(UserAnswer::class, 'idUserExam');
     }
+
+    public function timeRemaining()
+    {
+        $now = now();
+        $endTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $this->finish);
+        $timeRemaining = $endTime->diffInSeconds($now);
+
+        return $timeRemaining > 0 ? $timeRemaining : 0;
+    }
 }

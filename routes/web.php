@@ -3,6 +3,7 @@
 use App\Http\Controllers\CKEditorController;
 use App\Http\Controllers\DiscussionController;
 use App\Http\Controllers\ExamController;
+use App\Http\Controllers\ExamStudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
 use Illuminate\Support\Facades\Route;
@@ -118,7 +119,13 @@ Route::middleware('student')->group(function () {
     Route::put('/student/submission/{id}', [StudentController::class, 'updateSubmission']);
     Route::delete('/student/submission/{id}', [StudentController::class, 'destroySubmission']);
 
-    Route::get('/student/exam/{idSubject}', [ExamController::class, 'ExamStudent']);
+    Route::get('/student/exam/{idSubject}', [ExamStudentController::class, 'examList'])->name('list.exam');
+    Route::get('/student/exam-start/{id}', [ExamStudentController::class, 'index'])->name('exam');
+    Route::post('/student/exam/{id}/start', [ExamStudentController::class, 'startExam'])->name('start.exam');
+    Route::get('student/question', [ExamStudentController::class, 'question'])->name('exam.question');
+    Route::get('student/question-list', [ExamStudentController::class, 'questionList'])->name('exam.question-list');
+    Route::post('student/save-answer', [ExamStudentController::class, 'saveAnswer'])->name('exam.save-answer');
+    Route::post('student/finish-exam', [ExamStudentController::class, 'finishExam'])->name('exam.finisih');
 });
 
 Route::get('/login', [LoginController::class, 'login']);

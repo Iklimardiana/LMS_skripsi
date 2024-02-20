@@ -14,7 +14,7 @@ return new class extends Migration {
     {
         Schema::create('user_answer', function (Blueprint $table) {
             $table->id();
-            $table->string('user_answer');
+            $table->string('user_answer')->nullable();
             $table->enum('is_correct', [0, 1]);
             $table->unsignedBigInteger('idUserExam');
             $table->unsignedBigInteger('idQuestion');

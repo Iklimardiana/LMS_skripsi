@@ -27,8 +27,20 @@ class Question extends Model
         return $this->hasMany(Answer::class, 'idQuestion');
     }
 
-    public function UserAnswer()
+    public function trueAnswer()
     {
-        return $this->hasMany(UserAnswer::class, 'idQuestion');
+        return $this->hasOne(Answer::class, 'idQuestion')->where('isCorrect', '1');
     }
+
+    public function userAnswer()
+    {
+        return $this->hasOne(UserAnswer::class)->whereHas('userExam', function ($query) {
+            $query->where('idStudent', auth()->id());
+        });
+    }
+
+    // public function UserAnswer()
+    // {
+    //     return $this->hasMany(UserAnswer::class, 'idQuestion');
+    // }
 }

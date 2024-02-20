@@ -101,23 +101,6 @@ class ExamController extends Controller
         return redirect()->back();
     }
 
-    public function ExamStudent($id)
-    {
-        $examsQuery = Exam::where('idSubject', $id);
-
-        if (request()->has('keyword')) {
-            $keyword = request('keyword');
-            $examsQuery->where(function ($query) use ($keyword) {
-                $query->where('title', 'LIKE', '%' . $keyword . '%')
-                    ->orwhere('type', 'LIKE', '%' . $keyword . '%');
-            });
-        }
-
-        $exams = $examsQuery->get();
-        $subject = Subject::find($id);
-        return view('student.exam.view', compact('exams', 'subject'));
-    }
-
     public function createQuestion($id)
     {
         $exam = Exam::findOrFail($id);
@@ -336,7 +319,7 @@ class ExamController extends Controller
 
 
             DB::commit();
-            return redirect('/teacher/exam/' . $exam->idSubject)->with('success', 'Anda berhasil mengubah soal');
+            return redirect('/teacher/' . $question->idExam . '/questions/show')->with('success', 'Anda berhasil mengubah soal');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', $e->getMessage());
