@@ -71,13 +71,15 @@
                                 <line x1="26" x2="26" y1="48" y2="58" fill="none"
                                     stroke="#FFFFFF" stroke-miterlimit="10" stroke-width="4"></line>
                             </svg>
-                            Simpan
+                            Perbarui
                         </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+@endsection
+@push('scripts')
     <script>
         const categoryInput = document.querySelector('#type');
         const linkForm = document.querySelector('#linkForm');
@@ -107,4 +109,4 @@
             window.location.href = currentMaterialUrl;
         }
     </script>
-@endsection
+@endpush

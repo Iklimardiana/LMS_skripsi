@@ -111,10 +111,8 @@
                                     {{ $material->sequence }}
                                 </td>
                                 <td class="p-2 flex flex-items-center justify-center gap-1">
-                                    <form action="/teacher/materials/{{ $material->id }}"method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit"
+                                    <form>
+                                        <button type="button"
                                             onclick="deleteData(event, '/teacher/materials/{{ $material->id }}')"
                                             class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none"
                                             title="klik untuk menghapus materi">

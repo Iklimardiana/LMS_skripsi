@@ -120,6 +120,11 @@ class DiscussionController extends Controller
             }
         }
 
+        $request->session()->flash('toast', [
+            'type' => 'success',
+            'message' => 'Diskusi berhasil diperbarui!'
+        ]);
+
         $question->update([
             'question' => $request->question,
             'idMaterial' => $request->idMaterial,
@@ -170,6 +175,11 @@ class DiscussionController extends Controller
 
         $answer = AnswerDiscussion::findOrFail($id);
         $idQuestion = $answer->idQuestion;
+
+        $request->session()->flash('toast', [
+            'type' => 'success',
+            'message' => 'Diskusi berhasil diperbarui!'
+        ]);
 
         $answer->update([
             'answer' => $request->answer,

@@ -301,3 +301,22 @@
         </div>
     </div>
 @endsection
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        var toastMessage = '{{ session('toast.message') }}';
+        var toastType = '{{ session('toast.type') }}';
+
+        if (toastMessage) {
+            Swal.fire({
+                title: toastMessage,
+                icon: toastType,
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timerProgressBar: true,
+                timer: 2000,
+            });
+        }
+    </script>
+@endpush

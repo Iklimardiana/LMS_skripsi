@@ -252,6 +252,11 @@ class StudentController extends Controller
         $assignment->idSubject = $subjects->id;
         $assignment->idUser = Auth::user()->id;
 
+        $request->session()->flash('toast', [
+            'type' => 'success',
+            'message' => 'Tugas berhasil disimpan'
+        ]);
+
         $assignment->save();
 
         return redirect('/student/materials/' . $subjects->id . '?sequence=' . $materials->sequence);
@@ -345,6 +350,10 @@ class StudentController extends Controller
         $submission->idSubject = $idSubject;
         $submission->idUser = Auth::user()->id;
 
+        $request->session()->flash('toast', [
+            'type' => 'success',
+            'message' => 'Tugas berhasil diperbarui!'
+        ]);
         $submission->save();
 
         return redirect('/student/materials/' . $idSubject . '?sequence=' . $submission->material->sequence);

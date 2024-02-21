@@ -236,10 +236,7 @@
                                                 </th>
                                                 <th
                                                     class="flex flex-items-center justify-center gap-1 px-6 py-1 font-medium text-gray-900 whitespace-nowrap">
-                                                    {{-- <form action="/student/submission/{{ $item->id }}"method="POST"> --}}
                                                     <form>
-                                                        @csrf
-                                                        @method('DELETE')
                                                         <button type="button"
                                                             onclick="deleteData(event, '/student/submission/{{ $item->id }}')"
                                                             class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none"
@@ -343,7 +340,23 @@
             </div>
         </div>
     </section>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        var toastMessage = '{{ session('toast.message') }}';
+        var toastType = '{{ session('toast.type') }}';
+
+        if (toastMessage) {
+            Swal.fire({
+                title: toastMessage,
+                icon: toastType,
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timerProgressBar: true,
+                timer: 2000,
+            });
+        }
+
         function showAlert() {
             alert("Mohon untuk mengerjakan tugas terlebih dahulu");
         }

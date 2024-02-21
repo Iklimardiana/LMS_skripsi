@@ -70,6 +70,8 @@
             </div>
         </div>
     </div>
+@endsection
+@push('scripts')
     <script>
         const categoryInput = document.querySelector('#type');
         const linkForm = document.querySelector('#linkForm');
@@ -97,4 +99,4 @@
             window.location.href = currentMaterialUrl;
         }
     </script>
-@endsection
+@endpush

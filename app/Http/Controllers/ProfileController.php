@@ -62,6 +62,5 @@ class ProfileController extends Controller
         $profile->save();
 
         return redirect('/' . $profile->role . '/profile/' . $id);
-        // return redirect('/' . $profile->role . '/profile/' . $id . '?status=success');
     }
 }

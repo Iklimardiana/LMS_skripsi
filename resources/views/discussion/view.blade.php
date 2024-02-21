@@ -238,10 +238,8 @@
                                             role="menuitem">Edit</button>
                                     </li>
                                     <li>
-                                        <form action="/discussion/{{ $question->id }}" method="POST">
-                                            @method('DELETE')
-                                            @csrf
-                                            <button type="submit"
+                                        <form>
+                                            <button type="button"
                                                 onclick="deleteData(event, '/discussion/{{ $question->id }}')"
                                                 class="block px-4 py-2 mx-auto text-sm text-gray-700 hover:bg-cyan-100"
                                                 role="menuitem">Hapus</button>
