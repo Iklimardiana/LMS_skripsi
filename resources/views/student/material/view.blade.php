@@ -236,10 +236,12 @@
                                                 </th>
                                                 <th
                                                     class="flex flex-items-center justify-center gap-1 px-6 py-1 font-medium text-gray-900 whitespace-nowrap">
-                                                    <form action="/student/submission/{{ $item->id }}"method="POST">
+                                                    {{-- <form action="/student/submission/{{ $item->id }}"method="POST"> --}}
+                                                    <form>
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit"
+                                                        <button type="button"
+                                                            onclick="deleteData(event, '/student/submission/{{ $item->id }}')"
                                                             class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none"
                                                             title="klik untuk menghapus tugas">
                                                             <svg class="w-5 h-5" aria-hidden="true"
@@ -351,7 +353,7 @@
         }
 
         function redirectToAddSubmission(idMaterial) {
-            var baseUrl = '/student/';
+            var baseUrl = '/student/materials/';
             var addSubmissionUrl = baseUrl + idMaterial + '/submission/create/';
             window.location.href = addSubmissionUrl;
         }
