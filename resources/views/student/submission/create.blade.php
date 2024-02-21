@@ -3,7 +3,7 @@
     Tambah Tugas
 @endsection
 @section('content')
-    <div class="p-4 mt-16 sm:ml-64">
+    <div class="p-4 mt-16 mx-auto md:w-3/4 w-full">
         <div class="p-4 border-2 border-gray-200 min-h-56 border-dashed h-auto mb-20 rounded-lg ">
             <div class="gap-2 mb-2">
                 <div class="text-white font-medium text-lg">
