@@ -217,7 +217,6 @@
                         </svg>
                     </a>
                 </div>
-                {{-- @unless ($exams->where('status', '1')->isNotEmpty()) --}}
                 @unless (
                     $exams->where('status', '1')->where(function ($item) use ($examAvailability) {
                             return in_array($examAvailability[$item->id]['availability'], ['score']);

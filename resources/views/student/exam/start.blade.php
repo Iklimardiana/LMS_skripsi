@@ -160,14 +160,20 @@
                     btnPrev.removeAttr('disabled')
                     btnPrev.data('id', res.current_page - 1)
                     if (res.prev_page_url == null) {
-                        btnPrev.attr('disabled', 'disabled')
+                        btnPrev.attr('disabled', 'disabled');
+                        btnPrev.removeClass('hover:bg-cyan-700');
+                    } else {
+                        btnPrev.addClass('hover:bg-cyan-700');
                     }
 
                     // nav next
-                    btnNext.removeAttr('disabled')
+                    btnNext.removeAttr('disabled');
                     btnNext.data('id', res.current_page + 1)
                     if (res.next_page_url == null) {
-                        btnNext.attr('disabled', 'disabled')
+                        btnNext.attr('disabled', 'disabled');
+                        btnNext.removeClass('hover:bg-cyan-700');
+                    } else {
+                        btnNext.addClass('hover:bg-cyan-700');
                     }
 
                 },
@@ -187,12 +193,10 @@
         // btn next
         btnNext.on('click', function() {
             const data = $(this).data()
-            // console.log(data)
             loadSoal(data.id)
         })
 
         function daftarSoal() {
-            // console.log('Executing daftarSoal function...');
             $.get({
                 url: '/student/question-list',
                 data: {
@@ -247,7 +251,6 @@
                 },
                 error: function(err) {
                     console.error(err);
-                    // Handle error jika diperlukan
                 }
             });
         })
@@ -262,7 +265,6 @@
                 cancelButtonText: 'Batal',
                 confirmButtonText: 'Yakin'
             }).then((done) => {
-                console.log(done)
                 if (done.value) {
                     ujianSelesai()
                 }
@@ -278,8 +280,6 @@
                     _token: csrfToken
                 },
                 success: function(res) {
-                    console.log(res)
-
                     Swal.fire('Ujian Telah Berakhir', 'Anda akan dialihkan ke halaman Beranda', 'success').then(
                         () => {
                             window.location.href = '/student/subject'
