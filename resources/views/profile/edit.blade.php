@@ -1,6 +1,10 @@
 @extends('layouts.master')
 @section('title')
-    Profile Teacher
+    @if (Auth::user()->role === 'teacher')
+        Teacher Profile Edit
+    @elseif(Auth::user()->role === 'student')
+        Student Profile Edit
+    @endif
 @endsection
 @section('content')
     <div class="p-4 mt-16 sm:ml-64">
@@ -13,12 +17,12 @@
                 <div class="md:flex md:col-span-10">
                     <div class="w-full bg-cyan-50 rounded-lg border-cyan-500 shadow mx-auto">
                         @if (Auth::User()->role == 'teacher')
-                            <form action="/teacher/profile/{{ $profile->id }}" method="POST" enctype="multipart/form-data"
-                                class="p-3">
+                            <form id="editProfile" action="/teacher/profile/{{ $profile->id }}" method="POST"
+                                enctype="multipart/form-data" class="p-3">
                         @endif
                         @if (Auth::User()->role == 'student')
-                            <form action="/student/profile/{{ $profile->id }}" method="POST" enctype="multipart/form-data"
-                                class="p-3">
+                            <form id="editProfile" action="/student/profile/{{ $profile->id }}" method="POST"
+                                enctype="multipart/form-data" class="p-3">
                         @endif
                         @method('PUT')
                         @csrf
@@ -106,7 +110,7 @@
                                                 fill="none" stroke="#FFFFFF" stroke-miterlimit="10" stroke-width="4">
                                             </line>
                                         </svg>
-                                        Simpan
+                                        Perbarui
                                     </button>
                                     <button
                                         class="w-25 flex items-center justify-center px-2 py-2 leading-5 text-white transition-colors duration-200 transform bg-cyan-500 rounded-md hover:bg-cyan-700 focus:outline-none focus:bg-cyan-600"
@@ -131,3 +135,43 @@
     </div>
     </div>
 @endsection
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function submitProfileForm() {
+            // Assuming you have an id on your form
+            var form = document.getElementById('editProfile');
+
+            // Serialize the form data
+            var formData = new FormData(form);
+
+            // Perform AJAX request
+            $.ajax({
+                url: form.action,
+                method: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    window.location.href = '/student/profile/{{ $profile->id }}';
+                    Swal.fire({
+                        title: 'Profil Berhasil Diperbarui',
+                        icon: 'success',
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timerProgressBar: true,
+                        timer: 2000,
+                    });
+
+                    // Optionally, reset the form or perform other actions
+                    // form.reset();
+                },
+                error: function(error) {
+                    // Handle error if needed
+                    console.error('Error:', error);
+                }
+            });
+        }
+    </script>
+@endpush
