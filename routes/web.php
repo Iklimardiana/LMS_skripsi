@@ -4,6 +4,7 @@ use App\Http\Controllers\CKEditorController;
 use App\Http\Controllers\DiscussionController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\ExamStudentController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
 use Illuminate\Support\Facades\Route;
@@ -60,9 +61,9 @@ Route::middleware('teacher')->group(function () {
     Route::get('/teacher/subject/{id}/student', [TeacherController::class, 'students']);
     Route::put('/teacher/subject/{id}', [TeacherController::class, 'settingSubject']);
 
-    route::get('/teacher/profile/{id}/edit', [TeacherController::class, 'editProfile']);
-    route::put('/teacher/profile/{id}', [TeacherController::class, 'updateProfile']);
-    route::get('/teacher/profile/{id}', [TeacherController::class, 'profile']);
+    route::get('/teacher/profile/{id}/edit', [ProfileController::class, 'editProfile']);
+    route::put('/teacher/profile/{id}', [ProfileController::class, 'updateProfile']);
+    route::get('/teacher/profile/{id}', [ProfileController::class, 'profile']);
 
     route::get('/teacher/materials/create/{idSubject}', [TeacherController::class, 'createMaterial']);
     route::get('/teacher/materials/{id}', [TeacherController::class, 'materials']);
@@ -105,16 +106,16 @@ Route::middleware('teacher')->group(function () {
 Route::middleware('student')->group(function () {
     Route::get('/student/subject', [StudentController::class, 'subjects'])->name('subjects');
 
-    Route::get('/student/profile/{id}/edit', [StudentController::class, 'editProfile']);
-    Route::put('/student/profile/{id}', [StudentController::class, 'updateProfile']);
-    Route::get('/student/profile/{id}', [StudentController::class, 'profile']);
+    Route::get('/student/profile/{id}/edit', [ProfileController::class, 'editProfile']);
+    Route::put('/student/profile/{id}', [ProfileController::class, 'updateProfile']);
+    Route::get('/student/profile/{id}', [ProfileController::class, 'profile']);
 
     Route::post('/student/enroll/{enrollmentKey}', [StudentController::class, 'enrollSubject'])->name('student.enroll');
 
     Route::get('student/materials/{id}', [StudentController::class, 'materials'])->name('learning-page');
     Route::post('student/materials/{id}', [StudentController::class, 'storeAssignment']);
 
-    Route::get('/student/{idMaterial}/submission/create', [StudentController::class, 'createSubmission']);
+    Route::get('/student/materials/{idMaterial}/submission/create', [StudentController::class, 'createSubmission']);
     Route::post('/student/submission/{id}', [StudentController::class, 'storeSubmission']);
     Route::get('/student/submission/{id}/edit', [StudentController::class, 'editSubmission']);
     Route::put('/student/submission/{id}', [StudentController::class, 'updateSubmission']);
