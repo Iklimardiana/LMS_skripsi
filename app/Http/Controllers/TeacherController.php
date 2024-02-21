@@ -151,61 +151,6 @@ class TeacherController extends Controller
 
     }
 
-    public function profile($id)
-    {
-        $profile = User::findOrFail($id);
-
-        return view('profile.view', compact('profile'));
-    }
-    public function editProfile($id)
-    {
-        $profile = User::findOrFail($id);
-
-        return view('profile.edit', compact('profile'));
-    }
-
-    public function updateProfile(Request $request, $id)
-    {
-        $request->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'email' => 'required|email',
-            'avatar' => 'image|mimes:jpeg,png,jpg|max:2048',
-            'phone' => 'required',
-            'gender' => 'required'
-        ]);
-
-        $profile = User::findOrFail($id);
-
-        if ($request->input('first_name') !== $profile->first_name) {
-            $profile->first_name = $request->input('first_name');
-        } elseif ($request->input('last_name') !== $profile->last_name) {
-            $profile->last_name = $request->input('last_name');
-        } elseif ($request->input('email') !== $profile->email) {
-            $profile->email = $request->input('email');
-        } elseif ($request->input('phone') !== $profile->phone) {
-            $profile->phone = $request->input('phone');
-        } elseif ($request->input('gender') !== $profile->gender) {
-            $profile->gender = $request->input('gender');
-        } elseif ($request->has('avatar')) {
-            $path = "images/avatar/";
-
-            if ($profile->avatar && $profile->avatar !== 'avatarDefault.png') {
-                File::delete($path . $profile->avatar);
-            }
-
-            $avatarName = time() . '.' . $request->avatar->extension();
-
-            $request->avatar->move(public_path('images/avatar/'), $avatarName);
-
-            $profile->avatar = $avatarName;
-        }
-
-        $profile->save();
-
-        return redirect('/teacher/profile/' . $profile->id);
-    }
-
     public function createMaterial($idSubject)
     {
         $subjects = Subject::find($idSubject);
