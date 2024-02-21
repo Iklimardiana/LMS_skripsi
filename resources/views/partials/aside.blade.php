@@ -1,5 +1,10 @@
 @if (!in_array(request()->path(), ['login', 'register', '/']))
-    @if (!(request()->is('student/materials*') || request()->is('student/exam-start*') || request()->is('discussion*')))
+    @if (
+        !(request()->is('student/materials*') ||
+            request()->is('student/exam-start*') ||
+            request()->is('student/submission*') ||
+            request()->is('discussion*')
+        ))
         <aside id="logo-sidebar"
             class="fixed top-16 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
             aria-label="Sidebar">

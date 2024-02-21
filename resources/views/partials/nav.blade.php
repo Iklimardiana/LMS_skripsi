@@ -57,7 +57,8 @@
                 !(request()->is('student/materials*') ||
                     request()->is('student/exam-start*') ||
                     request()->is('/') ||
-                    request()->is('discussion*')
+                    request()->is('discussion*') ||
+                    request()->is('student/submission*')
                 ))
                 <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar"
                     type="button"
