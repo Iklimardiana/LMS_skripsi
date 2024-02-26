@@ -33,7 +33,7 @@
                                         Depan
                                     </label>
                                     <input type="text" name="first_name" id="first_name"
-                                        class="bg-gray-50 border border-cyan-400 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                        class="bg-gray-50 border border-cyan-400 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 block w-full p-2.5"
                                         value="{{ $profile->first_name }}">
                                 </div>
                                 <div class="mb-3">
@@ -41,14 +41,14 @@
                                         Belakang
                                     </label>
                                     <input type="text" name="last_name" id="last_name"
-                                        class="bg-gray-50 border border-cyan-400 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                        class="bg-gray-50 border border-cyan-400 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 block w-full p-2.5"
                                         value="{{ $profile->last_name }}">
                                 </div>
                                 <div class="mb-3">
                                     <label for="email" class="block mb-1 text-sm font-medium text-gray-800">Email
                                     </label>
                                     <input type="email" name="email" id="email"
-                                        class="bg-gray-50 border border-cyan-400 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                        class="bg-gray-50 border border-cyan-400 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 block w-full p-2.5"
                                         value="{{ $profile->email }}">
                                 </div>
                                 @if (Auth::user()->role === 'student')
@@ -57,7 +57,7 @@
                                             Masuk
                                         </label>
                                         <input type="number" name="entry_year" id="entry_year"
-                                            class="bg-gray-50 border border-cyan-400 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                            class="bg-gray-50 border border-cyan-400 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 block w-full p-2.5"
                                             value="{{ $profile->entry_year }}">
                                     </div>
                                 @endif
@@ -68,7 +68,7 @@
                                         Jenis Kelamin
                                     </label>
                                     <select
-                                        class="bg-gray-50 border border-cyan-400 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                        class="bg-gray-50 border border-cyan-400 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 block w-full p-2.5"
                                         name="gender" id="gender">
                                         <option value="L" {{ $profile->gender == 'L' ? 'selected' : '' }}>Laki-Laki
                                         </option>
@@ -81,7 +81,7 @@
                                         Telpon
                                     </label>
                                     <input type="number" name="phone" id="phone"
-                                        class="bg-gray-50 border border-cyan-400 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                        class="bg-gray-50 border border-cyan-400 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 block w-full p-2.5"
                                         value="{{ $profile->phone }}">
                                 </div>
                                 <div class="mb-3">
@@ -95,7 +95,7 @@
                                 </div>
                                 <div class="flex space-x-2 justify-end mt-8">
                                     <button
-                                        class="w-25 flex items-center justify-center px-2 py-2 leading-5 text-white transition-colors duration-200 transform bg-cyan-500 rounded-md hover:bg-cyan-700 focus:outline-none focus:bg-cyan-600"
+                                        class="w-25 flex items-center justify-center px-2 py-2 leading-5 text-white transition-colors duration-200 transform bg-cyan-500 rounded-md hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-cyan-300 focus:bg-cyan-600"
                                         type="submit">
                                         <svg class="me-1 -ms-1 w-5 h-5" xmlns="http://www.w3.org/2000/svg"
                                             data-name="Layer 1" viewBox="0 0 64 64" id="save">
@@ -113,7 +113,7 @@
                                         Perbarui
                                     </button>
                                     <button
-                                        class="w-25 flex items-center justify-center px-2 py-2 leading-5 text-white transition-colors duration-200 transform bg-cyan-500 rounded-md hover:bg-cyan-700 focus:outline-none focus:bg-cyan-600"
+                                        class="w-25 flex items-center justify-center px-2 py-2 leading-5 text-white transition-colors duration-200 transform bg-cyan-500 focus:ring-4 focus:ring-cyan-300 rounded-md hover:bg-cyan-700 focus:outline-none focus:bg-cyan-600"
                                         onclick="redirectToProfile({{ $profile->id }}, '{{ $profile->role }}')"
                                         type="button">
                                         <svg class="w-5 h-5 mr-1 text-white" aria-hidden="true"

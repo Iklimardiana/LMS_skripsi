@@ -89,7 +89,7 @@
                                 <div class="flex justify-end mt-8">
                                     @if (Auth::user())
                                         <button
-                                            class="w-20 flex items-center justify-center px-2 py-2 leading-5 text-white transition-colors duration-200 transform bg-cyan-500 rounded-md hover:bg-cyan-600 focus:outline-none focus:bg-cyan-600"
+                                            class="w-20 flex items-center justify-center px-2 py-2 leading-5 focus:ring-4 focus:ring-cyan-300 text-white transition-colors duration-200 transform bg-cyan-500 rounded-md hover:bg-cyan-600 focus:outline-none focus:bg-cyan-600"
                                             onclick="redirectToEditProfile({{ $profile->id }}, '{{ $profile->role }}')"
                                             type="button">
                                             <svg class="w-5 h-5 text-white" aria-hidden="true"
