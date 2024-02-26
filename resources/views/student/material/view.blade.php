@@ -85,12 +85,6 @@
                         0%
                     </p>
                 @endif
-                {{-- <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                    <div class="bg-cyan-500 h-2.5 rounded-full" style="width: 45%"></div>
-                </div>
-                <p>
-                    45%
-                </p> --}}
             </div>
             <div class="py-4 overflow-y-auto">
                 <ul class=" font-medium">
@@ -327,10 +321,9 @@
                                             ke
                                             Dashboard</a>
                                     @elseif($currentProgres->status == '0')
-                                        <a href=""
+                                        <a onclick="showAlert()"
                                             class="border bg-cyan-500 cursor-not-allowed text-white rounded-md py-2 px-5"
-                                            disabled>Kembali ke
-                                            Dashboard</a>
+                                            disabled>Kembali ke Dashboard</a>
                                     @endif
                                 @endif
                             </div>
@@ -358,11 +351,17 @@
         }
 
         function showAlert() {
-            alert("Mohon untuk mengerjakan tugas terlebih dahulu");
+            swal({
+                title: "Mohon untuk mengerjakan tugas terlebih dahulu",
+                icon: 'warning',
+            })
         }
 
         function showAlertAside() {
-            alert("Mohon untuk membaca materi hingga akhir");
+            swal({
+                title: "Mohon untuk membaca materi hingga akhir",
+                icon: 'warning',
+            })
         }
 
         function redirectToAddSubmission(idMaterial) {
