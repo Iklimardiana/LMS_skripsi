@@ -201,6 +201,11 @@
                                     <span class="font-medium text-gray-700">
                                         {{ strtoupper($reply->user->first_name . ' ' . $reply->user->last_name) }}
                                     </span>
+                                    @if ($reply->user->role === 'teacher')
+                                        <span class="text-xs text-gray-500">
+                                            (Guru)
+                                        </span>
+                                    @endif
                                     <span class="mx-2 inline-block">•</span>
                                     <p class="inline-block text-gray-500 mb-1">
                                         {{ $reply->created_at }}

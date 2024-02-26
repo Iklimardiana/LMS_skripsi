@@ -209,6 +209,11 @@
                                     <span class="font-medium text-gray-700">
                                         {{ strtoupper($question->user->first_name . ' ' . $question->user->last_name) }}
                                     </span>
+                                    @if ($question->user->role === 'teacher')
+                                        <span class="font-sm text-gray-500">
+                                            Guru
+                                        </span>
+                                    @endif
                                     <span class="mx-2 inline-block">•</span>
                                     <p class="inline-block text-gray-500 mb-1">
                                         {{ $question->created_at }}
