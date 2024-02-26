@@ -404,9 +404,23 @@ class TeacherController extends Controller
     }
     public function attachments($id)
     {
-        $attachments = Assignment::where('idMaterial', $id)->where('category', 'fromstudent')->paginate(10);
-        $iteration = $attachments->firstItem();
         $material = Material::findOrFail($id);
+        $attachmentsQuery = Assignment::where('idMaterial', $id)->where('category', 'fromstudent');
+
+        if (request('keyword')) {
+            $attachmentsQuery->whereHas('user', function ($query) {
+                $keyword = request('keyword');
+                $query->where(function ($subquery) use ($keyword) {
+                    $subquery->where('first_name', 'LIKE', '%' . $keyword . '%')
+                        ->orWhere('last_name', 'LIKE', '%' . $keyword . '%')
+                        ->orWhere(DB::raw("CONCAT(first_name, ' ', last_name)"), 'LIKE', '%' . $keyword . '%')
+                        ->where('role', 'student');
+                });
+            });
+        }
+
+        $attachments = $attachmentsQuery->paginate(10);
+        $iteration = $attachments->firstItem();
 
         return view('teacher.attachment.view', compact('attachments', 'iteration', 'material'));
     }
@@ -417,7 +431,7 @@ class TeacherController extends Controller
             'score' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/'
         ], [
             'score.required' => 'Nilai harus diisi',
-            'score.numeric' => 'Nilai harus berupa angka',
+            'score.numeric' => 'Nilai harus berupa angka bulat atau desimal. Jika desimal, gunakan titik sebagai koma(.)',
             'score.regex' => 'Nilai harus berupa angka atau angka desimal dengan maksimal dua digit di belakang koma'
         ]);
 
