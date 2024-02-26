@@ -92,9 +92,8 @@
                         @enderror
                     </div>
                     <div class="mb-3">
-                        <label for="password" class="block mb-1 text-sm font-medium text-gray-800">Kata
-                            Sandi</label>
-                        <input type="password" name="password" id="password" placeholder="Masukkan Password"
+                        <label for="password" class="block mb-1 text-sm font-medium text-gray-800">Kata Sandi Baru</label>
+                        <input type="password" name="password" id="password" placeholder="Masukkan kata sandi baru"
                             class="bg-gray-50 border border-cyan-400 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 block w-full p-2.5">
                         @error('password')
                             <div id="alert-2" class="flex items-center p-4 mb-4 text-red-800 rounded-lg bg-red-50"
@@ -115,10 +114,10 @@
                         <div class="sm:order-2 mt-0">
                             <label for="passwordConfirmation"
                                 class="block mb-1 text-sm font-medium text-gray-800">Konfirmasi
-                                Kata Sandi
+                                Kata Sandi Baru
                             </label>
                             <input type="password" name="password_confirmation" id="passwordConfirmation"
-                                placeholder="Masukkan Konfirmasi Password"
+                                placeholder="Masukkan Konfirmasi kata sandi baru"
                                 class="bg-gray-50 border border-cyan-400 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 block w-full p-2.5">
                         </div>
                         @error('password_confirmation')
