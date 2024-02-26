@@ -9,9 +9,9 @@
             class="fixed top-16 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
             aria-label="Sidebar">
             <div class="h-full px-3 py-4 overflow-y-auto bg-cyan-50">
-                <a href="https://flowbite.com/" class="flex items-center justify-center ps-2.5 mb-5">
-                    <img src="{{ asset('images/logo.png') }}" class="h-8 me-3 sm:h-14 self-center" alt="Logo" />
-                </a>
+                <div class="flex items-center justify-center mb-5">
+                    <img src="{{ asset('images/logo.png') }}" class="h-16 me-3 sm:h-20 self-center" alt="Logo" />
+                </div>
                 <ul class="space-y-2 font-medium">
                     @if (auth()->user()->role == 'admin')
                         <li>

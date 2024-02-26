@@ -1,9 +1,9 @@
 @guest
     <nav class="fixed top-0 w-full border-gray-200 bg-cyan-500">
-        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-            <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
-                <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="Flowbite Logo" />
-                <span class="self-center text-2xl font-semibold whitespace-nowrap text-white">Flowbite</span>
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-4 py-2">
+            <a href="/" class="flex items-center space-x-1 rtl:space-x-reverse">
+                <img src="{{ asset('images/logo.webp') }}" class="h-10" alt="MyEdu Logo" />
+                <span class="self-center text-2xl font-semibold whitespace-nowrap text-white">MyEdu</span>
             </a>
             <button data-collapse-toggle="navbar-solid-bg" type="button"
                 class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-white rounded-lg md:hidden hover:bg-transparant focus:outline-none focus:ring-2 focus:ring-gray-200"
@@ -52,7 +52,7 @@
 
 @auth
     <nav class="fixed top-0 w-full border-gray-200 bg-cyan-500 z-50">
-        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-4 py-3">
             @if (
                 !(request()->is('student/materials*') ||
                     request()->is('student/exam-start*') ||
@@ -72,9 +72,9 @@
                     </svg>
                 </button>
             @endif
-            <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
-                <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="Flowbite Logo" />
-                <span class="self-center text-2xl font-semibold whitespace-nowrap text-white">Flowbite</span>
+            <a href="/" class="flex items-center space-x-1 rtl:space-x-reverse">
+                <img src="{{ asset('images/logo.webp') }}" class="h-10" class="h-8" alt="MyEdu Logo" />
+                <span class="self-center text-2xl font-semibold whitespace-nowrap text-white">MyEdu</span>
             </a>
             <div class="flex items-center">
                 <div class="flex items-center ms-3">
