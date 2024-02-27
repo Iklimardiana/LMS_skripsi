@@ -61,26 +61,25 @@
                                         {{ $enroll->user->first_name . ' ' . $enroll->user->last_name }}
                                     </td>
                                     <td class="px-6 py-1">
+                                        {{-- @php
+                                            $progresUser = $progres->where('idUser', $enroll->user->id)->first();
+                                        @endphp --}}
                                         @php
                                             $progresUser = $progres->where('idUser', $enroll->user->id)->first();
+                                            $totalMaterials = $subject->Material->count();
+                                            $totalAssignments = $subject->Assignment->where('category', 'fromteacher')->count();
+
+                                            $completedAssignments = $subject->Assignment
+                                                ->where('category', 'fromstudent')
+                                                ->where('idUser', $enroll->user->id)
+                                                ->count();
+
+                                            $totalProgress = $totalMaterials + max(0, $totalAssignments - $completedAssignments);
+
+                                            $progressPercentage = $progresUser ? round(($progresUser->sequence / $totalProgress) * 100) : 0;
                                         @endphp
                                         @if ($progresUser ? $progresUser->sequence : '')
-                                            @if ($progresUser->sequence == $subject->Material->count())
-                                                @if ($progresUser->status == 0)
-                                                    {{ round(($progresUser->sequence / $subject->Material->count()) * 100) - 2 }}
-                                                    %
-                                                @else
-                                                    Complete (100%)
-                                                @endif
-                                            @else
-                                                @if ($progresUser->status == 0)
-                                                    {{ round(($progresUser->sequence / $subject->Material->count()) * 100) - 2 }}
-                                                    %
-                                                @else
-                                                    {{ round(($progresUser->sequence / $subject->Material->count()) * 100) }}
-                                                    %
-                                                @endif
-                                            @endif
+                                            {{ $progressPercentage }}%
                                         @else
                                             0%
                                         @endif

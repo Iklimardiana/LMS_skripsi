@@ -36,46 +36,23 @@
             </button>
             <div class="flex items-center justify-between gap-1">
                 @if ($currentProgres ? $currentProgres->sequence : '')
-                    @if ($currentProgres->sequence == $subject->Material->count())
-                        @if ($currentProgres->status == 0)
-                            <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                                <div class="bg-cyan-500 h-2.5 rounded-full"
-                                    style="width: {{ round(($currentProgres->sequence / $subject->Material->count()) * 100) - 2 }}%">
-                                </div>
-                            </div>
-                            <p>
-                                {{ round(($currentProgres->sequence / $subject->Material->count()) * 100) - 2 }}%
-                            </p>
-                        @else
-                            <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                                <div class="bg-cyan-500 h-2.5 rounded-full" style="width: 100%">
-                                </div>
-                            </div>
-                            <p>
-                                100%
-                            </p>
-                        @endif
-                    @else
-                        @if ($currentProgres->status == 0)
-                            <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                                <div class="bg-cyan-500 h-2.5 rounded-full"
-                                    style="width: {{ round(($currentProgres->sequence / $subject->Material->count()) * 100) - 2 }}%">
-                                </div>
-                            </div>
-                            <p>
-                                {{ round(($currentProgres->sequence / $subject->Material->count()) * 100) - 2 }}%
-                            </p>
-                        @else
-                            <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                                <div class="bg-cyan-500 h-2.5 rounded-full"
-                                    style="width: {{ round(($currentProgres->sequence / $subject->Material->count()) * 100) }}%">
-                                </div>
-                            </div>
-                            <p>
-                                {{ round(($currentProgres->sequence / $subject->Material->count()) * 100) }}%
-                            </p>
-                        @endif
-                    @endif
+                    @php
+                        $totalMaterials = $subject->Material->count();
+                        $totalAssignments = $subject->Assignment->where('category', 'fromteacher')->count();
+
+                        $completedAssignments = $subject->Assignment->where('category', 'fromstudent')->where('idUser', Auth::id())->count();
+
+                        $totalProgress = $totalMaterials + max(0, $totalAssignments - $completedAssignments);
+
+                        $progressPercentage = round(($currentProgres->sequence / $totalProgress) * 100);
+                    @endphp
+                    <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                        <div class="bg-cyan-500 h-2.5 rounded-full" style="width: {{ $progressPercentage }}%">
+                        </div>
+                    </div>
+                    <p>
+                        {{ $progressPercentage }}%
+                    </p>
                 @else
                     <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
                         <div class="bg-cyan-500 h-2.5 rounded-full" style="width: 0%">

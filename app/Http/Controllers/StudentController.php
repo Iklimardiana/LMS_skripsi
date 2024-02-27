@@ -201,6 +201,8 @@ class StudentController extends Controller
 
         return $content;
     }
+
+
     public function createSubmission($id)
     {
         $material = Material::findOrFail($id);

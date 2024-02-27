@@ -32,6 +32,11 @@ class Assignment extends Model
         return false;
     }
 
+    public function Subject()
+    {
+        return $this->belongsTo(Subject::class, 'idSubject');
+    }
+
     public function Material()
     {
         return $this->belongsTo(Material::class, 'idMaterial');

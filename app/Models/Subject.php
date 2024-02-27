@@ -42,4 +42,9 @@ class Subject extends Model
     {
         return $this->hasMany(DiscussionQuestion::class, 'idSubject');
     }
+
+    public function Assignment()
+    {
+        return $this->hasMany(Assignment::class, 'idSubject');
+    }
 }
