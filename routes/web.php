@@ -133,7 +133,6 @@ Route::middleware('student')->group(function () {
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'login']);
     Route::post('/login', [LoginController::class, 'authenticate']);
-    Route::get('/logout', [LoginController::class, 'logout']);
     Route::get('/login/verify', [LoginController::class, 'verify'])->name('verification.verify');
 
     Route::get('/register', [RegisterController::class, 'create']);
@@ -145,3 +144,5 @@ Route::middleware('guest')->group(function () {
     Route::get('/reset/{token}', [ResetPasswordController::class, 'verify'])->name('verify');
     Route::post('/reset', [ResetPasswordController::class, 'reset']);
 });
+
+Route::get('/logout', [LoginController::class, 'logout']);
