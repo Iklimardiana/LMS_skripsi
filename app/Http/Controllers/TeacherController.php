@@ -229,14 +229,18 @@ class TeacherController extends Controller
     public function showMaterial($id)
     {
         $material = Material::findOrFail($id);
-        $convertedContent = $this->convertOEmbedToIframe($material->content);
+        $convertedContent = $this->convertOEmbedToIframeAndTargetBlank($material->content);
         $containsImageAndCaption = $this->containsImageAndCaption($convertedContent);
         $materialContent = $this->centerImages($convertedContent, $containsImageAndCaption);
         return view('teacher.material.show-detail', compact('convertedContent', 'material'));
     }
-    private function convertOEmbedToIframe($content)
+    private function convertOEmbedToIframeAndTargetBlank($content)
     {
+        // Convert YouTube oEmbeds to iframes
         $convertedContent = preg_replace('/<oembed[^>]*url="https:\/\/www.youtube.com\/watch\?v=([^"]+)"[^>]*><\/oembed>/i', '<iframe class="w-full" src="https://www.youtube.com/embed/$1" width="560" height="315" frameborder="0" allowfullscreen></iframe>', $content);
+
+        // Add target="_blank" to links
+        $convertedContent = preg_replace('/<a(.*?)href=["\'](https?:\/\/[^"\']+)["\'](.*?)>/i', '<a$1href="$2"$3 target="_blank">', $convertedContent);
 
         if ($this->containsImageAndCaption($convertedContent)) {
             $convertedContent = $this->centerImages($convertedContent, true);

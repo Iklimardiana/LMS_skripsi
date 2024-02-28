@@ -81,8 +81,7 @@ class StudentController extends Controller
                 ->where('category', 'fromteacher')
                 ->get();
 
-            // Konversi tag OEmbed ke tag iframe
-            $convertedContent = $this->convertOEmbedToIframe($material->content);
+            $convertedContent = $this->convertOEmbedToIframeAndTargetBlank($material->content);
             $containsImageAndCaption = $this->containsImageAndCaption($convertedContent);
             $materialContent = $this->centerImages($convertedContent, $containsImageAndCaption);
         } else {
@@ -171,16 +170,22 @@ class StudentController extends Controller
         }
         return view('student.material.view')->with(compact('currentProgres', 'convertedContent', 'material', 'subject', 'currentSequence', 'attachment', 'submission', 'containsImageAndCaption', 'materialContent'));
     }
-    private function convertOEmbedToIframe($content)
+    private function convertOEmbedToIframeAndTargetBlank($content)
     {
+        // Convert YouTube oEmbeds to iframes
         $convertedContent = preg_replace('/<oembed[^>]*url="https:\/\/www.youtube.com\/watch\?v=([^"]+)"[^>]*><\/oembed>/i', '<iframe class="w-full" src="https://www.youtube.com/embed/$1" width="560" height="315" frameborder="0" allowfullscreen></iframe>', $content);
 
+        // Add target="_blank" to links
+        $convertedContent = preg_replace('/<a(.*?)href=["\'](https?:\/\/[^"\']+)["\'](.*?)>/i', '<a$1href="$2"$3 target="_blank">', $convertedContent);
+
+        // Check for images and captions
         if ($this->containsImageAndCaption($convertedContent)) {
             $convertedContent = $this->centerImages($convertedContent, true);
         }
 
         return $convertedContent;
     }
+
 
     protected function containsImageAndCaption($content)
     {
