@@ -1,5 +1,5 @@
 @guest
-    <nav class="fixed top-0 w-full border-gray-200 bg-cyan-500">
+    <nav class="fixed top-0 w-full border-gray-200 bg-cyan-500 z-50">
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-4 py-2">
             <a href="/" class="flex items-center space-x-1 rtl:space-x-reverse">
                 <img src="{{ asset('images/logo.webp') }}" class="h-10" alt="MyEdu Logo" />
@@ -18,15 +18,17 @@
             <div class="hidden w-full md:block md:w-auto" id="navbar-solid-bg">
                 <ul
                     class="flex flex-col font-medium mt-4 rounded-lg bg-cyan-700 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-transparent">
-                    <li>
-                        <a href="#"
-                            class="block py-2 px-3 md:p-0 text-white rounded md:hover:underline md:hover:border-white"
-                            aria-current="page">
-                            <span class="p-2">
-                                Tentang Kami
-                            </span>
-                        </a>
-                    </li>
+                    @if (request()->is('/'))
+                        <li>
+                            <a href="#aboutUs"
+                                class="block py-2 px-3 md:p-0 text-white rounded md:hover:underline md:hover:border-white"
+                                aria-current="page">
+                                <span class="p-2">
+                                    Tentang Kami
+                                </span>
+                            </a>
+                        </li>
+                    @endif
                     <li>
                         <a href="@if (request()->is('/') || request()->is('forgot')) /login 
                             @elseif(request()->is('login')) /register 
