@@ -9,7 +9,7 @@
                 <h1 class="text-3xl font-medium text-gray-800 capitalize text-center">Registrasi Akun</h1>
             </div>
             @if (session()->has('message'))
-                <div id="alert-3" class="flex items-center p-4 mb-4 text-green-800 rounded-lg bg-green-50" role="alert">
+                <div id="alert-3" class="flex items-center p-4 mb-4 text-green-800 rounded-lg bg-green-100" role="alert">
                     <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                         fill="currentColor" viewBox="0 0 20 20">
                         <path
@@ -106,7 +106,7 @@
                             </label>
                             <input type="email" name="email" id="email"
                                 class="bg-gray-50 border border-cyan-400 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 block w-full p-2.5"
-                                placeholder="YourEmail@gmail.com" value="{{ old('email') }}">
+                                placeholder="Masukkan email aktif" value="{{ old('email') }}">
                             @error('email')
                                 <div id="alert-2" class="flex items-center p-4 mb-4 text-red-800 rounded-lg bg-red-50"
                                     role="alert">
