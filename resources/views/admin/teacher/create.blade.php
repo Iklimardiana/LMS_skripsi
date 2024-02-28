@@ -198,3 +198,10 @@
         </div>
     </div>
 @endsection
+@push('scripts')
+    <script>
+        function redirectToListTeacher() {
+            window.location.href = '/admin/teacher'
+        }
+    </script>
+@endpush

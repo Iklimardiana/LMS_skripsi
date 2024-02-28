@@ -84,3 +84,10 @@
         </div>
     </div>
 @endsection
+@push('scripts')
+    <script>
+        function redirectToAddTeacher() {
+            window.location.href = '/admin/teacher/create';
+        }
+    </script>
+@endpush

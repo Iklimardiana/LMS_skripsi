@@ -244,5 +244,31 @@
             var attachmentUrl = baseUrl + idMaterial
             window.location.href = attachmentUrl;
         }
+
+        function redirectToAddAssignment(idMaterial) {
+            var addAssignmentUrl = '/teacher/' + idMaterial + '/assignment/create/';
+            window.location.href = addAssignmentUrl;
+        }
+
+        function redirectToEditAssignment(idAssignment) {
+            var editAssignmentUrl = '/teacher/assignment/' + idAssignment + '/edit';
+            window.location.href = editAssignmentUrl;
+        }
+
+        function redirectToAddMaterial(idSubject) {
+            var addMateriUrl = '/teacher/materials/create/' + idSubject;
+            window.location.href = addMateriUrl;
+        }
+
+        function redirectToEditMaterial(idMaterial) {
+            var EditMateriUrl = '/teacher/materials/' + idMaterial + '/edit';
+            window.location.href = EditMateriUrl;
+        }
+
+        function redirectToShowMaterial(idMaterial) {
+            var baseUrl = '/teacher/materials/';
+            var showMateriUrl = baseUrl + idMaterial + '/detail';
+            window.location.href = showMateriUrl;
+        }
     </script>
 @endpush

@@ -220,6 +220,8 @@ class StudentController extends Controller
         $request->validate([
             'type' => 'required',
             'attachment' => 'required',
+        ], [
+            'attachment.required' => 'File/link tugas wajib diisi',
         ]);
 
         if ($request->has('attachment')) {
@@ -234,6 +236,9 @@ class StudentController extends Controller
             } else {
                 $request->validate([
                     'attachment' => 'file|mimes:pdf|max:3048',
+                ], [
+                    'attachment.mimes' => 'Format file harus pdf',
+                    'attachment.max' => 'File harus berukuran kurang dari 3mb'
                 ]);
 
                 $fileName = time() . '.' . $request->attachment->extension();
@@ -314,6 +319,8 @@ class StudentController extends Controller
         $request->validate([
             'type' => 'required',
             'attachment' => 'required',
+        ], [
+            'attachment.required' => 'File/link tugas wajib diisi',
         ]);
 
         if ($request->has('attachment')) {
@@ -334,6 +341,9 @@ class StudentController extends Controller
             } else {
                 $request->validate([
                     'attachment' => 'file|mimes:pdf|max:3048',
+                ], [
+                    'attachment.mimes' => 'Format file harus pdf',
+                    'attachment.max' => 'File harus berukuran kurang dari 3mb'
                 ]);
 
                 if ($request->hasFile('attachment')) {

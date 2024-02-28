@@ -89,7 +89,8 @@
                                     @if ($attachment->type === 'link')
                                         <button type="button"
                                             class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none"
-                                            title="Tugas Siswa" onclick="redirectToLink('{{ $attachment->attachment }}')">
+                                            title="Tugas Siswa"
+                                            onclick="previewAssignment('{{ $attachment->type }}', '{{ $attachment->attachment }}', '{{ $attachment->user->role }}')">
                                             <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                                 fill="none" viewBox="0 0 12 20">
                                                 <path stroke="currentColor" stroke-linejoin="round" stroke-width="2"
@@ -98,6 +99,7 @@
                                         </button>
                                     @else
                                         <button type="button"
+                                            onclick="previewAssignment('{{ $attachment->type }}', '{{ $attachment->attachment }}', '{{ $attachment->user->role }}')"
                                             class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none"
                                             title="Tugas Siswa">
                                             <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"

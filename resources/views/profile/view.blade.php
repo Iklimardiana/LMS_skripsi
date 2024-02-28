@@ -129,4 +129,16 @@
             });
         }
     </script>
+    <script>
+        function redirectToEditProfile(userId, userRole) {
+            if (userRole == 'student') {
+                baseUrl = '/student/profile/';
+            } else if (userRole == 'teacher') {
+                baseUrl = '/teacher/profile/';
+            }
+
+            var editProfileUrl = baseUrl + userId + '/edit';
+            window.location.href = editProfileUrl;
+        }
+    </script>
 @endpush

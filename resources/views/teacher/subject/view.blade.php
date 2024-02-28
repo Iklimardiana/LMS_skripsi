@@ -215,5 +215,21 @@
             var discussionUrl = baseUrl + idSubject;
             window.location.href = discussionUrl;
         }
+
+        function redirectToMaterial(idSubject, userRole) {
+            if (userRole === 'student') {
+                var baseUrl = '/student/materials/';
+            } else if (userRole === 'teacher') {
+                var baseUrl = '/teacher/materials/';
+            }
+            var materialUrl = baseUrl + idSubject;
+            window.location.href = materialUrl;
+        }
+
+        function redirectToStudent(subjectId) {
+            var baseUrl = '/teacher/subject/';
+            var studentUrl = baseUrl + subjectId + '/student';
+            window.location.href = studentUrl;
+        }
     </script>
 @endpush
