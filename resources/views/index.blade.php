@@ -7,15 +7,15 @@
         <div class="grid max-w-screen-xl py-14 md:grid-cols-12 gap-2 lg:grid-cols-12">
             <div class="md:flex md:col-span-6">
                 <div class="mr-auto place-self-center">
-                    <div class="flex flex-col max-w-2xl mb-4 leading-none tracking-tight md:text-3xl text-xl text-cyan-800">
-                        <span class="font-bold text-5xl mb-5">
+                    <div class="flex flex-col max-w-2xl mb-4 leading-none tracking-tight md:text-3xl text-xl">
+                        <span class="font-bold text-5xl mb-5 text-cyan-800">
                             Selamat datang di MyEdu
                         </span>
-                        <span>
+                        <span class="font-semibold text-slate-800">
                             Learning Management System Interaktif untuk Meningkatkan Pendidikan!
                         </span>
                     </div>
-                    <p class=" max-w-2xl mb-6 font-normal text-cyan-800 lg:mb-8 md:text-lg lg:text-xl">
+                    <p class=" max-w-2xl mb-6 font-normal text-slate-500 lg:mb-8 md:text-lg lg:text-xl">
                         MyEdu hadir sebagai solusi untuk mendukung pengalaman belajar di sekolah. Dengan antarmuka yang
                         ramah
                         pengguna, MyEdu menyediakan akses mudah dan cepat ke berbagai sumber daya pembelajaran, alat
