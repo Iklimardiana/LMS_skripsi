@@ -82,8 +82,6 @@ Route::middleware('teacher')->group(function () {
     route::put('/teacher/assignment/{id}', [TeacherController::class, 'updateAssignment']);
     route::delete('/teacher/assignment/{id}', [TeacherController::class, 'destroyAssignment']);
 
-    // upload image from CKEditor
-    // Route::post('/upload', [TeacherController::class, 'uploadImage'])->name('ckeditor.upload');
     Route::post('/delete-ckeditor-image', [TeacherController::class, 'deleteCkeditorImage'])->name('ckeditor.deleteCkeditorImage');
     Route::post('/upload', [CKEditorController::class, 'uploadImage'])->name('ckeditor.upload');
     Route::post('/upload-image-answer', [CKEditorController::class, 'uploadImageAnswer'])->name('ckeditor-answer.upload');
