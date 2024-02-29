@@ -232,6 +232,9 @@
             </div>
         </div>
     </div>
+@endsection
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function redirectToMaterialStudent(idSubject, progres) {
             var baseUrl = '/student/materials/';
@@ -240,7 +243,12 @@
         }
 
         function showAlert() {
-            alert("Enrollment Key belum di-set oleh guru");
+            Swal.fire({
+                title: 'Enrollment-key Belum Diatur',
+                text: "Enrollment-Key belum di-set oleh guru",
+                icon: 'warning',
+                confirmButtonText: 'Ok'
+            })
         }
 
         function redirectToExam(idSubject) {
@@ -254,4 +262,4 @@
             window.location.href = discussionUrl;
         }
     </script>
-@endsection
+@endpush
