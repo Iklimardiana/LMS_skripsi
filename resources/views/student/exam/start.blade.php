@@ -44,7 +44,7 @@
                             <div class="mt-4 md:mt-2 mb-2">
                                 <div class="flex justify-between">
                                     <button type="button" id="btnPrev"
-                                        class="flex items-center gap-1 text-xs md:text-sm font-medium border bg-cyan-500 hover:bg-cyan-700 text-white rounded-md px-2 py-1">
+                                        class="flex items-center gap-1 text-xs md:text-sm font-medium border bg-cyan-500 hover:bg-cyan-700 text-white rounded-md p-2">
                                         <svg class="w-5 h-5 text-white" aria-hidden="true"
                                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -52,10 +52,10 @@
                                         </svg>
                                         Sebelumnya</button>
                                     <button type="submit"
-                                        class="border text-xs md:text-sm font-medium bg-cyan-500 hover:bg-cyan-700 text-white rounded-md px-2 py-1">Simpan</button>
+                                        class="border text-xs md:text-sm font-medium bg-cyan-500 hover:bg-cyan-700 text-white rounded-md p-2">Simpan</button>
 
                                     <button type="button" id="btnNext"
-                                        class="flex items-center gap-1 text-xs md:text-sm font-medium border bg-cyan-500 hover:bg-cyan-700 text-white rounded-md px-2 py-1">
+                                        class="flex items-center gap-1 text-xs md:text-sm font-medium border bg-cyan-500 hover:bg-cyan-700 text-white rounded-md p-2">
                                         Selanjutnya
                                         <svg class="w-5 h-5 text-white" aria-hidden="true"
                                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -81,7 +81,6 @@
     <script>
         const btnPrev = $('#btnPrev')
         const btnNext = $('#btnNext')
-        const btnRagu = $('#btnRagu')
 
         let x = setInterval(() => {
             const timer = document.getElementById('timer');
