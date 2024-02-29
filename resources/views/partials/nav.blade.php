@@ -1,6 +1,6 @@
 @guest
     <nav class="fixed top-0 w-full border-gray-200 bg-cyan-500 z-50">
-        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-5 py-4">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-5 py-3">
             <a href="/" class="flex items-center space-x-1 rtl:space-x-reverse">
                 <img src="{{ asset('images/logo.webp') }}" class="h-10" alt="MyEdu Logo" />
                 <span class="self-center text-2xl font-semibold whitespace-nowrap text-white">MyEdu</span>
@@ -54,7 +54,7 @@
 
 @auth
     <nav class="fixed top-0 w-full border-gray-200 bg-cyan-500 z-50">
-        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-5 py-4">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-5 py-3">
             @if (
                 !(request()->is('student/materials*') ||
                     request()->is('student/exam-start*') ||
