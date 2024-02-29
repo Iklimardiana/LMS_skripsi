@@ -1,6 +1,6 @@
 @guest
     <nav class="fixed top-0 w-full border-gray-200 bg-cyan-500 z-50">
-        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-4 py-2">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-5 py-4">
             <a href="/" class="flex items-center space-x-1 rtl:space-x-reverse">
                 <img src="{{ asset('images/logo.webp') }}" class="h-10" alt="MyEdu Logo" />
                 <span class="self-center text-2xl font-semibold whitespace-nowrap text-white">MyEdu</span>
@@ -54,7 +54,7 @@
 
 @auth
     <nav class="fixed top-0 w-full border-gray-200 bg-cyan-500 z-50">
-        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-4 py-3">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-5 py-4">
             @if (
                 !(request()->is('student/materials*') ||
                     request()->is('student/exam-start*') ||
@@ -79,6 +79,9 @@
                 <span class="self-center text-2xl font-semibold whitespace-nowrap text-white">MyEdu</span>
             </a>
             <div class="flex items-center">
+                @if (request()->is('/'))
+                    <p>Tes</p>
+                @endif
                 <div class="flex items-center ms-3">
                     <div>
                         <button type="button"
@@ -111,25 +114,25 @@
                                 @endif
                                 @if (Auth::user()->role == 'student')
                                     <a href="/student/subject"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-cyan-100"
-                                        role="menuitem">Subject</a>
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-cyan-100" role="menuitem">Mata
+                                        Pelajaran</a>
                                 @endif
                             </li>
                             <li>
                                 @if (Auth::user()->role == 'teacher')
                                     <a href="/teacher/profile/{{ Auth::user()->id }}"
                                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-cyan-100"
-                                        role="menuitem">Profile</a>
+                                        role="menuitem">Profil</a>
                                 @endif
                                 @if (Auth::user()->role == 'student')
                                     <a href="/student/profile/{{ Auth::user()->id }}"
                                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-cyan-100"
-                                        role="menuitem">Profile</a>
+                                        role="menuitem">Profil</a>
                                 @endif
                             </li>
                             <li>
                                 <a href="/logout" class="block px-4 py-2 text-sm text-gray-700 hover:bg-cyan-100"
-                                    role="menuitem">Sign out</a>
+                                    role="menuitem">Keluar</a>
                             </li>
                         </ul>
                     </div>
