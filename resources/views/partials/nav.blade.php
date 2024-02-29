@@ -79,8 +79,42 @@
                 <span class="self-center text-2xl font-semibold whitespace-nowrap text-white">MyEdu</span>
             </a>
             <div class="flex items-center">
-                @if (request()->is('/'))
-                    <p>Tes</p>
+                @if (request()->is('/') && Auth::user()->role == 'student')
+                    <ul>
+                        <li>
+                            <a href="/student/subject"
+                                class="block py-2 px-3 font-semibold text-white rounded md:hover:underline md:hover:border-white"
+                                aria-current="page">
+                                <span class="p-2">
+                                    Mata Pelajaran
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                @elseif(request()->is('/') && Auth::user()->role == 'teacher')
+                    <ul>
+                        <li>
+                            <a href="/teacher"
+                                class="block py-2 px-3 font-semibold text-white rounded md:hover:underline md:hover:border-white"
+                                aria-current="page">
+                                <span class="p-2">
+                                    Dashboard
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                @elseif(request()->is('/') && Auth::user()->role == 'admin')
+                    <ul>
+                        <li>
+                            <a href="/admin"
+                                class="block py-2 px-3 font-semibold text-white rounded md:hover:underline md:hover:border-white"
+                                aria-current="page">
+                                <span class="p-2">
+                                    Dashboard
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
                 @endif
                 <div class="flex items-center ms-3">
                     <div>
