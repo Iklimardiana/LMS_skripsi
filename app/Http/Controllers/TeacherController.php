@@ -240,8 +240,9 @@ class TeacherController extends Controller
         $convertedContent = preg_replace('/<oembed[^>]*url="https:\/\/www.youtube.com\/watch\?v=([^"]+)"[^>]*><\/oembed>/i', '<iframe class="w-full" src="https://www.youtube.com/embed/$1" width="560" height="315" frameborder="0" allowfullscreen></iframe>', $content);
 
         // Add target="_blank" to links
-        $convertedContent = preg_replace('/<a(.*?)href=["\'](https?:\/\/[^"\']+)["\'](.*?)>/i', '<a$1href="$2"$3 target="_blank">', $convertedContent);
+        $convertedContent = preg_replace('/<a(.*?)href=["\'](https?:\/\/[^"\']+)["\'](.*?)>/i', '<a$1href="$2"$3 style="color: blue;" onmouseover="this.style.color=\'#0891B2\';" onmouseout="this.style.color=\'blue\';" target="_blank">', $convertedContent);
 
+        // Check for images and captions
         if ($this->containsImageAndCaption($convertedContent)) {
             $convertedContent = $this->centerImages($convertedContent, true);
         }
