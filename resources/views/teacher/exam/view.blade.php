@@ -82,9 +82,10 @@
                             d="M13 5H1m0 0 4 4M1 5l4-4" />
                     </svg>
                 </a>
-                <button type="button" data-modal-target="addExam-modal" data-modal-toggle="addExam-modal"
+                <button type="button" onmouseover="showPopup('Klik untuk menambah ujian')" onmouseout="hidePopup()"
+                    data-modal-target="addExam-modal" data-modal-toggle="addExam-modal"
                     class="flex text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
-                    title="Klik untuk menambah materi">
+                    title="Klik untuk menambah ujian">
                     <svg class="w-5 h-5 text-white mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                         fill="none" viewBox="0 0 20 20">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -226,7 +227,8 @@
                                 </td>
                                 <td class="px-2 py-4 font-medium text-gray-900 whitespace-nowrap border border-cyan-500">
                                     <button type="button" title="List siswa"
-                                        onclick="redirectToListStudentExam({{ $exam->id }})"
+                                        onmouseover="showPopup('Klik untuk melihat daftar siswa')"
+                                        onmouseout="hidePopup()" onclick="redirectToListStudentExam({{ $exam->id }})"
                                         class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none">
                                         <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                             fill="none" viewBox="0 0 16 20">
@@ -240,7 +242,8 @@
                                     <form action="/teacher/exam/{{ $exam->id }}" method="POST">
                                         @method('DELETE')
                                         @csrf
-                                        <button type="button"
+                                        <button type="button" onmouseover="showPopup('Klik untuk menghapus ujian')"
+                                            onmouseout="hidePopup()"
                                             onclick="deleteData(event, '/teacher/exam/{{ $exam->id }}','exam-{{ $exam->id }}')"
                                             title="Hapus Ujian"
                                             class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none">
@@ -257,7 +260,8 @@
                                         @method('PUT')
                                         @csrf
                                         <input type="hidden" name="status" id="statusInput" value="PUT">
-                                        <button type="button" onclick="changeStatus({{ $exam->id }})"
+                                        <button type="button" onmouseover="showPopup('Klik untuk mengubah akses ujian')"
+                                            onmouseout="hidePopup()" onclick="changeStatus({{ $exam->id }})"
                                             class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none"
                                             title="Buka Akses Ujian">
                                             @if ($exam->status == '1')
@@ -280,6 +284,7 @@
                                         </button>
                                     </form>
                                     <button type="button" data-modal-target="editExam-modal-{{ $exam->id }}"
+                                        onmouseover="showPopup('Klik untuk edit ujian')" onmouseout="hidePopup()"
                                         data-modal-toggle="editExam-modal-{{ $exam->id }}"
                                         class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none"
                                         title="Klik untuk edit ujian">
@@ -386,7 +391,8 @@
                                 </td>
                                 <td class="px-2 py-4 font-medium text-gray-900 whitespace-nowrap border border-cyan-500">
                                     <div class="flex flex-items-center justify-center gap-1">
-                                        <button type="button" title="Klik untuk membuat soal"
+                                        <button type="button" onmouseover="showPopup('Klik untuk membuat soal')"
+                                            onmouseout="hidePopup()" title="Klik untuk membuat soal"
                                             onclick="redirectToCreateQuestion({{ $exam->id }})"
                                             class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none">
                                             <svg class="w-5 h-5 text-white" aria-hidden="true"
@@ -399,7 +405,9 @@
                                         <form action="/teacher/exam/" method="POST" id="deleteForm">
                                             @method('DELETE')
                                             @csrf
-                                            <button type="button" onclick="deleteData(event, '/teacher/exam/')"
+                                            <button type="button"
+                                                onmouseover="showPopup('Klik untuk menghapus seluruh soal')"
+                                                onmouseout="hidePopup()" onclick="deleteData(event, '/teacher/exam/')"
                                                 title="Hapus seluruh soal"
                                                 class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none">
                                                 <svg class="w-5 h-5" aria-hidden="true"
@@ -411,7 +419,9 @@
                                                 </svg>
                                             </button>
                                         </form>
-                                        <button type="button" onclick="redirectToShowQuestions({{ $exam->id }})"
+                                        <button type="button" onmouseover="showPopup('Klik untuk pratinjau soal')"
+                                            onmouseout="hidePopup()"
+                                            onclick="redirectToShowQuestions({{ $exam->id }})"
                                             title="klik untuk pratinjau soal"
                                             class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none">
                                             <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -441,6 +451,7 @@
     </div>
 @endsection
 @push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function redirectToCreateQuestion(idExam) {
             var baseUrl = '/teacher/';
@@ -493,6 +504,20 @@
                         swal("Perubahan dibatalkan!");
                     }
                 });
+        }
+
+        function showPopup(message) {
+            Swal.fire({
+                title: message,
+                icon: 'info',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+            });
+        }
+
+        function hidePopup() {
+            Swal.close();
         }
     </script>
 @endpush
