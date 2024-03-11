@@ -239,22 +239,18 @@
                                     </button>
                                 </td>
                                 <td class="px-2 py-4 flex flex-items-center justify-center gap-1">
-                                    <form action="/teacher/exam/{{ $exam->id }}" method="POST">
-                                        @method('DELETE')
-                                        @csrf
-                                        <button type="button" onmouseover="showPopup('Klik untuk menghapus ujian')"
-                                            onmouseout="hidePopup()"
-                                            onclick="deleteData(event, '/teacher/exam/{{ $exam->id }}','exam-{{ $exam->id }}')"
-                                            title="Hapus Ujian"
-                                            class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none">
-                                            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                                fill="none" viewBox="0 0 18 20">
-                                                <path stroke="currentColor" stroke-linecap="round"
-                                                    stroke-linejoin="round" stroke-width="2"
-                                                    d="M1 5h16M7 8v8m4-8v8M7 1h4a1 1 0 0 1 1 1v3H6V2a1 1 0 0 1 1-1ZM3 5h12v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5Z" />
-                                            </svg>
-                                        </button>
-                                    </form>
+                                    <button type="button" onmouseover="showPopup('Klik untuk menghapus ujian')"
+                                        onmouseout="hidePopup()"
+                                        onclick="deleteData(event, '/teacher/exam/{{ $exam->id }}','exam-{{ $exam->id }}')"
+                                        title="Hapus Ujian"
+                                        class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none">
+                                        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="none" viewBox="0 0 18 20">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M1 5h16M7 8v8m4-8v8M7 1h4a1 1 0 0 1 1 1v3H6V2a1 1 0 0 1 1-1ZM3 5h12v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5Z" />
+                                        </svg>
+                                    </button>
                                     <form id="statusForm{{ $exam->id }}"
                                         action="/teacher/exam/{{ $exam->id }}/update-status" method="POST">
                                         @method('PUT')
@@ -390,21 +386,35 @@
                                     <!-- end modal -->
                                 </td>
                                 <td class="px-2 py-4 font-medium text-gray-900 whitespace-nowrap border border-cyan-500">
-                                    <div class="flex flex-items-center justify-center gap-1">
-                                        <button type="button" onmouseover="showPopup('Klik untuk membuat soal')"
-                                            onmouseout="hidePopup()" title="Klik untuk membuat soal"
-                                            onclick="redirectToCreateQuestion({{ $exam->id }})"
-                                            class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none">
-                                            <svg class="w-5 h-5 text-white" aria-hidden="true"
-                                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                                <path stroke="currentColor" stroke-linecap="round"
-                                                    stroke-linejoin="round" stroke-width="2"
-                                                    d="M10 5.757v8.486M5.757 10h8.486M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                            </svg>
-                                        </button>
-                                        <form action="/teacher/exam/" method="POST" id="deleteForm">
-                                            @method('DELETE')
-                                            @csrf
+                                    @if ($exam->question->isEmpty())
+                                        <div class="flex flex-items-center justify-center gap-1">
+                                            <button type="button" title="Klik untuk membuat soal"
+                                                onclick="redirectToCreateQuestion({{ $exam->id }})"
+                                                class="text-white flex gap-1 bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none">
+                                                <svg class="w-5 h-5 text-white" aria-hidden="true"
+                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                    viewBox="0 0 20 20">
+                                                    <path stroke="currentColor" stroke-linecap="round"
+                                                        stroke-linejoin="round" stroke-width="2"
+                                                        d="M10 5.757v8.486M5.757 10h8.486M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                                </svg>
+                                                <span>Membuat Soal</span>
+                                            </button>
+                                        </div>
+                                    @else
+                                        <div class="flex flex-items-center justify-center gap-1">
+                                            <button type="button" onmouseover="showPopup('Klik untuk membuat soal')"
+                                                onmouseout="hidePopup()" title="Klik untuk membuat soal"
+                                                onclick="redirectToCreateQuestion({{ $exam->id }})"
+                                                class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none">
+                                                <svg class="w-5 h-5 text-white" aria-hidden="true"
+                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                    viewBox="0 0 20 20">
+                                                    <path stroke="currentColor" stroke-linecap="round"
+                                                        stroke-linejoin="round" stroke-width="2"
+                                                        d="M10 5.757v8.486M5.757 10h8.486M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                                </svg>
+                                            </button>
                                             <button type="button"
                                                 onmouseover="showPopup('Klik untuk menghapus seluruh soal')"
                                                 onmouseout="hidePopup()" onclick="deleteData(event, '/teacher/exam/')"
@@ -418,23 +428,24 @@
                                                         d="M1 5h16M7 8v8m4-8v8M7 1h4a1 1 0 0 1 1 1v3H6V2a1 1 0 0 1 1-1ZM3 5h12v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5Z" />
                                                 </svg>
                                             </button>
-                                        </form>
-                                        <button type="button" onmouseover="showPopup('Klik untuk pratinjau soal')"
-                                            onmouseout="hidePopup()"
-                                            onclick="redirectToShowQuestions({{ $exam->id }})"
-                                            title="klik untuk pratinjau soal"
-                                            class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none">
-                                            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                                fill="none" viewBox="0 0 20 14">
-                                                <g stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                                    stroke-width="2">
-                                                    <path d="M10 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-                                                    <path
-                                                        d="M10 13c4.97 0 9-2.686 9-6s-4.03-6-9-6-9 2.686-9 6 4.03 6 9 6Z" />
-                                                </g>
-                                            </svg>
-                                        </button>
-                                    </div>
+                                            <button type="button" onmouseover="showPopup('Klik untuk pratinjau soal')"
+                                                onmouseout="hidePopup()"
+                                                onclick="redirectToShowQuestions({{ $exam->id }})"
+                                                title="klik untuk pratinjau soal"
+                                                class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none">
+                                                <svg class="w-5 h-5" aria-hidden="true"
+                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                    viewBox="0 0 20 14">
+                                                    <g stroke="currentColor" stroke-linecap="round"
+                                                        stroke-linejoin="round" stroke-width="2">
+                                                        <path d="M10 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                                                        <path
+                                                            d="M10 13c4.97 0 9-2.686 9-6s-4.03-6-9-6-9 2.686-9 6 4.03 6 9 6Z" />
+                                                    </g>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    @endif
                                 </td>
                             </tr>
                         @empty

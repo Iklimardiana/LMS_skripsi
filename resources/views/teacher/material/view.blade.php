@@ -111,20 +111,20 @@
                                     {{ $material->sequence }}
                                 </td>
                                 <td class="p-2 flex flex-items-center justify-center gap-1">
-                                    <form>
-                                        <button type="button"
-                                            onclick="deleteData(event, '/teacher/materials/{{ $material->id }}')"
-                                            class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none"
-                                            title="klik untuk menghapus materi">
-                                            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                                fill="none" viewBox="0 0 18 20">
-                                                <path stroke="currentColor" stroke-linecap="round"
-                                                    stroke-linejoin="round" stroke-width="2"
-                                                    d="M1 5h16M7 8v8m4-8v8M7 1h4a1 1 0 0 1 1 1v3H6V2a1 1 0 0 1 1-1ZM3 5h12v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5Z" />
-                                            </svg>
-                                        </button>
-                                    </form>
-                                    <button type="button" onclick="redirectToShowMaterial({{ $material->id }})"
+                                    <button type="button" onmouseover="showPopup('Klik untuk menghapus materi')"
+                                        onmouseout="hidePopup()"
+                                        onclick="deleteData(event, '/teacher/materials/{{ $material->id }}')"
+                                        class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none"
+                                        title="klik untuk menghapus materi">
+                                        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="none" viewBox="0 0 18 20">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M1 5h16M7 8v8m4-8v8M7 1h4a1 1 0 0 1 1 1v3H6V2a1 1 0 0 1 1-1ZM3 5h12v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5Z" />
+                                        </svg>
+                                    </button>
+                                    <button type="button" onmouseover="showPopup('Klik untuk pratinjau materi')"
+                                        onmouseout="hidePopup()" onclick="redirectToShowMaterial({{ $material->id }})"
                                         class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none"
                                         title="Klik untuk pratinjau materi">
                                         <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -136,7 +136,8 @@
                                             </g>
                                         </svg>
                                     </button>
-                                    <button type="button"
+                                    <button type="button" onmouseover="showPopup('Klik untuk edit materi')"
+                                        onmouseout="hidePopup()"
                                         class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none"
                                         title="Klik untuk edit materi"
                                         onclick="redirectToEditMaterial({{ $material->id }})">
@@ -157,23 +158,21 @@
                                     @endphp
                                     @if ($currentAssignment)
                                         <div class="flex flex-items-center justify-center gap-1">
-                                            <form action="/teacher/assignment/{{ $currentAssignment->id }}"method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit"
-                                                    onclick="deleteData(event, '/teacher/assignment/{{ $currentAssignment->id }}')"
-                                                    class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none"
-                                                    title="klik untuk menghapus materi">
-                                                    <svg class="w-5 h-5" aria-hidden="true"
-                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                        viewBox="0 0 18 20">
-                                                        <path stroke="currentColor" stroke-linecap="round"
-                                                            stroke-linejoin="round" stroke-width="2"
-                                                            d="M1 5h16M7 8v8m4-8v8M7 1h4a1 1 0 0 1 1 1v3H6V2a1 1 0 0 1 1-1ZM3 5h12v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5Z" />
-                                                    </svg>
-                                                </button>
-                                            </form>
-                                            <button type="button"
+                                            <button type="button" onmouseover="showPopup('Klik untuk menghapus tugas')"
+                                                onmouseout="hidePopup()"
+                                                onclick="deleteData(event, '/teacher/assignment/{{ $currentAssignment->id }}')"
+                                                class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none"
+                                                title="klik untuk menghapus tugas">
+                                                <svg class="w-5 h-5" aria-hidden="true"
+                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                    viewBox="0 0 18 20">
+                                                    <path stroke="currentColor" stroke-linecap="round"
+                                                        stroke-linejoin="round" stroke-width="2"
+                                                        d="M1 5h16M7 8v8m4-8v8M7 1h4a1 1 0 0 1 1 1v3H6V2a1 1 0 0 1 1-1ZM3 5h12v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5Z" />
+                                                </svg>
+                                            </button>
+                                            <button type="button" onmouseover="showPopup('Klik untuk edit tugas')"
+                                                onmouseout="hidePopup()"
                                                 onclick="redirectToEditAssignment({{ $currentAssignment->id }})"
                                                 class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none"
                                                 title="Klik untuk edit tugas">
@@ -185,7 +184,8 @@
                                                     <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
                                                 </svg>
                                             </button>
-                                            <button type="button"
+                                            <button type="button" onmouseover="showPopup('Klik untuk pratinjau tugas')"
+                                                onmouseout="hidePopup()"
                                                 class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none"
                                                 title="Klik Untuk Pratinjau Tugas"
                                                 onclick="previewAssignment('{{ $currentAssignment->type }}', '{{ $currentAssignment->attachment }}', '{{ $currentAssignment->user->role }}')">
@@ -201,6 +201,8 @@
                                                 </svg>
                                             </button>
                                             <button type="button"
+                                                onmouseover="showPopup('Klik untuk melihat daftar tugas ungaahan siswa')"
+                                                onmouseout="hidePopup()"
                                                 class="text-white bg-cyan-500 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm p-2 focus:outline-none"
                                                 title="daftar tugas unggahan siswa"
                                                 onclick="redirectToAttachmentStudent({{ $material->id }})">
@@ -238,6 +240,7 @@
     </div>
 @endsection
 @push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function redirectToAttachmentStudent(idMaterial) {
             var baseUrl = '/teacher/attachment/';
@@ -269,6 +272,20 @@
             var baseUrl = '/teacher/materials/';
             var showMateriUrl = baseUrl + idMaterial + '/detail';
             window.location.href = showMateriUrl;
+        }
+
+        function showPopup(message) {
+            Swal.fire({
+                title: message,
+                icon: 'info',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+            });
+        }
+
+        function hidePopup() {
+            Swal.close();
         }
     </script>
 @endpush
