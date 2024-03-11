@@ -40,7 +40,10 @@
                         $totalMaterials = $subject->Material->count();
                         $totalAssignments = $subject->Assignment->where('category', 'fromteacher')->count();
 
-                        $completedAssignments = $subject->Assignment->where('category', 'fromstudent')->where('idUser', Auth::id())->count();
+                        $completedAssignments = $subject->Assignment
+                            ->where('category', 'fromstudent')
+                            ->where('idUser', Auth::id())
+                            ->count();
 
                         $totalProgress = $totalMaterials + max(0, $totalAssignments - $completedAssignments);
 
@@ -279,7 +282,7 @@
                             <div>
                                 @if ($currentSequence > 1)
                                     <a href="{{ route('learning-page', ['id' => $subject->id, 'sequence' => $currentSequence - 1]) }}"
-                                        class="border bg-cyan-500 hover:bg-cyan-700 text-white rounded-md py-2 px-5">Kembali</a>
+                                        class="border bg-cyan-500 hover:bg-cyan-700 text-white rounded-md py-2 px-5">Sebelumnya</a>
                                 @endif
                             </div>
                             <div class="text-right">
