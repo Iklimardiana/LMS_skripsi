@@ -51,7 +51,7 @@ class TeacherController extends Controller
             $subjects = Subject::where('idTeacher', $teacherId)->where('name', 'LIKE', '%' . request('keyword') . '%')->get();
         }
 
-        if (!empty($subjects)) {
+        if (!empty ($subjects)) {
             foreach ($subjects as $subject) {
                 $enrollment = Enrollment::where('idSubject', $subject->id)->first();
 
@@ -217,7 +217,7 @@ class TeacherController extends Controller
         // Bandingkan urutan sebelum dan setelah penyimpanan
         $missingSequences = array_diff(range(1, max($existingSequencesAfterSave)), $existingSequencesAfterSave);
 
-        if (!empty($missingSequences)) {
+        if (!empty ($missingSequences)) {
             $errorMessage = 'Materi tersimpan, namun urutan ' . implode(', ', $missingSequences) . ' terlewat! Mohon untuk edit terlebih dahulu urutan materi dengan benar!';
             return redirect('/teacher/materials/' . $idSubject)->with('messageError', $errorMessage);
         } else {
@@ -237,10 +237,33 @@ class TeacherController extends Controller
     private function convertOEmbedToIframeAndTargetBlank($content)
     {
         // Convert YouTube oEmbeds to iframes
-        $convertedContent = preg_replace('/<oembed[^>]*url="https:\/\/www.youtube.com\/watch\?v=([^"]+)"[^>]*><\/oembed>/i', '<iframe class="w-full" src="https://www.youtube.com/embed/$1" width="560" height="315" frameborder="0" allowfullscreen></iframe>', $content);
+        $convertedContent = preg_replace('/<oembed[^>]*url="https:\/\/(?:www\.)?youtu(?:be\.com\/(?:watch\?v=|embed\/|v\/)|\.be\/)([^"&?\/\s]{11})"[^>]*><\/oembed>/i', '<iframe class="w-full" src="https://www.youtube.com/embed/$1" width="560" height="315" frameborder="0" allowfullscreen></iframe>', $content);
+
 
         // Add target="_blank" to links
         $convertedContent = preg_replace('/<a(.*?)href=["\'](https?:\/\/[^"\']+)["\'](.*?)>/i', '<a$1href="$2"$3 style="color: blue;" onmouseover="this.style.color=\'#0891B2\';" onmouseout="this.style.color=\'blue\';" target="_blank">', $convertedContent);
+
+        // Convert ordered lists to use list-decimal
+        $convertedContent = preg_replace('/<ol[^>]*>(.*?)<\/ol>/si', '<ol class="list-decimal list-inside">$1</ol>', $convertedContent);
+
+        // Convert unordered lists to use list-disc
+        $convertedContent = preg_replace('/<ul[^>]*>(.*?)<\/ul>/si', '<ul class="list-disc list-inside">$1</ul>', $convertedContent);
+
+        // Add class to <h4> tags
+        $convertedContent = preg_replace('/<h4>(.*?)<\/h4>/i', '<h4 class="text-lg font-semibold">$1</h4>', $convertedContent);
+
+        // Add class to <h3> tags
+        $convertedContent = preg_replace('/<h3>(.*?)<\/h3>/i', '<h3 class="text-xl font-semibold">$1</h3>', $convertedContent);
+
+        // Add class to <h2> tags
+        $convertedContent = preg_replace('/<h2>(.*?)<\/h2>/i', '<h2 class="text-2xl font-semibold">$1</h2>', $convertedContent);
+
+        // Convert tables to use Tailwind classes
+        $convertedContent = preg_replace('/<table(.*?)>/i', '<div class="relative overflow-x-auto"><table class="min-w-full border-2 border-black rounded-lg overflow-hidden">', $convertedContent);
+
+        // Add style for tr and td
+        $convertedContent = preg_replace('/<tr(.*?)>/i', '<tr class="border-2 border-black">', $convertedContent);
+        $convertedContent = preg_replace('/<td(.*?)>/i', '<td class="border-2 border-black px-4 py-2">', $convertedContent);
 
         // Check for images and captions
         if ($this->containsImageAndCaption($convertedContent)) {
@@ -340,7 +363,7 @@ class TeacherController extends Controller
         // Bandingkan urutan sebelum dan setelah penyimpanan
         $missingSequences = array_diff(range(1, max($existingSequencesAfterSave)), $existingSequencesAfterSave);
 
-        if (!empty($missingSequences)) {
+        if (!empty ($missingSequences)) {
             $errorMessage = 'Materi tersimpan, namun urutan ' . implode(', ', $missingSequences) . ' terlewat! Mohon untuk edit terlebih dahulu urutan materi dengan benar!';
             return redirect('/teacher/materials/' . $materials->idSubject)->with('messageError', $errorMessage);
         } else {
@@ -392,7 +415,7 @@ class TeacherController extends Controller
         // Bandingkan urutan sebelum dan setelah penyimpanan
         $missingSequences = array_diff(range(1, max($existingSequencesAfterSave)), $existingSequencesAfterSave);
 
-        if (!empty($missingSequences)) {
+        if (!empty ($missingSequences)) {
             $errorMessage = 'Materi terhapus, namun urutan ' . implode(', ', $missingSequences) . ' terlewat! Mohon untuk edit terlebih dahulu urutan materi dengan benar!';
             return back()->with('messageError', $errorMessage);
         } else {
@@ -588,6 +611,13 @@ class TeacherController extends Controller
         File::delete(public_path('attachment/task/' . $assignment->attachment));
 
         $assignment->delete();
+
+        // Jika kategori adalah 'fromteacher', hapus tugas dengan id materi yang sama
+        if ($assignment->category === 'fromteacher') {
+            Assignment::where('idMaterial', $assignment->idMaterial)
+                ->where('category', 'fromstudent')
+                ->delete();
+        }
 
         return back();
     }
