@@ -19,7 +19,7 @@
 
         <!-- drawer component -->
         <div id="drawer-navigation"
-            class="fixed top-0 left-0 mt-16 z-50 w-64 h-screen p-4 overflow-y-auto transition-transform -translate-x-full bg-cyan-50 dark:bg-gray-800 border border-cyan-400"
+            class="fixed top-0 left-0 mt-16 z-50 w-64 h-screen p-4 overflow-y-auto transition-transform -translate-x-full bg-cyan-50 dark:bg-gray-800 border border-cyan-400 pb-16"
             tabindex="-1" aria-labelledby="drawer-navigation-label">
             <h5 id="drawer-navigation-label"
                 class="text-base border-cyan-500 pb-4 font-semibold text-gray-500 uppercase dark:text-gray-400">
