@@ -76,22 +76,6 @@ class ExamStudentController extends Controller
         return view('student.exam.view', compact('exams', 'subject', 'examAvailability', 'iteration', 'ongoingExam'));
     }
 
-    // public function examList($id)
-    // {
-    //     $examsQuery = Exam::where('idSubject', $id);
-
-    //     if (request()->has('keyword')) {
-    //         $keyword = request('keyword');
-    //         $examsQuery->where(function ($query) use ($keyword) {
-    //             $query->where('title', 'LIKE', '%' . $keyword . '%')
-    //                 ->orwhere('type', 'LIKE', '%' . $keyword . '%');
-    //         });
-    //     }
-
-    //     $exams = $examsQuery->get();
-    //     $subject = Subject::find($id);
-    //     return view('student.exam.view', compact('exams', 'subject'));
-    // }
     public function startExam(Request $request, $id)
     {
         $exam = Exam::find($id);
