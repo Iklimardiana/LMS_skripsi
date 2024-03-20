@@ -38,9 +38,4 @@ class Question extends Model
             $query->where('idStudent', auth()->id());
         });
     }
-
-    // public function UserAnswer()
-    // {
-    //     return $this->hasMany(UserAnswer::class, 'idQuestion');
-    // }
 }
