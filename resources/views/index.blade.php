@@ -9,16 +9,17 @@
                 <div class="mr-auto place-self-center">
                     <div class="flex flex-col max-w-2xl mb-4 leading-none tracking-tight md:text-3xl text-xl">
                         <span class="font-bold text-5xl mb-5 text-cyan-800">
-                            Selamat datang di MyEdu
+                            Selamat datang di MicroTika
                         </span>
                         <span class="font-semibold text-slate-800">
                             Learning Management System Interaktif untuk Meningkatkan Pendidikan!
                         </span>
                     </div>
                     <p class=" max-w-2xl mb-6 font-normal text-slate-500 lg:mb-8 md:text-lg lg:text-xl">
-                        MyEdu hadir sebagai solusi untuk mendukung pengalaman belajar di sekolah. Dengan antarmuka yang
+                        MicroTika (Microlearning Informatika) hadir sebagai solusi untuk mendukung pengalaman belajar di
+                        sekolah. Dengan antarmuka yang
                         ramah
-                        pengguna, MyEdu menyediakan akses mudah dan cepat ke berbagai sumber daya pembelajaran, alat
+                        pengguna, MicroTika menyediakan akses mudah dan cepat ke berbagai sumber daya pembelajaran, alat
                         kolaborasi,
                         dan pengelolaan tugas yang dirancang untuk meningkatkan pengalaman belajar Anda.
                     </p>

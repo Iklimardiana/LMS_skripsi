@@ -126,7 +126,10 @@
                                         $totalProgress =
                                             $totalMaterials + max(0, $totalAssignments - $completedAssignments);
 
-                                        // $progressPercentage = round(($currentProgres->sequence / $totalProgress) * 100);
+                                        if ($currentProgres->sequence > $totalMaterials) {
+                                            $currentProgres->sequence = $totalMaterials;
+                                        }
+
                                         $progressPercentage =
                                             $totalProgress > 0
                                                 ? round(($currentProgres->sequence / $totalProgress) * 100)

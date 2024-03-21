@@ -61,22 +61,27 @@
                                         {{ $enroll->user->first_name . ' ' . $enroll->user->last_name }}
                                     </td>
                                     <td class="px-6 py-1">
-                                        {{-- @php
-                                            $progresUser = $progres->where('idUser', $enroll->user->id)->first();
-                                        @endphp --}}
                                         @php
                                             $progresUser = $progres->where('idUser', $enroll->user->id)->first();
                                             $totalMaterials = $subject->Material->count();
-                                            $totalAssignments = $subject->Assignment->where('category', 'fromteacher')->count();
+                                            $totalAssignments = $subject->Assignment
+                                                ->where('category', 'fromteacher')
+                                                ->count();
 
                                             $completedAssignments = $subject->Assignment
                                                 ->where('category', 'fromstudent')
                                                 ->where('idUser', $enroll->user->id)
                                                 ->count();
 
-                                            $totalProgress = $totalMaterials + max(0, $totalAssignments - $completedAssignments);
+                                            $totalProgress =
+                                                $totalMaterials + max(0, $totalAssignments - $completedAssignments);
 
-                                            $progressPercentage = $progresUser ? round(($progresUser->sequence / $totalProgress) * 100) : 0;
+                                            if ($progresUser && $progresUser->sequence > $totalMaterials) {
+                                                $progresUser->sequence = $totalMaterials;
+                                            }
+                                            $progressPercentage = $progresUser
+                                                ? round(($progresUser->sequence / $totalProgress) * 100)
+                                                : 0;
                                         @endphp
                                         @if ($progresUser ? $progresUser->sequence : '')
                                             {{ $progressPercentage }}%
