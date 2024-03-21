@@ -285,24 +285,13 @@
                             </div>
                             <div class="text-right">
                                 @if ($currentSequence < $subject->material->count())
-                                    @if ($currentProgres->status == '1')
-                                        <a href="{{ route('learning-page', ['id' => $subject->id, 'sequence' => $currentSequence + 1]) }}"
-                                            class="border bg-cyan-500 hover:bg-cyan-700 text-white rounded-md p-2">Selanjutnya</a>
-                                    @elseif($currentProgres->status == '0')
-                                        <a class="border bg-cyan-500 cursor-not-allowed text-white rounded-md p-2"
-                                            onclick="showAlert()" disabled>Selanjutnya</a>
-                                    @endif
+                                    <a href="{{ route('learning-page', ['id' => $subject->id, 'sequence' => $currentSequence + 1]) }}"
+                                        class="border bg-cyan-500 hover:bg-cyan-700 text-white rounded-md p-2">Selanjutnya</a>
                                 @elseif($currentSequence == $subject->material->count())
-                                    @if ($currentProgres->status == '1')
-                                        <a href="/student/subject"
-                                            class="border bg-cyan-500 hover:bg-cyan-700 text-white rounded-md py-2 px-5">Kembali
-                                            ke
-                                            Dashboard</a>
-                                    @elseif($currentProgres->status == '0')
-                                        <a onclick="showAlert()"
-                                            class="border bg-cyan-500 cursor-not-allowed text-white rounded-md py-2 px-5"
-                                            disabled>Kembali ke Dashboard</a>
-                                    @endif
+                                    <a href="/student/subject"
+                                        class="border bg-cyan-500 hover:bg-cyan-700 text-white rounded-md py-2 px-5">Kembali
+                                        ke
+                                        Dashboard</a>
                                 @endif
                             </div>
                         </div>
@@ -328,13 +317,6 @@
                 timerProgressBar: true,
                 timer: 2000,
             });
-        }
-
-        function showAlert() {
-            swal({
-                title: "Mohon untuk mengerjakan tugas terlebih dahulu",
-                icon: 'warning',
-            })
         }
 
         function showAlertAside() {
