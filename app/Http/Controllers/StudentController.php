@@ -58,6 +58,7 @@ class StudentController extends Controller
         if ($isEnrolled) {
             return redirect()->back()->with('error', 'Anda sudah terdaftar pada mata pelajaran ini.');
         }
+
         if ($enrollmentkeyStudent !== $subject->enrollment_key) {
             return redirect()->back()->with('error', 'Enrollment Key tidak sesuai.');
         }

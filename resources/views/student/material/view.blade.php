@@ -268,7 +268,7 @@
                     @endif
                     <div class="flex flex-col min-h-80">
                         <div id="content" class="h-auto p-2 rounded-lg bg-white border border-cyan-500 mb-2">
-                            <h1 class=" text-center font-medium text-3xl">{{ $currentMaterial->name }}</h1>
+                            <h1 class=" text-center font-medium text-2xl sm:text-3xl">{{ $currentMaterial->name }}</h1>
                             <hr class="mt-2 border-cyan-500">
                             <div class="mt-2 text-justify">
                                 {!! $convertedContent !!}
@@ -280,16 +280,16 @@
                             <div>
                                 @if ($currentSequence > 1)
                                     <a href="{{ route('learning-page', ['id' => $subject->id, 'sequence' => $currentSequence - 1]) }}"
-                                        class="border bg-cyan-500 hover:bg-cyan-700 text-white rounded-md py-2 px-5">Sebelumnya</a>
+                                        class="flex text-center border bg-cyan-500 hover:bg-cyan-700 text-white rounded-md py-1 sm:py-2 px-2 sm:px-5">Sebelumnya</a>
                                 @endif
                             </div>
                             <div class="text-right">
                                 @if ($currentSequence < $subject->material->count())
                                     <a href="{{ route('learning-page', ['id' => $subject->id, 'sequence' => $currentSequence + 1]) }}"
-                                        class="border bg-cyan-500 hover:bg-cyan-700 text-white rounded-md p-2">Selanjutnya</a>
+                                        class="flex text-center border bg-cyan-500 hover:bg-cyan-700 text-white rounded-md py-1 sm:py-2 px-2 sm:px-5">Selanjutnya</a>
                                 @elseif($currentSequence == $subject->material->count())
                                     <a href="/student/subject"
-                                        class="border bg-cyan-500 hover:bg-cyan-700 text-white rounded-md py-2 px-5">Kembali
+                                        class="flex text-center border bg-cyan-500 hover:bg-cyan-700 text-white rounded-md py-1 sm:py-2 px-2 sm:px-5">Kembali
                                         ke
                                         Dashboard</a>
                                 @endif

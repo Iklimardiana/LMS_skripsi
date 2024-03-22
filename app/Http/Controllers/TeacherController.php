@@ -114,11 +114,12 @@ class TeacherController extends Controller
     public function settingSubject(Request $request, $id)
     {
         $request->validate([
-            'enrollment_key' => 'required|string|min:6|confirmed',
+            'enrollment_key' => 'required|string|min:6|confirmed|unique:subject,enrollment_key',
             'thumbnail' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ], [
             'enrollment_key.required' => 'Enrollment Key harus diisi. Coba lagi',
             'enrollment_key.confirmed' => 'Konfirmasi Enrollment key tidak cocok. Coba lagi',
+            'enrollment_key.unique' => 'Enrollment Key sudah digunakan. Silakan gunakan yang lain.',
             'thumbnail.image' => 'File harus berupa gambar.',
             'thumbnail.mimes' => 'Format gambar yang diperbolehkan: jpeg, png, jpg, gif.',
             'thumbnail.max' => 'Ukuran gambar tidak boleh melebihi 2 MB.',
@@ -148,7 +149,6 @@ class TeacherController extends Controller
         }
 
         return redirect('/teacher/subject');
-
     }
 
     public function createMaterial($idSubject)

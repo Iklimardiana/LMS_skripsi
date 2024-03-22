@@ -44,24 +44,24 @@
                         swal("Data Anda telah dihapus!", {
                             icon: "success",
                         });
-                        setTimeout(() => {
-                            fetch(url, {
-                                    method: "DELETE",
-                                    headers: {
-                                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                                    }
-                                })
-                                .then(response => {
-                                    const elementToRemove = document.getElementById(elementId);
-                                    if (elementToRemove) {
-                                        elementToRemove.remove();
-                                    }
-                                    location.reload()
-                                })
-                                .catch(error => {
-                                    // 
-                                });
-                        }, 100);
+                        fetch(url, {
+                                method: "DELETE",
+                                headers: {
+                                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                                }
+                            })
+                            .then(response => {
+                                const elementToRemove = document.getElementById(elementId);
+                                if (elementToRemove) {
+                                    elementToRemove.remove();
+                                }
+                                setTimeout(() => {
+                                    location.reload();
+                                }, 500);
+                            })
+                            .catch(error => {
+                                // 
+                            });
 
                     } else {
                         swal("Data Anda aman!");
