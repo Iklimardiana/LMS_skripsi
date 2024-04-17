@@ -5,10 +5,26 @@
 @section('content')
     <div class="p-4 mt-20 sm:ml-72 sm:mr-9">
         <div class="py-4 px-7 border-2 border-gray-200 h-auto border-dashed mb-20 rounded-lg ">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
                 <div class="min-h-24 max-h-96 p-3 flex flex-col items-center justify-center rounded bg-cyan-100">
-                    <p class="text-4xl font-semibold text-gray-600 ">
-                        {{ $totalStudents }}
+                    @php
+                        $totalUniqueStudents = 0;
+                        $printedIds = [];
+                    @endphp
+
+                    @foreach ($students as $subjectName => $subjectStudents)
+                        @foreach ($subjectStudents as $student)
+                            @foreach ($student as $individualStudent)
+                                @if (!in_array($individualStudent->id, $printedIds))
+                                    @php $totalUniqueStudents++; @endphp
+                                    @php $printedIds[] = $individualStudent->id; @endphp
+                                @endif
+                            @endforeach
+                        @endforeach
+                    @endforeach
+
+                    <p class="text-4xl font-semibold text-gray-600">
+                        {{ $totalUniqueStudents }}
                     </p>
                     <span class="text-xl font-normal text-gray-600">
                         siswa
@@ -24,22 +40,27 @@
                                 </tr>
                             </thead>
                             <tbody class="text-center">
-                                @forelse ($students as $subjectName => $subjectStudents)
+                                @php $printedNames = []; @endphp
+                                @foreach ($students as $subjectName => $subjectStudents)
                                     @foreach ($subjectStudents as $student)
-                                        <tr class="bg-white border-b border-cyan-500 hover:bg-gray-50">
-                                            <td class="px-6 py-1 font-normal text-gray-900 whitespace-nowrap">
-                                                @foreach ($student as $individualStudent)
-                                                    {{ $individualStudent->first_name . ' ' . $individualStudent->last_name }}
-                                                @endforeach
-                                            </td>
-                                        </tr>
+                                        @foreach ($student as $individualStudent)
+                                            @if (!in_array($individualStudent->id, $printedNames))
+                                                <tr class="bg-white border-b border-cyan-500 hover:bg-gray-50">
+                                                    <td class="px-6 py-1 font-normal text-gray-900 whitespace-nowrap">
+                                                        {{ $individualStudent->first_name . ' ' . $individualStudent->last_name }}
+                                                    </td>
+                                                </tr>
+                                                @php $printedNames[] = $individualStudent->id; @endphp
+                                            @endif
+                                        @endforeach
                                     @endforeach
-                                @empty
+                                @endforeach
+                                @if (empty($printedNames))
                                     <tr>
-                                        <td colspan="1" class="px-6 py-1 text-gray-900 whitespace-nowrap">Tidak ada
-                                            siswa yang terdaftar</td>
+                                        <td colspan="1" class="px-6 py-1 text-gray-900 whitespace-nowrap">Tidak ada siswa
+                                            yang terdaftar</td>
                                     </tr>
-                                @endforelse
+                                @endif
                             </tbody>
                         </table>
                     </div>

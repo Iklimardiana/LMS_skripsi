@@ -36,6 +36,13 @@ class StudentController extends Controller
         $enrollment = $enrollmentQuery->get();
         $progres = Progres::where('idUser', $id)->get();
 
+        foreach ($progres as $progress) {
+            $subject = Subject::find($progress->idSubject);
+            if ($subject && $subject->Material()->count() == 0) {
+                $progress->delete();
+            }
+        }
+
         return view("student.subject.view", compact('subjects', 'enrollment', 'progres'));
     }
 

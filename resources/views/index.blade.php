@@ -3,7 +3,7 @@
     Beranda
 @endsection
 @section('content')
-    <div class="mb-16 mx-10 px-8">
+    <div class="mb-16 mx-3 md:mx-10 px-4 md:px-8">
         <div class="grid max-w-screen-xl py-14 md:grid-cols-12 gap-2 lg:grid-cols-12">
             <div class="md:flex md:col-span-6">
                 <div class="mr-auto place-self-center">

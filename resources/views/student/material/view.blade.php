@@ -19,10 +19,9 @@
 
         <!-- drawer component -->
         <div id="drawer-navigation"
-            class="fixed top-0 left-0 mt-16 z-50 w-64 h-screen p-4 overflow-y-auto transition-transform -translate-x-full bg-cyan-50 dark:bg-gray-800 border border-cyan-400 pb-16"
+            class="fixed top-0 left-0 mt-16 z-50 w-64 h-screen p-4 overflow-y-auto transition-transform -translate-x-full bg-cyan-50 border border-cyan-400 pb-24"
             tabindex="-1" aria-labelledby="drawer-navigation-label">
-            <h5 id="drawer-navigation-label"
-                class="text-base border-cyan-500 pb-4 font-semibold text-gray-500 uppercase dark:text-gray-400">
+            <h5 id="drawer-navigation-label" class="text-base border-cyan-500 pb-4 font-semibold text-gray-500 uppercase">
                 {{ $subject->name }}</h5>
             <button type="button" data-drawer-hide="drawer-navigation" aria-controls="drawer-navigation"
                 class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 absolute top-2.5 end-2.5 inline-flex items-center z-40">
@@ -49,7 +48,7 @@
 
                         $progressPercentage = round(($currentProgres->sequence / $totalProgress) * 100);
                     @endphp
-                    <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                    <div class="w-full bg-gray-200 rounded-full h-2.5">
                         <div class="bg-cyan-500 h-2.5 rounded-full" style="width: {{ $progressPercentage }}%">
                         </div>
                     </div>
@@ -57,7 +56,7 @@
                         {{ $progressPercentage }}%
                     </p>
                 @else
-                    <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                    <div class="w-full bg-gray-200 rounded-full h-2.5">
                         <div class="bg-cyan-500 h-2.5 rounded-full" style="width: 0%">
                         </div>
                     </div>
@@ -270,7 +269,7 @@
                         <div id="content" class="h-auto p-2 rounded-lg bg-white border border-cyan-500 mb-2">
                             <h1 class=" text-center font-medium text-2xl sm:text-3xl">{{ $currentMaterial->name }}</h1>
                             <hr class="mt-2 border-cyan-500">
-                            <div class="mt-2 text-justify">
+                            <div class="mt-2 text-left md:text-justify">
                                 {!! $convertedContent !!}
                             </div>
                         </div>

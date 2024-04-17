@@ -48,15 +48,15 @@
                 <!-- Dropdown menu -->
                 <div id="dropdown"
                     class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 overflow-y-auto max-h-64">
-                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+                    <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownDefaultButton">
                         <li>
                             <a href="{{ route('discussion.view', ['idSubject' => $subject->id, 'material' => '']) }}"
-                                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Semua</a>
+                                class="block px-4 py-2 hover:bg-gray-100">Semua</a>
                         </li>
                         @foreach ($materials as $materialId => $materialName)
                             <li>
                                 <a href="{{ route('discussion.view', ['idSubject' => $subject->id, 'material' => $materialId]) }}"
-                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                    class="block px-4 py-2 hover:bg-gray-100">
                                     {{ $materialName }}
                                 </a>
                             </li>
@@ -221,7 +221,7 @@
                                 </div>
                             </div>
                         </div>
-                        @if (Auth::user()->id === $question->idUser)
+                        @if (Auth::user()->id == $question->idUser)
                             <button class="text-gray-800" type="button" aria-expanded="false"
                                 data-dropdown-toggle="dropdown-discussion-{{ $question->id }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -333,8 +333,8 @@
                         </a>
                     </div>
                     <div class="flex mt-2">
-                        <svg class="w-6 h-6 text-gray-900 dark:text-white" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <svg class="w-6 h-6 text-gray-900" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 17h6l3 3v-3h2V9h-2M4 4h11v8H9l-3 3v-3H4V4Z" />
                         </svg>
