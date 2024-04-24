@@ -181,7 +181,7 @@
             <h1 class="text-center sm:text-4xl text-2xl font-semibold text-cyan-800">
                 Tentang Kami
             </h1>
-            <p class="text-center mt-2 text-lg font-normal text-cyan-800">
+            <p class="text-justify mt-2 text-lg font-normal text-cyan-800">
                 Didorong oleh semangat untuk meningkatkan motivasi belajar siswa, LMS ini didesain untuk memberikan
                 solusi yang efektif dan efisien dalam mengorganisir materi pembelajaran. LMS kami hadir sebagai solusi
                 yang dapat memberikan semangat dan kreativitas siswa dalam belajar. LMS yang telah kami kembangkan
@@ -189,6 +189,26 @@
                 progres setiap siswa secara efisien. Dengan LMS ini, kami ingin membuka pintu menuju pembelajaran yang
                 lebih inspiratif dan memberdayakan setiap pelajar dan pendidik untuk mencapai potensi penuh mereka.
             </p>
+        </div>
+
+        <div id="aboutUs" class="border-t border-cyan-800 pt-2 sm:px-12 my-2 text-lg font-normal text-cyan-800">
+            <p class="text-justify">
+                Sumber-sumber gambar yang digunakan dalam pembuatan konten ini diambil dari <a
+                    href="https://www.freepik.com" target="_blank">Freepik</a>, sebuah platform yang menyediakan beragam
+                gambar dan desain berkualitas dengan lisensi terbuka. Sedangkan konten digital dibuat dengan menggunakan <a
+                    href="https://www.canva.com" target="_blank">Canva</a>, sebuah alat desain grafis yang memungkinkan
+                pembuatan konten dengan lisensi terbuka dan beragam pilihan kreatif.
+            </p>
+            <div class="mt-2 text-center">
+                <p class="font-light">Powered by:</p>
+                <div class="flex flex-wrap justify-center gap-1">
+                    <img class="w-auto md:h-20 h-16" src="./images/canva.webp" alt="logo canva">
+                    <img class="w-auto md:h-20 h-16" src="./images/freepik.webp" alt="logo freepik">
+                    <img class="w-auto md:h-20 h-16" src="./images/laravel.webp" alt="logo laravel">
+                    <img class="w-auto md:h-20 h-16" src="./images/tailwind.webp" alt="logo tailwind">
+                    <img class="w-auto md:h-20 h-16" src="./images/flowbite.webp" alt="logo flowbite">
+                </div>
+            </div>
         </div>
     </div>
 @endsection

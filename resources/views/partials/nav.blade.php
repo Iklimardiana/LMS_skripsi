@@ -79,26 +79,14 @@
                 <span class="self-center text-2xl font-semibold whitespace-nowrap text-white">MicroTika</span>
             </a>
             <div class="flex items-center">
-                @if (request()->is('/') && Auth::user()->role == 'student')
+                @if ((request()->is('/') && Auth::user()->role == 'student') || Auth::user()->role == 'teacher')
                     <ul>
                         <li>
-                            <a href="/student/subject"
+                            <a href="#aboutUs"
                                 class="block py-2 px-3 font-semibold text-white rounded md:hover:underline md:hover:border-white"
                                 aria-current="page">
                                 <span class="p-2">
-                                    Mata Pelajaran
-                                </span>
-                            </a>
-                        </li>
-                    </ul>
-                @elseif(request()->is('/') && Auth::user()->role == 'teacher')
-                    <ul>
-                        <li>
-                            <a href="/teacher"
-                                class="block py-2 px-3 font-semibold text-white rounded md:hover:underline md:hover:border-white"
-                                aria-current="page">
-                                <span class="p-2">
-                                    Dashboard
+                                    Tentang Kami
                                 </span>
                             </a>
                         </li>

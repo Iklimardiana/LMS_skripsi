@@ -144,6 +144,9 @@
                                             <option value="postest" {{ old('type') == 'postest' ? 'selected' : '' }}>
                                                 Postest
                                             </option>
+                                            <option value="quiz" {{ old('type') == 'quiz' ? 'selected' : '' }}>
+                                                Quiz
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -354,6 +357,10 @@
                                                                 <option value="postest"
                                                                     {{ $exam->type == 'postest' ? 'selected' : '' }}>
                                                                     Postest
+                                                                </option>
+                                                                <option value="quiz"
+                                                                    {{ $exam->type == 'quiz' ? 'selected' : '' }}>
+                                                                    Quiz
                                                                 </option>
                                                             </select>
                                                         </div>

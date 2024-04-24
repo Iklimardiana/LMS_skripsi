@@ -41,9 +41,6 @@
                 })
                 .then((willDelete) => {
                     if (willDelete) {
-                        swal("Data Anda telah dihapus!", {
-                            icon: "success",
-                        });
                         fetch(url, {
                                 method: "DELETE",
                                 headers: {
@@ -55,6 +52,10 @@
                                 if (elementToRemove) {
                                     elementToRemove.remove();
                                 }
+                                swal("Data Anda telah dihapus!", {
+                                    icon: "success",
+                                    buttons: false,
+                                });
                                 setTimeout(() => {
                                     location.reload();
                                 }, 500);
