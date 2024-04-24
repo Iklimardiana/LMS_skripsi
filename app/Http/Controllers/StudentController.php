@@ -307,28 +307,12 @@ class StudentController extends Controller
     {
         $submission = Assignment::findOrFail($id);
 
-        $material = $submission->material;
         File::delete(public_path('attachment/submission/' . $submission->attachment));
         $submission->delete();
 
-        $this->updateProgres($material);
-
         return redirect()->back();
     }
-    protected function updateProgres($material)
-    {
-        $user = Auth::user()->id;
-        $subject = $material->subject;
 
-        $currentProgres = Progres::where('idUser', $user)->where('idSubject', $subject->id)->first();
-
-        if ($currentProgres) {
-            $currentProgres->complete = '0';
-            $currentProgres->sequence = $material->sequence;
-
-            $currentProgres->save();
-        }
-    }
     public function editSubmission($id)
     {
         $submission = Assignment::findOrFail($id);

@@ -8,7 +8,7 @@
 @endsection
 @section('content')
     <div class="p-4 mt-16 sm:ml-64">
-        <div class="flex flex-col space-y-3 p-4 border-2 border-gray-200 border-dashed h-auto rounded-lg">
+        <div class="flex flex-col space-y-3 p-4 mb-12 md:mb-auto border-2 border-gray-200 border-dashed h-auto rounded-lg">
             <div class="grid max-w-screen-xl md:grid-cols-12 gap-4 lg:grid-cols-12">
                 <div class="flex justify-center md:col-span-2">
                     <img class="rounded-lg w-28 h-32 md:w-32 md:h-36 border border-cyan-500 object-cover"
