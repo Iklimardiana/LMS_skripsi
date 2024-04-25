@@ -97,22 +97,4 @@ class RegisterController extends Controller
             return back()->with('error', 'Unable to resend verification link.');
         }
     }
-    // public function resendVerification(Request $request)
-    // {
-    //     // Temukan pengguna berdasarkan alamat email
-    //     $user = User::where('email', $request->email)->first();
-
-    //     // Periksa apakah pengguna ada dan belum diverifikasi
-    //     if ($user && !$user->hasVerifiedEmail()) {
-    //         // Buat URL verifikasi baru
-    //         $url = request()->getHttpHost() . '/register/resend-verification/' . $user->key;
-
-    //         // Kirim ulang email verifikasi
-    //         Mail::to($user->email)->send(new MailSend(['key' => $user->key], $url));
-
-    //         return redirect('/register')->with('message', 'Link verifikasi telah dikirim ulang ke email Anda. Silakan cek email untuk memverifikasi');
-    //     }
-
-    //     return back()->with('registerError', 'Tidak dapat mengirim ulang email verifikasi.');
-    // }
 }
