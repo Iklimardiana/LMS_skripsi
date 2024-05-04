@@ -61,6 +61,9 @@
                     </tbody>
                 </table>
             </div>
+            <div class="mt-3">
+                {{ $students->links('pagination::tailwind') }}
+            </div>
         </div>
     </div>
 @endsection

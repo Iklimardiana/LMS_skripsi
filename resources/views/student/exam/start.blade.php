@@ -147,7 +147,7 @@
 
                     answerChoice.forEach(function(item, index) {
                         html += `
-                        <div class="flex flex-row gap-1">
+                        <div class="flex flex-row gap-1 mb-1">
                             <input class="mt-1" type="radio" id="pilihan${index}" name="user_answer" value="${item.id}" ${item.id == data.user_answer ? 'checked' : ''}>
                             <label for="pilihan${index}">${item.answer_content}</label>
                         </div>`;
