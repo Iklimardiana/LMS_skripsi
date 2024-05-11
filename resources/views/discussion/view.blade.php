@@ -98,7 +98,7 @@
                                         class="bg-gray-50 border border-cyan-500 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 block w-full p-2.5"
                                         name="idMaterial" id="idMaterial">
                                         <option value="">--Pilih Materi--</option>
-                                        @forelse ($subject->material as $material)
+                                        @forelse ($subject->material()->orderBy('sequence')->get() as $material)
                                             <option value="{{ $material->id }}">
                                                 {{ $material->name }}</option>
                                         @empty

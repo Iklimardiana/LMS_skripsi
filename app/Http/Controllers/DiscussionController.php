@@ -16,11 +16,9 @@ class DiscussionController extends Controller
     {
         $subject = Subject::findOrFail($id);
 
-        $materials = Material::where('id', function ($query) use ($subject) {
-            $query->select('id')
-                ->where('idSubject', $subject->id)
-                ->distinct();
-        })->pluck('name', 'id');
+        $materials = Material::where('idSubject', $subject->id)
+            ->orderBy('sequence')
+            ->pluck('name', 'id');
 
         $selectedMaterial = request('material');
         $questions = DiscussionQuestion::where('idSubject', $subject->id)
@@ -34,6 +32,7 @@ class DiscussionController extends Controller
 
         return view("discussion.view", compact("subject", "questions", "questionCount", "materials"));
     }
+
 
     public function showQuestion($id)
     {

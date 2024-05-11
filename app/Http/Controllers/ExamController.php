@@ -146,7 +146,7 @@ class ExamController extends Controller
             session()->forget('uploaded_images_questions');
 
             foreach ($request->answer as $key => $choice) {
-                if (!empty ($choice['answer_content'])) {
+                if (!empty($choice['answer_content'])) {
                     $answer = new Answer;
                     $answer->idQuestion = $question->id;
                     $answer->answer_content = $choice['answer_content'];
@@ -251,7 +251,7 @@ class ExamController extends Controller
             $idAnswer = $answers->pluck('id');
 
             foreach ($request->answer as $key => $choice) {
-                if (!empty ($choice['answer_content'])) {
+                if (!empty($choice['answer_content'])) {
                     $answerId = $idAnswer[$key - 1] ?? null;
 
                     if ($answerId !== null) {
@@ -446,7 +446,7 @@ class ExamController extends Controller
             });
         }
 
-        $userExams = $userExamsQuery->paginate(1);
+        $userExams = $userExamsQuery->paginate(10);
         $iteration = $userExams->firstItem();
         $exam = Exam::findOrFail($idExam);
 
