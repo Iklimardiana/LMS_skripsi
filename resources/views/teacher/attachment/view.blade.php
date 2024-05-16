@@ -56,6 +56,10 @@
                 </a>
             </div>
             <div class="relative overflow-x-auto shadow-md sm:rounded-t-lg">
+                <div class="mb-2">
+                    <p class="text-center text-gray-900 font-medium text-xl">Daftar Lampiran Tugas {{ $material->name }}
+                    </p>
+                </div>
                 <table class="w-full text-sm text-left rtl:text-right text-gray-900">
                     <thead class="text-xs text-center text-white uppercase bg-cyan-500 border border-cyan-500">
                         <tr>
